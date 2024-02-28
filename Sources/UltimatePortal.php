@@ -11,19 +11,9 @@ if (!defined('SMF'))
 	
 function UltimatePortalMain()
 {
-	global $sourcedir, $context, $ultimateportalSettings, $boardurl, $boarddir,$mbname;
-	global $scripturl, $txt, $settings, $user_info;
+	global $context, $ultimateportalSettings, $boardurl, $boarddir,$mbname;
+	global $txt, $settings, $user_info;
 	
-	if(WIRELESS)
-		redirectexit('action=forum');
-			
-	// Load UltimatePortal Settings
-	ultimateportalSettings();
-
-	// Load Language
-	if (loadlanguage('UltimatePortal') == false)
-		loadLanguage('UltimatePortal','english');
-
 	if (!empty($context['linktree']) && !empty($ultimateportalSettings['ultimate_portal_enable']))
     {  
 		foreach ($context['linktree'] as $key => $tree)

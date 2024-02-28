@@ -18,12 +18,13 @@ function template_ultimate_portal_frontpage()
 		and the last parameter is the center column
 		the first and second parameter is "1" if the column is are not collapsed and "0" if the column print collapsed
 	*/
-	$left = !empty($ultimateportalSettings['ultimate_portal_enable_col_left']) ? 1 : 0;
-	$right = !empty($ultimateportalSettings['ultimate_portal_enable_col_right']) ? 1 : 0;
+	$printLeftCol = !empty($ultimateportalSettings['ultimate_portal_enable_col_left']) ? true : false;
+	$printRightCol = !empty($ultimateportalSettings['ultimate_portal_enable_col_right']) ? true : false;
 	//Portal Above
-	up_print_page_above($left, $right, '', 0, 1);
+	up_print_page_above($printLeftCol, $printRightCol, '', false, true);
 	//Portal Below
-	up_print_page_below($right);	
+	up_print_page_below(printRightColumn:$printRightCol);
+	$context['load_block_right'] = false;
 }
 
 ?>

@@ -28,10 +28,8 @@
 			<add><![CDATA[
 		// Ultimate Portal
 		global $ultimateportalSettings;
-		if (!empty($ultimateportalSettings['ultimate_portal_enable']) && empty($board) && empty($topic))
-		{
-					require_once($sourcedir . '/UltimatePortal.php');
-					return 'UltimatePortal_Home_Page';
+		if (!empty($ultimateportalSettings['ultimate_portal_enable']) && empty($board) && empty($topic)){
+			return 'UltimatePortal_Home_Page';
 		}
 		]]></add>
 	</operation>	
@@ -46,21 +44,21 @@ require_once($sourcedir . '/Subs-UltimatePortal-Init-Blocks.php');
 ]]></add>
 	</operation>			
     <operation>
-		<search position="before"><![CDATA[	// Is the forum in maintenance mode? (doesn't apply to administrators.)]]></search>
-			<add><![CDATA[
-	//Ultimate Portal Load funcionts
-		ultimateportalSettings();
-		LoadMemberGroupsPermissions();
-		// Load Language
-		if (loadlanguage('UltimatePortal') == false)
-			loadLanguage('UltimatePortal','english');	
-		require_once($sourcedir . '/UltimatePortal.php');
-		if (!isset($_REQUEST['wap']) && !isset($_REQUEST['wap2']) && !isset($_REQUEST['imode']))
+		<search position="after"><![CDATA[	// Is the forum in maintenance mode? (doesn't apply to administrators.)]]></search>
+			<add><![CDATA[	//Ultimate Portal Load funcionts
+	ultimateportalSettings();
+	LoadMemberGroupsPermissions();
+	// Load Language
+	if (loadLanguage('UltimatePortal') == false)
+		loadLanguage('UltimatePortal','english');	
+	require_once($sourcedir . '/UltimatePortal.php');
+	if (!isset($_REQUEST['wap']) && !isset($_REQUEST['wap2']) && !isset($_REQUEST['imode'])){
 		UltimatePortalMain();	
 		//Load Top Menu
 		LoadTopMenu();	
 		//Load Blocks
 		up_init_blocks();
+	}
 	//End Ultimate Portal
 	]]></add>
 	</operation>		
@@ -109,7 +107,7 @@ $buffer = str_replace($forum_copyright, $forum_copyright.$context['copyfor'],$bu
     <operation>
 		<search position="after"><![CDATA[	// Load the language and templates....
 	loadLanguage('Admin');
-	loadTemplate('Admin', 'admin');
+	loadTemplate('Admin');
 ]]></search>
 			<add><![CDATA[
 	//Load ultimate portal language
@@ -118,16 +116,14 @@ $buffer = str_replace($forum_copyright, $forum_copyright.$context['copyfor'],$bu
 	if (loadLanguage('UltimatePortalModules', '', false) === false)
 		loadLanguage('UltimatePortalModules', 'english', false);
 	//Call File
-	global $sourcedir, $ultimateportalSettings;
+	global $ultimateportalSettings;
 	//End
 	
 ]]></add>
 	</operation>	
     <operation>
-		<search position="after"><![CDATA[
-		'config' => array(
-			'title' => $txt['admin_config'],
-			]]></search>
+		<search position="after"><![CDATA[		'config' => array(
+			'title' => $txt['admin_config'],]]></search>
 			<add><![CDATA[
 		//Ultimate Portal 
 		'ultimate_portal_cp' => array(
@@ -297,12 +293,10 @@ $buffer = str_replace($forum_copyright, $forum_copyright.$context['copyfor'],$bu
 </file>		
 <file name="$sourcedir/Load.php">
     <operation>
-		<search position="replace"><![CDATA[	// Set the top level linktree up.
-	array_unshift($context['linktree'], array(
+		<search position="replace"><![CDATA[	array_unshift($context['linktree'], array(
 		'url' => $scripturl,
 		'name' => $context['forum_name_html_safe']
-	));
-]]></search>
+	));]]></search>
 			<add><![CDATA[
 	//Ultimate Portal
 	global $ultimateportalSettings;
@@ -330,7 +324,7 @@ $buffer = str_replace($forum_copyright, $forum_copyright.$context['copyfor'],$bu
 			),array('url' => $scripturl . '?action=forum', 'name' => $txt['ultport_forum_tab']));
 		}
    }else{
-   		array_unshift($context['linktree'], array(
+		array_unshift($context['linktree'], array(
 			'url' => $scripturl,
 			'name' => $context['forum_name_html_safe']
 		));
@@ -427,8 +421,7 @@ $buffer = str_replace($forum_copyright, $forum_copyright.$context['copyfor'],$bu
 </file>		
 <file name="$themedir/index.template.php" error="skip">
     <operation>
-		<search position="before"><![CDATA[// The main sub template above the content.
-function template_html_above()
+		<search position="before"><![CDATA[function template_html_above()
 {
 ]]></search>
 			<add><![CDATA[	global $ultimateportalSettings, $user_info;		
@@ -439,31 +432,14 @@ function template_html_above()
 			<add><![CDATA[',!empty($ultimateportalSettings['seo_title_keyword']) ? '&nbsp;- '.$ultimateportalSettings['seo_title_keyword'] : '',']]></add>
 	</operation>	
     <operation>
-		<search position="replace"><![CDATA[empty($settings['site_slogan']) ? '<img id="smflogo" src="' . $settings['images_url'] . '/smflogo.png" alt="Simple Machines Forum" title="Simple Machines Forum" />' : '<div id="siteslogan" class="floatright">' . $settings['site_slogan'] . '</div>']]></search>
-			<add><![CDATA[(empty($context['top_menu_view']) ? (empty($settings['site_slogan']) ? '<img id="smflogo" src="' . $settings['images_url'] . '/smflogo.png" alt="Simple Machines Forum" title="Simple Machines Forum" />' : '<div id="siteslogan" class="floatright">' . $settings['site_slogan'] . '</div>') : '')]]></add>
-	</operation>
+		<search position="replace"><![CDATA[empty($settings['site_slogan']) ? '<img id="smflogo" src="' . $settings['images_url'] . '/smflogo.svg" alt="Simple Machines Forum" title="Simple Machines Forum">' : '<div id="siteslogan">' . $settings['site_slogan'] . '</div>']]></search>
+			<add><![CDATA[(empty($context['top_menu_view']) ? (empty($settings['site_slogan']) ? '<img id="smflogo" src="' . $settings['images_url'] . '/smflogo.svg" alt="Simple Machines Forum" title="Simple Machines Forum">' : '<div id="siteslogan">' . $settings['site_slogan'] . '</div>') : '')]]></add>
+	</operation>    
     <operation>
-		<search position="before"><![CDATA[	// the upshrink image, right-floated
-	echo '
-			<img id="upshrink" src="', $settings['images_url'], '/upshrink.png" alt="*" title="', $txt['upshrink_description'], '" style="display: none;" />';
-]]></search>
-			<add><![CDATA[
-	//Ultimate portal Top Menu
-	if(!empty($context['top_menu_view']))
-	{
-		echo '<div id="up_top_menu">', template_top_menu_ultimate_portal() ,'</div>';
-	}
-	//End Top Menu
+		<search position="replace"><![CDATA[<div id="main_content_section">';]]></search>
+	<add><![CDATA[
+	<div id="main_content_section">';
 
-]]></add>
-	</operation>
-    <operation>
-		<search position="replace"><![CDATA[}
-
-function template_body_below()
-{
-]]></search>
-	<add><![CDATA[	
 	//Ultimate Portal Column Left - Forum
 	$context['vblocks'] = false;
 	
@@ -492,21 +468,17 @@ function template_body_below()
 		$right = !empty($ultimateportalSettings['up_forum_enable_col_right']) ? 1 : 0;
 		up_print_page_above($left, $right, '', 1, 0);
 	}
-	//End
-}
-
-function template_body_below()
-{
-	//Ultimate Portal Column Left - Forum
-	global $context, $ultimateportalSettings;
-	if ($context['vblocks'] === true)
-	{	
-		$right = !empty($ultimateportalSettings['up_forum_enable_col_right']) ? 1 : 0;
-		up_print_page_below($right);
-	}
-	//End
-
-]]></add>
+	//End]]></add>
 	</operation>
+	<operation>
+		<search position="replace"><![CDATA[	echo '
+			</div><!-- #main_content_section -->]]></search>
+	<add><![CDATA[	global $ultimateportalSettings;
+	$printRightCol = !empty($ultimateportalSettings['up_forum_enable_col_right']) ? true : false;
+	up_print_page_below($printRightCol);
+
+	echo '
+			</div><!-- #main_content_section -->]]></add>
+	</operation>	
 </file>	
 </modification>

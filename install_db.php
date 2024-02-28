@@ -6,24 +6,19 @@
  * @copyright 2024
  */
 
-global $mbname, $boardurl, $db_prefix, $context;
-global $smcFunc, $db_name;
-// Define the Manual Installation Status
-$manual_install = false;
+global $user_info, $mbname;
+
 if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF')) {
 	require_once(dirname(__FILE__) . '/SSI.php');
+} elseif (!defined('SMF')) {
+	die('<b>Error:</b> Cannot install - please verify that you put this file in the same place as SMF\'s index.php and SSI.php files.');
+}
 
-	$manual_install = true;
-} elseif (!defined('SMF'))
-	die('The Ultimate Portal installer wasn\'t able to connect to SMF! Make sure that you are either installing this via the Package Manager or the SSI.php file is in the same directory.');
-if ($manual_install)
-	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-	<title>Ultimate Portal Database Installer</title>
-     <link rel="stylesheet" type="text/css" href="Themes/default/style.css" />
-</head>
-<body>
-	<br /><br />';
+if ((SMF == 'SSI') && !$user_info['is_admin']) {
+	die('Admin privileges required.');
+}
+db_extend('packages');
+
 // The Ultimate Portal Creating tables
 $tables = array(
 	// UP Settings
@@ -1066,62 +1061,6 @@ $tables = array(
 foreach ($tables as $table) {
 	$table_name = $table['name'];
 	$smcFunc['db_create_table']('{db_prefix}' . $table_name, $table['columns'], $table['indexes']);
-	$currentTable = $smcFunc['db_table_structure']('{db_prefix}' . $table_name);
-	// Check that all columns are in
-	foreach ($table['columns'] as $id => $col) {
-		$exists = false;
-		// TODO: Check that definition is correct
-		foreach ($currentTable['columns'] as $col2) {
-			if ($col['name'] === $col2['name']) {
-				$exists = true;
-				break;
-			}
-		}
-
-		// Add missing columns
-		if (!$exists)
-			$smcFunc['db_add_column']('{db_prefix}' . $table_name, $col);
-
-		//Check, not change anything?
-		if ($exists) {
-			$smcFunc['db_change_column']('{db_prefix}' . $table_name, $col['name'], $col);
-		}
-	}
-	//End add missing columns
-	// Check that all indexes are in and correct
-	foreach ($table['indexes'] as $id => $index) {
-		$exists = false;
-
-		foreach ($currentTable['indexes'] as $index2) {
-			// Primary is special case
-			if ($index['type'] == 'primary' && $index2['type'] == 'primary') {
-				$exists = true;
-
-				if ($index['columns'] !== $index2['columns']) {
-					$smcFunc['db_remove_index']('{db_prefix}' . $table_name, 'primary');
-					$smcFunc['db_add_index']('{db_prefix}' . $table_name, $index);
-				}
-
-				break;
-			}
-			// Make sure index is correct
-			elseif (isset($index['name']) && isset($index2['name']) && $index['name'] == $index2['name']) {
-				$exists = true;
-
-				// Need to be changed?
-				if ($index['type'] != $index2['type'] || $index['columns'] !== $index2['columns']) {
-					$smcFunc['db_remove_index']('{db_prefix}' . $table_name, $index['name']);
-					$smcFunc['db_add_index']('{db_prefix}' . $table_name, $index);
-				}
-
-				break;
-			}
-		}
-
-		if (!$exists)
-			$smcFunc['db_add_index']('{db_prefix}' . $table_name, $index);
-	}
-	//End check indexes
 }
 
 //Install default rows
@@ -1247,23 +1186,3 @@ $smcFunc['db_insert'](
 	array('id')
 );
 //End insert rows in Blocks table
-
-// OK, time to report, output all the stuff to be shown to the user
-if ($manual_install) {
-	echo '
-<table cellpadding="0" cellspacing="0" border="0" class="tborder" width="800" align="center"><tr><td>
-<div class="titlebg" style="padding: 1ex" align="center">
-	Ultimate Portal Database Installer
-</div>
-<div class="windowbg2" style="padding: 2ex">
-<div style="padding-top:30px">
-	<strong>Your database update has been completed successfully!</strong>
-	<br /><br />The Ultimate Portal Database was successfully installed.<br />
-	Now you should go to the <a href="', $scripturl, '?action=admin;area=preferences">Ultimate Portal</a>.
-	<br /><br />
-	<span style="color: #FF0000"><strong>Please NOW Delete this file. </strong></span>
-</div>
-</td></tr></table>
-<br />
-</body></html>';
-}
