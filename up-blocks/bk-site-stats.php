@@ -17,7 +17,7 @@ global $smcFunc, $boarddir;
 require_once($boarddir . '/SSI.php');
 
 //Total Stats 
-$totals = array();
+$totals = [];
 
 //Ultimate Portal use SMF Cache data... UP it's the best, only "UP", can create this feature
 if(!empty($ultimateportalSettings['up_reduce_site_overload']))
@@ -34,7 +34,7 @@ if(!empty($ultimateportalSettings['up_reduce_site_overload']))
 }
 
 //Last Member from SSI.php
-$latestMember = array();
+$latestMember = [];
 //Ultimate Portal use SMF Cache data... UP it's the best, only "UP", can create this feature
 if(!empty($ultimateportalSettings['up_reduce_site_overload']))
 {

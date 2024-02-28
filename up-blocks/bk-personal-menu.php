@@ -19,7 +19,7 @@ if (!$user_info['is_guest'])
 			'<table style="border-spacing:5px;table-layout:fixed;width:100%;" border="0" cellspacing="1" cellpadding="3">
 				<tr>
 					<td align="center">
-						<strong>'. $txt['hello_member_ndt']. ' <a href="'.$scripturl.'?action=profile;u='.$user_info['id'].'">' . $user_info['username']. '</a></strong>
+						<strong>'. $txt['hello_member']. ' <a href="'.$scripturl.'?action=profile;u='.$user_info['id'].'">' . $user_info['username']. '</a></strong>
 					</td>
 				</tr>
 				<tr>

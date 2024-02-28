@@ -6,6 +6,10 @@
 * @copyright 2024
 */
 
+//labels
+$txt['newest_member'] = '';
+
+
 //Buttons
 $txt['ultport_close'] = 'Close';
 
