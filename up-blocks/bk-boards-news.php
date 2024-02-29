@@ -13,7 +13,9 @@ global $scripturl, $db_prefix, $txt, $settings, $modSettings, $context;
 global $func, $sourcedir, $memberContext;
 global $ultimateportalSettings, $sc, $user_info;
 global $smcFunc, $boarddir;
-global $boarddir;
+global $boarddir, $upCaller;
+
+$upSubs = $upCaller->subs();
 
 $limit = !empty($ultimateportalSettings['board_news_limit']) ? (int) $ultimateportalSettings['board_news_limit'] : 10;
 $length = !empty($ultimateportalSettings['board_news_lenght']) ? (int) $ultimateportalSettings['board_news_lenght'] : ''; 
@@ -25,14 +27,14 @@ if(!empty($ultimateportalSettings['up_reduce_site_overload']))
 {
 	if((cache_get_data('bk_boards_news', 1800)) === NULL)
 	{
-		$bnews = upSSI_BoardNews($limit, null, $boards, $length);
+		$bnews = $upSubs->getBoardNewsSSI($limit, null, $boards, $length);
 		//Ultimate Portal use SMF Cache data... UP it's the best, only "UP", can create this feature
 		cache_put_data('bk_boards_news', $bnews, 1800);		
 	}else{
 		$bnews = cache_get_data('bk_boards_news', 1800);
 	}
 }else{
-	$bnews = upSSI_BoardNews($limit, null, $boards, $length);
+	$bnews = $upSubs->getBoardNewsSSI($limit, null, $boards, $length);
 }
 
 loadLanguage('Stats');
