@@ -1,8 +1,10 @@
 <?php
 
-class SubsUltimatePortalUtils
+namespace UltimatePortal;
+
+class SubsUtils
 {
-    static function loadBlock(string $place): void
+    function loadBlock(string $place): void
     {
         global $smcFunc;
         $context['exists_'.$place] = 0;
@@ -25,11 +27,11 @@ class SubsUltimatePortalUtils
         }
 
         while ($row = $smcFunc['db_fetch_assoc']($myquery)) {
-            $context['block-'.$place][] = self::colModeller(place: $place, blockTotals: $blockTotals, row: $row);
+            $context['block-'.$place][] = self::_colModeller(place: $place, blockTotals: $blockTotals, row: $row);
         }
     }
 
-    static function colModeller(string $place, int $blockTotals, array $row): array
+    private function _colModeller(string $place, int $blockTotals, array $row): array
     {
         global $txt;
 

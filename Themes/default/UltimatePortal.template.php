@@ -8,9 +8,8 @@
 
 function template_ultimate_portal_frontpage()
 {
-	global $context, $ultimateportalSettings, $sourcedir;
-
-	//print the front page
+	global $context, $ultimateportalSettings, $upCaller;
+	$block = $upCaller->subsBlock();
 	/*
 		This function is from Source/Subs-UltimatePortal-Init-Blocks.php
 		first parameter is left column
@@ -21,9 +20,9 @@ function template_ultimate_portal_frontpage()
 	$printLeftCol = !empty($ultimateportalSettings['ultimate_portal_enable_col_left']) ? true : false;
 	$printRightCol = !empty($ultimateportalSettings['ultimate_portal_enable_col_right']) ? true : false;
 	//Portal Above
-	up_print_page_above($printLeftCol, $printRightCol, '', false, true);
+	$block->printPageAbove($printLeftCol, $printRightCol, '', false, true);
 	//Portal Below
-	up_print_page_below(printRightColumn:$printRightCol);
+	$block->printPageBelow(printRightColumn:$printRightCol);
 	$context['load_block_right'] = false;
 }
 

@@ -10,20 +10,20 @@ if (!defined('SMF'))
 	die('Hacking attempt...');
 	
 global $settings, $db_prefix, $boardurl, $context;
-global $smcFunc, $sourcedir;
-
+global $smcFunc, $sourcedir, $upCaller;
+$upSubs = $upCaller->subs();
 //Ultimate Portal use SMF Cache data... UP it's the best, only "UP", can create this feature
 if(!empty($ultimateportalSettings['up_reduce_site_overload']))
 {
 	if((cache_get_data('bk_menu', 1800)) === NULL)
 	{
-		LoadMainLinks();
+		$upSubs->getMainLinks();
 		cache_put_data('bk_menu', $context['main-links'], 1800);		
 	}else{
 		$context['main-links'] = cache_get_data('bk_menu', 1800);
 	}
 }else{
-	LoadMainLinks();
+	$upSubs->getMainLinks();
 }
 
 echo '
@@ -36,7 +36,7 @@ if ($main_link['active'])
 		echo '
 			<tr>
 				<td class="'.!empty($main_link['class']).'" align="left">
-					'. $main_link['icon'] .'&nbsp;
+					<span style="margin-right:10px;">'. $main_link['icon'] .'</span>
 					<a href="'. $main_link['url'] .'">
 						<span>'. $main_link['title'] .'</span>
 					</a>
