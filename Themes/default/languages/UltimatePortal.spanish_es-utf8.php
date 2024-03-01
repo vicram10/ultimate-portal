@@ -6,6 +6,11 @@
 * @copyright 2024
 */
 
+//labels
+$txt['newest_member'] = 'Nuevo miembro';
+$txt['core_settings_switch_off'] = $txt['core_settings_disabled'] = 'Apagar';
+$txt['core_settings_switch_on'] = $txt['core_settings_enabled'] = 'Prender';
+
 //Buttons
 $txt['ultport_close'] = 'Cerrar';
 

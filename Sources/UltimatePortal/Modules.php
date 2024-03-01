@@ -11,12 +11,13 @@ if (!defined('SMF'))
 	
 function UltimatePortalMainModules()
 {
-	global $sourcedir, $context;
+	global $sourcedir, $context, $upCaller;
+	$subs = $upCaller->subs();
 
 	//Inicialized the Ultimate Portal?
 	$context['ultimate_portal_initialized'] = false;	
 	// Load UltimatePortal Settings
-	ultimateportalSettings();
+	$subs->getSettings();
 	// Load UltimatePortal template
 	loadtemplate('UltimatePortalModules');
 	// Load Language
@@ -26,7 +27,6 @@ function UltimatePortalMainModules()
 	//Load Important Files
 	require_once($sourcedir . '/Security.php');
 	require_once($sourcedir . '/Load.php');
-	require_once($sourcedir . '/Subs-UltimatePortal.php');
 	
 	$areas = array(
 		'upmodulesenable' => array('', 'ShowEnableModules'),		   
@@ -54,26 +54,26 @@ function UltimatePortalMainModules()
 //Core Features
 function ShowEnableModules()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $upCaller, $context, $scripturl, $txt;
 	global $sourcedir;
+	$subs = $upCaller->subs();
 	//Inicialized the Ultimate Portal?
 	$context['ultimate_portal_initialized'] = false;	
 	// Load UltimatePortal Settings
-	ultimateportalSettings();
+	$subs->getSettings();
 	// Load UltimatePortal template
-	loadtemplate('UltimatePortalModules');
+	loadTemplate('UltimatePortalModules');
 	// Load Language
-	if (loadlanguage('UltimatePortalModules') == false)
+	if (loadLanguage('UltimatePortalModules') == false)
 		loadLanguage('UltimatePortalModules','english');
 
 	loadLanguage('ManageSettings');
 	//Load Important Files
 	require_once($sourcedir . '/Security.php');
 	require_once($sourcedir . '/Load.php');
-	require_once($sourcedir . '/Subs-UltimatePortal.php');
 
 	//Load Array
-	LoadEnableModules();
+	$subs->LoadEnableModules();
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -85,7 +85,7 @@ function ShowEnableModules()
 		foreach($context['array_modules'] as $id => $modules)
 		{
 			$configUltimatePortalVar[$id] = !empty($_POST[$id]) ? $_POST[$id] : '';
-			updateUltimatePortalSettings($configUltimatePortalVar, $modules['section']);		
+			$subs->updateSettings($configUltimatePortalVar, $modules['section']);		
 		}		
 		
 		//redirect
@@ -112,7 +112,7 @@ function ShowEnableModules()
 //Users Posts SubActions
 function ShowUserPosts()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -156,7 +156,7 @@ function ShowUserPosts()
 //Users Posts Main
 function ShowUserPostsMain()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $upCaller, $context, $txt;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -166,7 +166,7 @@ function ShowUserPostsMain()
 	{
 		checkSession('post');
 		//save the ultimate portal settings section users posts module			
-		saveUltimatePortalSettings('config_user_posts');
+		$upCaller->subs()->writeSettings('config_user_posts');
 	}
 	
 	// Call the sub template.
@@ -178,11 +178,12 @@ function ShowUserPostsMain()
 //Users Posts Extra Field - Select Type User Post and Select Languange Field
 function ShowExtraField()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $upCaller, $context, $txt;
 
 	checkSession('get');
-	//Load the ExtraField rows from Source/Subs-UltimatePortal.php
-	LoadExtraField();	
+	
+	//Load the ExtraField rows
+	$upCaller->subs()->LoadExtraField();	
 	
 	// Call the sub template.
 	$context['sub_template'] = 'up_extra_field';
@@ -193,11 +194,13 @@ function ShowExtraField()
 //Modules - Area User Posts - Sect: Add Extra Field 
 function AddExtraField()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $db_prefix, $context, $txt, $upCaller;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	//Save 
 	if (isset($_POST['save']))
@@ -207,9 +210,9 @@ function AddExtraField()
 		if (empty($_POST['icon']))
 			fatal_lang_error('ultport_error_no_add_icon',false);
 		
-		$icon =  up_db_xss($_POST['icon']);
+		$icon =  $subs->up_db_xss($_POST['icon']);
 		$title = $smcFunc['db_escape_string']($_POST['title']);
-		$field =  up_db_xss($_POST['field']);
+		$field =  $subs->up_db_xss($_POST['field']);
 		
 		//Now insert the new section in the smf_up_news_sections 
 		$smcFunc['db_query']('',"INSERT INTO {$db_prefix}uposts_extra_field (title, icon, field) VALUES ('$title', '$icon', '$field')");
@@ -227,12 +230,14 @@ function AddExtraField()
 //Modules - Area User Posts - Sect: Edit Extra Field 
 function EditExtraField()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $db_prefix, $context, $txt, $upCaller;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
 
+	$subs = $upCaller->subs();
+	
 	//Save 
 	if (isset($_POST['save']))
 	{
@@ -243,9 +248,9 @@ function EditExtraField()
 			fatal_lang_error('ultport_error_no_add_icon',false);
 		
 		$id = (int) $_POST['id'];	
-		$icon =  up_db_xss($_POST['icon']);
+		$icon =  $subs->up_db_xss($_POST['icon']);
 		$title = $smcFunc['db_escape_string']($_POST['title']);
-		$field =  up_db_xss($_POST['field']);
+		$field =  $subs->up_db_xss($_POST['field']);
 		
 		//Now update 
 		$smcFunc['db_query']('',"UPDATE {$db_prefix}uposts_extra_field 
@@ -280,8 +285,7 @@ function EditExtraField()
 //Modules - Area User Posts - Sect: Delete ExtraField
 function DeleteExtraField()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
-	global $smcFunc;
+	global $db_prefix, $context, $smcFunc;
 	
 	checkSession('get');	
 	if (empty($_REQUEST['id']))
@@ -301,7 +305,7 @@ function DeleteExtraField()
 //Modules - Area News
 function ShowNews()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -352,19 +356,19 @@ function ShowNews()
 //Modules - Area News - Sect: Gral Settings
 function ShowNewsMain()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $sourcedir;
-	global $ultimateportalSettings;
+	global $context, $txt, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	if (isset($_POST['save']))
 	{
 		checkSession('post');
 		//save the ultimate portal settings section news
 		$configUltimatePortalVar['up_news_limit'] = !empty($_POST['up_news_limit']) ? $_POST['up_news_limit'] : 10;	
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_up_news');		
+		$subs->updateSettings($configUltimatePortalVar, 'config_up_news');		
 	}
 
 	// Call the sub template.
@@ -376,9 +380,9 @@ function ShowNewsMain()
 //Modules - Area News - Sect: Announcements
 function ShowAnnouncements()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $sourcedir, $smcFunc;
-	global $ultimateportalSettings;
+	global $context, $txt;
+	global $sourcedir;
+	global $ultimateportalSettings, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -388,7 +392,7 @@ function ShowAnnouncements()
 		checkSession('post');
 		//save the ultimate portal settings section news
 		$configUltimatePortalVar['up_news_global_announcement'] = censorText($_POST['up_news_global_announcement']);
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_up_news');		
+		$upCaller->subs()->updateSettings($configUltimatePortalVar, 'config_up_news');		
 	}
 
 	// Needed for the editor and message icons.
@@ -414,11 +418,11 @@ function ShowAnnouncements()
 //Modules - Area News - Sect: Config Add - Delete - News Section 
 function ShowNewsSection()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $context, $txt, $upCaller;
 
 	checkSession('get');	
-	//Load the News Section - Source/Subs-UltimatePortal.php
-	LoadNewsSection();
+	//Load the News Section
+	$upCaller->subs()->LoadNewsSection();
 
 	// Call the sub template.
 	$context['sub_template'] = 'news_section';
@@ -429,7 +433,7 @@ function ShowNewsSection()
 //Modules - Area News - Sect: Add News Section 
 function ShowAddSection()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $db_prefix, $context, $upCaller, $txt, $settings;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
@@ -452,7 +456,7 @@ function ShowAddSection()
 		redirectexit('action=admin;area=up-news;sa=section;sesc=' . $context['session_id']);		
 	}
 	//only load the $context['last_position']
-	LoadNewsSection();	
+	$upCaller->subs()->LoadNewsSection();	
 	
 	// Call the sub template.
 	$context['sub_template'] = 'add_news_section';
@@ -463,7 +467,7 @@ function ShowAddSection()
 //Modules - Area News - Sect: Edit News Section 
 function EditSection()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $db_prefix, $context, $txt, $settings;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
@@ -513,8 +517,7 @@ function EditSection()
 //Modules - Area News - Sect: Delete News Section 
 function DeleteSection()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
-	global $smcFunc;
+	global $db_prefix, $context, $smcFunc;
 
 	checkSession('get');
 	if (empty($_REQUEST['id']))
@@ -535,12 +538,11 @@ function DeleteSection()
 //Modules - Area News - Sect: Config Add - Delete - News  
 function ShowAdminNews()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $ultimateportalSettings;
+	global $context, $txt, $upCaller;
 
 	checkSession('get');
-	//Load News - Source/Subs-UltimatePortal.php
-	LoadNews();
+	//Load News
+	$upCaller->subs()->LoadNews();
 
 	// Call the sub template.
 	$context['sub_template'] = 'admin_news';
@@ -551,11 +553,13 @@ function ShowAdminNews()
 //Modules - Area News - Sect: Add News  
 function ShowAddNews()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $db_prefix, $context, $txt, $upCaller;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	//Save 
 	if (isset($_POST['save']))
@@ -566,9 +570,9 @@ function ShowAddNews()
 
 		$title = $smcFunc['db_escape_string']($_POST['title']);
 		$id_cat = (int) $_POST['id_cat'];
-		$body = up_convert_savedbadmin($_POST['elm1']);
+		$body = $subs->up_convert_savedbadmin($_POST['elm1']);
 		$id_member = (int) $_POST['id_member'];
-		$username =  up_db_xss($_POST['username']);
+		$username =  $subs->up_db_xss($_POST['username']);
 		$date = time();
 		
 		//Now insert the NEWS in the smf_up_news
@@ -589,7 +593,7 @@ function ShowAddNews()
 	}
 	
 	//Load the html headers and load the Editor
-	context_html_headers();
+	$subs->context_html_headers();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'add_news';
@@ -600,11 +604,13 @@ function ShowAddNews()
 //Modules - Area News - Sect: Edit News  
 function EditUPNews()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $db_prefix, $context, $upCaller, $txt;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	//Save 
 	if (isset($_POST['save']))
@@ -616,9 +622,9 @@ function EditUPNews()
 		$id = (int) $_POST['id'];
 		$title = $smcFunc['db_escape_string']($_POST['title']);
 		$id_cat = (int) $_POST['id_cat'];
-		$body = up_convert_savedbadmin($_POST['elm1']);
+		$body = $subs->up_convert_savedbadmin($_POST['elm1']);
 		$id_member_updated = (int) $_POST['id_member_updated'];
-		$username_updated =  up_db_xss($_POST['username_updated']);
+		$username_updated =  $subs->up_db_xss($_POST['username_updated']);
 		$date_updated = time();
 		
 		//Now insert the NEWS in the smf_up_news
@@ -668,7 +674,7 @@ function EditUPNews()
 	}
 	
 	//Load the html headers and load the Editor
-	context_html_headers();
+	$subs->context_html_headers();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'edit_news';
@@ -693,14 +699,12 @@ function DeleteNews()
 
 	//redirect the News Admin News
 	redirectexit('action=admin;area=up-news;sa=admin-news;sesc=' . $context['session_id']);		
-						
-
 }
 
 //Modules - Area Board News
 function ShowBoardNews()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -732,11 +736,13 @@ function ShowBoardNews()
 
 function ShowBoardNewsMain()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $smcFunc;
+	global $context, $txt;
+	global $upCaller;
 
 	if(!isset($_POST['bn-save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	//Save 
 	if (isset($_POST['bn-save']))
@@ -751,19 +757,19 @@ function ShowBoardNewsMain()
 		}
 				
 		//save the ultimate portal settings section board news
-		saveUltimatePortalSettings("config_board_news");		
+		$subs->writeSettings("config_board_news");		
 		
 		//save the select multiple in the ultimate portal table settings
 		$board_news_view = $id_boards;		
 		$configUltimatePortalVar['board_news_view'] = $board_news_view;
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_board_news');		
+		$subs->updateSettings($configUltimatePortalVar, 'config_board_news');		
 
 		redirectexit('action=admin;area=board-news;sa=bn-main;sesc=' . $context['session_id']);
 	}
 	//End Save
 	
 	// Based on the up_loadJumpTo() from SMF 1.1.X
-	up_loadJumpTo();
+	$subs->up_loadJumpTo();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'board_news_main';
@@ -774,7 +780,7 @@ function ShowBoardNewsMain()
 //Modules - Area Download
 function ShowDownload()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -813,11 +819,13 @@ function ShowDownload()
 
 function ShowDownloadMain()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $sourcedir, $ultimateportalSettings;
+	global $context, $txt;
+	global $upCaller, $ultimateportalSettings;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	//Save 
 	if (isset($_POST['save']))
@@ -825,7 +833,7 @@ function ShowDownloadMain()
 		checkSession('post');
 		
 		//save the ultimate portal settings section download module
-		saveUltimatePortalSettings('config_download');
+		$subs->writeSettings('config_download');
 		redirectexit('action=admin;area=download;sa=main;sesc=' . $context['session_id']);
 	}
 	//End Save
@@ -839,7 +847,7 @@ function ShowDownloadMain()
 	);
 	$context['smileyBox_container'] = 'smileyBox_'.$editorOptions['id'];
 	$context['bbcBox_container'] = 'bbcBox_'.$editorOptions['id'];
-	up_create_control_richedit($editorOptions);	
+	$subs->up_create_control_richedit($editorOptions);	
 	$context['post_box_name'] = $editorOptions['id'];		
 
 	// Call the sub template.
@@ -850,14 +858,15 @@ function ShowDownloadMain()
 
 function ShowSection()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $sourcedir;
+	global $context, $txt;
+	global $upCaller;
 
 	checkSession('get');
+	$subs = $upCaller->subs();
 	//Load the Download Sections	
-	LoadDownloadSection('view');
+	$subs->LoadDownloadSection('view');
 	//Call the up_loadJumpTo, we need the boards id and name / llamando a la funcion up_loadJumpTo para poder visualizar los foros
-	up_loadJumpTo();
+	$subs->up_loadJumpTo();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'download_section';
@@ -867,8 +876,8 @@ function ShowSection()
 
 function AddDownloadSection()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $sourcedir, $settings;
+	global $db_prefix, $context, $txt;
+	global $settings, $upCaller;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
@@ -902,10 +911,10 @@ function AddDownloadSection()
 	//End Save
 
 	//Call the up_loadJumpTo, we need the boards id and name / llamando a la funcion up_loadJumpTo para poder visualizar los foros
-	up_loadJumpTo();
+	$upCaller->subs()->up_loadJumpTo();
 
 	//Load the MemberGroups
-	LoadMemberGroups(); 
+	$upCaller->subs()->LoadMemberGroups(); 
 	
 	// Used for the custom editor
 	// Now create the editor.
@@ -916,7 +925,7 @@ function AddDownloadSection()
 	);
 	$context['smileyBox_container'] = 'smileyBox_'.$editorOptions['id'];
 	$context['bbcBox_container'] = 'bbcBox_'.$editorOptions['id'];
-	up_create_control_richedit($editorOptions);	
+	$upCaller->subs()->up_create_control_richedit($editorOptions);	
 	$context['post_box_name'] = $editorOptions['id'];		
 	
 	// Call the sub template.
@@ -927,9 +936,8 @@ function AddDownloadSection()
 
 function EditDownloadSection()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $sourcedir, $settings;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;
+	global $settings, $smcFunc, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -970,13 +978,13 @@ function EditDownloadSection()
 	$id = $smcFunc['db_escape_string']($_REQUEST['id']);
 	
 	//Load selected Section
-	LoadDownloadSection('edit',$id);
+	$upCaller->subs()->LoadDownloadSection('edit',$id);
 	
 	//Load the MemberGroups
-	LoadMemberGroups(); 
+	$upCaller->subs()->LoadMemberGroups(); 
 
 	//Call the up_loadJumpTo, we need the boards id and name / llamando a la funcion up_loadJumpTo para poder visualizar los foros
-	up_loadJumpTo();
+	$upCaller->subs()->up_loadJumpTo();
 
 	// Used for the custom editor
 	// Now create the editor.
@@ -987,7 +995,7 @@ function EditDownloadSection()
 	);
 	$context['smileyBox_container'] = 'smileyBox_'.$editorOptions['id'];
 	$context['bbcBox_container'] = 'bbcBox_'.$editorOptions['id'];
-	up_create_control_richedit($editorOptions);	
+	$upCaller->subs()->up_create_control_richedit($editorOptions);	
 	$context['post_box_name'] = $editorOptions['id'];		
 
 	// Call the sub template.
@@ -999,7 +1007,7 @@ function EditDownloadSection()
 //Modules - Area Download - Delete Section
 function DeleteDownloadSection()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $db_prefix, $context;
 	global $user_info;
 	global $smcFunc;
 
@@ -1023,7 +1031,7 @@ function DeleteDownloadSection()
 //Internal Page SubActions
 function ShowInternalPage()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context,$txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -1056,7 +1064,7 @@ function ShowInternalPage()
 //Internal Page Main
 function ShowInternalPageMain()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $context, $upCaller, $txt;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -1067,7 +1075,7 @@ function ShowInternalPageMain()
 		checkSession('post');
 		
 		//save the ultimate portal settings section internal page module
-		saveUltimatePortalSettings('config_ipage');					
+		$upCaller->subs()->writeSettings('config_ipage');					
 	}
 	
 	// Call the sub template.
@@ -1078,7 +1086,7 @@ function ShowInternalPageMain()
 // Affiliates Mod Start Code 
 function ShowAffiliates()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules')) 
 		isAllowedTo('ultimate_portal_modules');
@@ -1116,7 +1124,7 @@ function ShowAffiliates()
 //Modules - Area Affiliates - Main
 function ShowAffiliatesMain()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $upCaller, $context, $txt;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -1126,7 +1134,7 @@ function ShowAffiliatesMain()
 	{
 		checkSession('post');
 		//save the ultimate portal settings section users posts module
-		saveUltimatePortalSettings("config_affiliates");	
+		$upCaller->subs()->writeSettings("config_affiliates");	
 		redirectexit('action=admin;area=up-affiliates;sa=aff-main;sesc=' . $context['session_id']);
 	}
 	
@@ -1138,11 +1146,11 @@ function ShowAffiliatesMain()
 
 function ShowAff_Affiliates()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $upCaller, $context, $txt;
 
 	checkSession('get');
 	//Load the Affiliates rows from Source/Subs-UltimatePortal.php
-	LoadAffiliates();	
+	$upCaller->subs()->LoadAffiliates();	
 	
 	// Call the sub template.
 	$context['sub_template'] = 'aff_affiliates';
@@ -1152,7 +1160,7 @@ function ShowAff_Affiliates()
 
 function AddAffiliates()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 	global $smcFunc;
 
 	if(!isset($_POST['save']))
@@ -1183,8 +1191,8 @@ function AddAffiliates()
 //Affiliates - Edit Afiliate
 function EditAffiliates()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;
+	global $smcFunc, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -1194,10 +1202,10 @@ function EditAffiliates()
 	{
 		checkSession('post');		
 		$id = (int) $_POST['id'];
-		$url =  up_db_xss($_POST['url']);
+		$url =  $upCaller->subs()->up_db_xss($_POST['url']);
 		$title = $smcFunc['db_escape_string']($_POST['title']);
-		$imageurl =  up_db_xss($_POST['imageurl']);
-		$alt =  up_db_xss($_POST['alt']);
+		$imageurl =  $upCaller->subs()->up_db_xss($_POST['imageurl']);
+		$alt =  $upCaller->subs()->up_db_xss($_POST['alt']);
 		
 		//Now update 
 		$smcFunc['db_query']('', "UPDATE {db_prefix}up_affiliates
@@ -1235,7 +1243,7 @@ function EditAffiliates()
 // Affiliates: Delete affiliate
 function DeleteAffiliates()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $db_prefix, $context;
 	global $smcFunc, $user_info;
 
 	checkSession('get');
@@ -1253,14 +1261,12 @@ function DeleteAffiliates()
 
 	//redirect
 	redirectexit('action=admin;area=up-affiliates;sa=aff_affiliates;sesc=' . $context['session_id']);		
-						
-
 }
 
 //About Us Module SubActions
 function ShowAboutUs()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -1293,8 +1299,8 @@ function ShowAboutUs()
 //Modules - Area About Us - Main
 function ShowAboutUsMain()
 {
-	global $db_prefix, $context, $scripturl, $sourcedir, $txt;
-	global $ultimateportalSettings, $smcFunc;
+	global $context, $sourcedir, $txt;
+	global $ultimateportalSettings, $smcFunc, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -1320,12 +1326,12 @@ function ShowAboutUsMain()
 		}
 		$configUltimatePortalVar['about_us_group_view'] = implode(",",$groupsArray);
 		//End
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_about_us');		
+		$upCaller->subs()->updateSettings($configUltimatePortalVar, 'config_about_us');		
 		redirectexit('action=admin;area=up-aboutus;sa=main;sesc=' . $context['session_id']);
 	}
 
 	// We need the membergroups / Para poder usar un vector (array) que contenga el ID y nombre del grupo
-	LoadMemberGroups(0, 'about_us');
+	$upCaller->subs()->LoadMemberGroups(0, 'about_us');
 
 	// Needed for the editor and message icons.
 	require_once($sourcedir . '/Subs-Editor.php');
@@ -1348,7 +1354,7 @@ function ShowAboutUsMain()
 //FAQ Module SubActions
 function ShowFaq()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_modules'))
 		isAllowedTo('ultimate_portal_modules');
@@ -1381,8 +1387,8 @@ function ShowFaq()
 //Modules - Area FAQ - Main
 function ShowFaqMain()
 {
-	global $db_prefix, $context, $scripturl, $sourcedir, $txt;
-	global $ultimateportalSettings, $smcFunc;
+	global $context, $txt;
+	global $upCaller, $smcFunc;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
@@ -1394,7 +1400,7 @@ function ShowFaqMain()
 		//save the ultimate portal settings
 		$configUltimatePortalVar['faq_title'] = !empty($_POST['faq_title']) ? $smcFunc['htmlspecialchars']($_POST['faq_title'], ENT_QUOTES) : '';
 		$configUltimatePortalVar['faq_small_description'] = !empty($_POST['faq_small_description']) ? ($smcFunc['htmlspecialchars']($_POST['faq_small_description'], ENT_QUOTES)) : '';
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_faq');		
+		$upCaller->subs()->updateSettings($configUltimatePortalVar, 'config_faq');		
 		redirectexit('action=admin;area=up-faq;sa=main;sesc=' . $context['session_id']);
 	}
 

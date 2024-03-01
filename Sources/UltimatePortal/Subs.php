@@ -134,10 +134,9 @@ class Subs
 	}
 
 	// Helper function for saving database settings.
-	function saveUltimatePortalSettings($section)
+	function writeSettings($section)
 	{
-		global $db_prefix, $context, $scripturl, $txt;
-		global $smcFunc;
+		global $context;
 
 		$this->prepareUltimatePortalSettingContext($section);
 
@@ -145,12 +144,12 @@ class Subs
 			$configUltimatePortalVar[$configvars['variable']] = isset($_POST[$configvars['variable']]) ? $_POST[$configvars['variable']] : '';
 		}
 
-		$this->updateUltimatePortalSettings($configUltimatePortalVar, $section);
+		$this->updateSettings($configUltimatePortalVar, $section);
 	}
 
 	// Updates the Ultimate Portal Settings table as well as $ultimateportalSettings... only does one at a time if $update is true.
 	// All input variables and values are assumed to have escaped apostrophes(')!
-	function updateUltimatePortalSettings($changeArray, $section, $update = false)
+	function updateSettings($changeArray, $section, $update = false)
 	{
 		global $db_prefix, $ultimateportalSettings;
 		global $smcFunc;
@@ -279,7 +278,7 @@ class Subs
 	}
 
 	//Load Lang Directory
-	function UltimatePortalLangs()
+	function loadLangs()
 	{
 		global $db_prefix, $context, $scripturl, $txt, $boarddir;
 
@@ -297,7 +296,7 @@ class Subs
 	}
 
 	//Load Specific lang file
-	function LoadSpecificLang($this_file)
+	function loadSpecificLang($this_file)
 	{
 		global $db_prefix, $context, $scripturl, $txt;
 		global $boarddir;
@@ -317,7 +316,7 @@ class Subs
 	}
 
 	//Create Specific lang file
-	function CreateSpecificLang($file, $content)
+	function createSpecificLang($file, $content)
 	{
 		global $db_prefix, $context, $scripturl, $txt;
 		global $boarddir;
@@ -345,7 +344,7 @@ class Subs
 	}
 
 	//Prepare the Ultimate Portal Permissions Groups
-	function LoadUPModulesPermissions()
+	function loadModulesPermissions()
 	{
 		global $db_prefix, $context, $txt;
 
@@ -378,7 +377,7 @@ class Subs
 	}
 
 	//Load MemberGroups
-	function LoadMemberGroups($group_selected = -99, $call = '')
+	function loadMemberGroups($group_selected = -99, $call = '')
 	{
 		global $db_prefix, $context, $txt, $smcFunc;
 

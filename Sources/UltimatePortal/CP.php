@@ -16,8 +16,6 @@ function UltimatePortalMainCP()
 	//Inicialized the Ultimate Portal?
 	$context['ultimate_portal_initialized'] = false;	
 	
-	// Load UltimatePortal Settings
-	ultimateportalSettings();
 	// Load UltimatePortal template
 	loadtemplate('UltimatePortalCP');
 	// Load Language
@@ -27,11 +25,10 @@ function UltimatePortalMainCP()
 	//Load Important Files
 	require_once($sourcedir . '/Security.php');
 	require_once($sourcedir . '/Load.php');
-	require_once($sourcedir . '/Subs-UltimatePortal.php');
 	
 	$areas = array(
 		'preferences' => array('', 'ShowPreferences'),
-		'ultimate_portal_blocks' => array('UltimatePortal-BlocksMain.php', 'ShowBlocksMain'),
+		'ultimate_portal_blocks' => array('BlocksMain.php', 'ShowBlocksMain'),
 		'multiblock' => array('', 'ShowMultiblock'),
 	);
 
@@ -48,7 +45,7 @@ function UltimatePortalMainCP()
 
 function ShowPreferences()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_cp'))
 		isAllowedTo('ultimate_portal_cp');
@@ -103,35 +100,28 @@ function ShowPreferences()
 
 }
 
-function ShowPreferencesMain()
-{
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
+function ShowPreferencesMain(){
+	global $context, $txt;
 
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-	
 	// Call the sub template.
 	$context['sub_template'] = 'preferences_main';
 	$context['page_title'] = $txt['ultport_admin_preferences_title'] . ' - ' . $txt['ultport_preferences_title'];
-
 }
 
 function ShowPreferencesGralSettings()
 {
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
+	global $context, $txt,$sourcedir;
+	global $upCaller;
 	
 	if(!isset($_POST['save']))
 		checkSession('get');
-		
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
 
 	//Save 
 	if (isset($_POST['save']))
 	{
 		checkSession('post');
 		//save the ultimate portal settings section preferences
-		saveUltimatePortalSettings("config_preferences");
+		$upCaller->subs()->writeSettings("config_preferences");
 		redirectexit('action=admin;area=preferences;sa=gral-settings;'. $context['session_var'] .'=' . $context['session_id']);
 	}
 	//End Save
@@ -144,31 +134,23 @@ function ShowPreferencesGralSettings()
 
 function ShowPreferencesLangMaintenance()
 {
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
-
+	global $context, $txt, $upCaller;
 	checkSession('get');
 
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-
 	//Load all Language from language folder
-	UltimatePortalLangs();
+	$upCaller->subs()->loadLangs();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'preferences_lang_maintenance';
 	$context['page_title'] = $txt['ultport_admin_lang_maintenance_title'] . ' - ' . $txt['ultport_preferences_title'];
-
 }
 
 function UltimatePortalEditLangs()
 {
-	global $db_prefix, $context, $scripturl, $txt, $boarddir,$sourcedir;
+	global $context, $txt, $sourcedir, $upCaller;
 
 	if(!isset($_POST['save']) && !isset($_POST['duplicate']) && !isset($_POST['editing']))
 		checkSession('get');
-
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
 
 	if (isset($_POST['save']))
 	{
@@ -179,7 +161,7 @@ function UltimatePortalEditLangs()
 		$content = trim($_POST['content']);
 
 		//Create Edit Lang File
-		CreateSpecificLang($file, $content);
+		$upCaller->subs()->createSpecificLang($file, $content);
 		
 		//Ok redirect 
 		redirectexit('action=admin;area=preferences;sa=lang-maintenance;sesc=' . $context['session_id']);
@@ -196,11 +178,11 @@ function UltimatePortalEditLangs()
 		$file = trim($_POST['file']);
 		
 		//Load the original lang
-		LoadSpecificLang($file);
+		$upCaller->subs()->loadSpecificLang($file);
 		
 		$new_file_name = $_POST['new_file'] .'.php';
 		//Create Edit Lang File
-		CreateSpecificLang($new_file_name, $context['content']);
+		$upCaller->subs()->createSpecificLang($new_file_name, $context['content']);
 		
 		//Ok redirect 
 		redirectexit('action=admin;area=preferences;sa=lang-maintenance;sesc=' . $context['session_id']);
@@ -218,7 +200,7 @@ function UltimatePortalEditLangs()
 	$this_file = $context['file'];
 
 	//Load Specific Lang - from Subs-UltimatePortal.php
-	LoadSpecificLang($this_file);
+	$upCaller->subs()->loadSpecificLang($this_file);
 	
 	// Call the sub template.
 	$context['sub_template'] = 'preferences_lang_edit';
@@ -229,20 +211,17 @@ function UltimatePortalEditLangs()
 //Load Permissions Settings
 function ShowPreferencesPermissionsSettings()
 {
-	global $db_prefix, $context, $scripturl, $txt, $boarddir;
+	global $db_prefix, $context, $txt, $upCaller;
 	global $smcFunc,$sourcedir;
 
 	if(!isset($_POST['save']) && !isset($_POST['view-perms']))
 		checkSession('get');
-
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
 	
 	$context['view-perms'] = 0;
 	$group_selected = '';
 
-	//Load Permissions - Source/Subs-UltimatePortal.php
-	LoadUPModulesPermissions();
+	//Load Permissions
+	$upCaller->subs()->loadModulesPermissions();
 
 	//View Perms?
 	if (isset($_POST['view-perms']))
@@ -286,25 +265,23 @@ function ShowPreferencesPermissionsSettings()
 	}
 
 	//Load the MemberGroups
-	LoadMemberGroups($group_selected);
+	$upCaller->subs()->loadMemberGroups($group_selected);
 	
 	// Call the sub template.
 	$context['sub_template'] = 'preferences_permissions_settings';
 	$context['page_title'] = $txt['ultport_admin_permissions_settings_title'] . ' - ' . $txt['ultport_preferences_title'];
-
 }
 
 //Portal Menu Settings
 function ShowPortalMenuSettings()
 {
-	global $db_prefix, $context, $scripturl, $txt, $boarddir,$sourcedir;
+	global $context, $txt, $upCaller;
 
 	checkSession('get');
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-
+	
 	//Load the Main links from BD
-	LoadMainLinks();
+	$upCaller->subs()->getMainLinks();
+
 	// Call the sub template.
 	$context['sub_template'] = 'preferences_main_links';
 	$context['page_title'] = $txt['ultport_admin_portal_menu_title'] . ' - ' . $txt['ultport_preferences_title'];
@@ -314,11 +291,8 @@ function ShowPortalMenuSettings()
 //Save Main Links
 function SaveMainLinks()
 {
-	global $db_prefix, $context, $scripturl, $txt, $boarddir;
+	global $db_prefix, $context;
 	global $smcFunc,$sourcedir;
-	
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
 	
 	if (!isset($_POST['save-menu']))
 		redirectexit('action=admin;area=preferences;sa=portal-menu');	
@@ -352,12 +326,8 @@ function SaveMainLinks()
 //Add Main Links
 function AddMainLinks()
 {
-	global $db_prefix, $context, $scripturl, $txt, $boarddir;
-	global $smcFunc,$sourcedir;
+	global $db_prefix, $context, $smcFunc,$sourcedir;
 
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-	
 	if (!isset($_POST['add-menu']))
 		redirectexit('action=admin;area=preferences;sa=portal-menu');	
 
@@ -368,8 +338,8 @@ function AddMainLinks()
 	$position = (int) $_POST['position'];
 	$active = !empty($_POST['active']) ? $_POST['active'] : '0';
 		
-	$result = $smcFunc['db_query']('',"INSERT INTO {$db_prefix}ultimate_portal_main_links
-					VALUES(0, '$icon', '$title', '$url', $position, $active, 0)");
+	$smcFunc['db_query']('',"INSERT INTO {$db_prefix}ultimate_portal_main_links
+		VALUES(0, '$icon', '$title', '$url', $position, $active, 0)");
 					
 	//redirect to Portal Menu Settings
 	redirectexit('action=admin;area=preferences;sa=portal-menu;sesc=' . $context['session_id']);
@@ -379,15 +349,11 @@ function AddMainLinks()
 //Edit Main Links
 function EditMainLinks()
 {
-	global $db_prefix, $context, $scripturl, $txt, $boarddir;
-	global $smcFunc,$sourcedir;
+	global $db_prefix, $context, $txt, $smcFunc,$sourcedir;
 	
 	if(!isset($_POST['save']))
 		checkSession('get');
 
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-	
 	if (!isset($_REQUEST['id']))
 		redirectexit('action=admin;area=preferences;sa=portal-menu');	
 
@@ -400,13 +366,15 @@ function EditMainLinks()
 					FROM {$db_prefix}ultimate_portal_main_links
 					WHERE id = $id");
 		while( $row = $smcFunc['db_fetch_assoc']($myquery) ) {
-			$edit_main_link = &$context['edit-main-links'][];
-			$edit_main_link['id'] = $row['id'];
-			$edit_main_link['icon'] = $row['icon'];			
-			$edit_main_link['title'] = $row['title'];
-			$edit_main_link['url'] = $row['url'];
-			$edit_main_link['position'] = $row['position'];
-			$edit_main_link['active'] = $row['active'];	
+			$editMainLink = [];
+			$editMainLink['id'] = $row['id'];
+			$editMainLink['icon'] = $row['icon'];			
+			$editMainLink['title'] = $row['title'];
+			$editMainLink['url'] = $row['url'];
+			$editMainLink['position'] = $row['position'];
+			$editMainLink['active'] = $row['active'];	
+
+			$context['edit-main-links'][] = $editMainLink;
 		}
 		// Call the sub template.
 		$context['sub_template'] = 'preferences_edit_main_links';
@@ -443,35 +411,28 @@ function DeleteMainLinks()
 	global $db_prefix, $context;
 	global $smcFunc,$sourcedir;
 
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-	
 	if (!isset($_REQUEST['id']))
 		redirectexit('action=admin;area=preferences;sa=portal-menu');	
 
 	checkSession('get');
 	$id = (int) $_REQUEST['id'];
 	
-	$myquery = $smcFunc['db_query']('',"
-				DELETE  
-				FROM {$db_prefix}ultimate_portal_main_links
-				WHERE id = $id");
+	$smcFunc['db_query']('',"DELETE  
+		FROM {$db_prefix}ultimate_portal_main_links
+		WHERE id = $id"
+	);
 				
 	redirectexit('action=admin;area=preferences;sa=portal-menu;sesc=' . $context['session_id']);
-
 }
 
 //Settings SEO
 function ShowSEO()
 {
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
+	global $context, $txt,$sourcedir, $upCaller;
 	global $boarddir, $smcFunc, $ultimateportalSettings;
 
 	if(!isset($_POST['save_robot']) && !isset($_POST['save_seo_config']) && !isset($_POST['save_seo_google_verification_code']))
 		checkSession('get');
-
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
 
 	//Save Robot
 	if (isset($_POST['save_robot']))
@@ -500,7 +461,7 @@ function ShowSEO()
 	{
 		checkSession('post');		
 		//save the ultimate portal settings section seo
-		saveUltimatePortalSettings("config_seo");
+		$upCaller->subs()->writeSettings("config_seo");
 		redirectexit('action=admin;area=preferences;sa=seo;sesc=' . $context['session_id']);
 	}
 	//End Save
@@ -515,7 +476,7 @@ function ShowSEO()
 			
 		//save the ultimate portal settings section seo
 		$configUltimatePortalVar['seo_google_verification_code'] = empty($ultimateportalSettings['seo_google_verification_code']) ? $verification : $ultimateportalSettings['seo_google_verification_code'].','.$verification;
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_seo');
+		$upCaller->subs()->updateSettings($configUltimatePortalVar, 'config_seo');
 		if (!empty($verification))
 		{			
 			$filename = $boarddir . '/'. $verification . '.html';
@@ -534,16 +495,16 @@ function ShowSEO()
 		checkSession('get');
 		$verification = $smcFunc['db_escape_string']($_REQUEST['file']);
 		unlink($boarddir . '/'. $verification . '.html');
-		$verifications_codes = explode(',', $ultimateportalSettings['seo_google_verification_code']);
-		$count = count($verifications_codes);
-		if($count > 1)
+		$verificationsCodes = explode(',', $ultimateportalSettings['seo_google_verification_code']);
+		$count = count($verificationsCodes);
+		if(!empty($verificationsCodes))
 		{
 			for($i = 0; $i <= $count; $i++)
 			{
-				if(!empty($verifications_codes[$i]))
+				if(!empty($verificationsCodes[$i]))
 				{
 					//save the ultimate portal settings section seo
-					if($verifications_codes[$i] == $verification)
+					if($verificationsCodes[$i] == $verification)
 						$position = $i;
 				}
 			}
@@ -551,7 +512,7 @@ function ShowSEO()
 			$configUltimatePortalVar['seo_google_verification_code'] = '';
 		}
 		//Not first?
-		if(!empty($position) && $position >= 1 && (($position != count($verifications_codes)-1) || ($position == count($verifications_codes)-1)))
+		if(!empty($position) && $position >= 1 && (($position != count($verificationsCodes)-1) || ($position == count($verificationsCodes)-1)))
 		{
 			$configUltimatePortalVar['seo_google_verification_code'] = str_replace(','.$verification,'', $ultimateportalSettings['seo_google_verification_code']);
 		}
@@ -560,7 +521,7 @@ function ShowSEO()
 		{
 			$configUltimatePortalVar['seo_google_verification_code'] = str_replace($verification.',','', $ultimateportalSettings['seo_google_verification_code']);
 		}		
-		updateUltimatePortalSettings($configUltimatePortalVar, 'config_seo');						
+		$upCaller->subs()->updateSettings($configUltimatePortalVar, 'config_seo');						
 		redirectexit('action=admin;area=preferences;sa=seo;sesc=' . $context['session_id']);
 	}
 	if(file_exists($boarddir . '/robots.txt'))
@@ -576,7 +537,7 @@ function ShowSEO()
 
 function ShowMultiblock()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 
 	if (!allowedTo('ultimate_portal_cp'))
 		isAllowedTo('ultimate_portal_cp');
@@ -614,13 +575,10 @@ function ShowMultiblock()
 
 function ShowMBMain()
 {
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
-
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
+	global $context, $txt, $upCaller;
 
 	//Load
-	MultiBlocksLoads();
+	$upCaller->subs()->MultiBlocksLoads();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'mb_main';
@@ -630,15 +588,14 @@ function ShowMBMain()
 
 function ShowMBAdd()
 {
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
-	global $smcFunc;
-	
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal-Init-Blocks.php');	
+	global $context, $txt, $upCaller, $smcFunc;
 	
 	if (!isset($_POST['next']) && !isset($_POST['save']))
 		checkSession('get');				
 	
+	$block = $upCaller->subsBlock();
+	$subs = $upCaller->subs();
+
 	if(isset($_POST['next']))
 	{
 		checkSession('post');		
@@ -670,10 +627,10 @@ function ShowMBAdd()
 	if (isset($_POST['save']))
 	{
 		checkSession('post');			
-		$title = !empty($_POST['title']) ?  up_db_xss($_POST['title']) : '';
-		$position = !empty($_POST['position']) ?  up_db_xss($_POST['position']) : '';
-		$id_blocks = !empty($_POST['blocks']) ?  up_db_xss($_POST['blocks']) : '';
-		$design = !empty($_POST['design']) ?  up_db_xss($_POST['design']) : '';
+		$title = !empty($_POST['title']) ?  $subs->up_db_xss($_POST['title']) : '';
+		$position = !empty($_POST['position']) ?  $subs->up_db_xss($_POST['position']) : '';
+		$id_blocks = !empty($_POST['blocks']) ?  $subs->up_db_xss($_POST['blocks']) : '';
+		$design = !empty($_POST['design']) ?  $subs->up_db_xss($_POST['design']) : '';
 		$enable = !empty($_POST['enable']) ? 1 : 0;
 		$mbk_title = !empty($_POST['mbk_title']) ? 'on' : '';
 		$mbk_collapse = !empty($_POST['mbk_collapse']) ? 'on' : '';
@@ -698,7 +655,7 @@ function ShowMBAdd()
 	}
 	
 	//Loads only right, left, and center blocks
-	LoadsBlocksForMultiBlock(true);
+	$subs->LoadsBlocksForMultiBlock(true);
 	
 	// Call the sub template.
 	$context['page_title'] = $txt['ultport_mb_title'] . ' - ' . $txt['ultport_mb_add'];
@@ -707,11 +664,9 @@ function ShowMBAdd()
 
 function ShowMBEdit()
 {
-	global $db_prefix, $context, $scripturl, $txt,$sourcedir;
-	global $smcFunc;
+	global $context, $txt, $smcFunc, $upCaller;
 	
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal-Init-Blocks.php');	
+	$subs = $upCaller->subs();
 
 	if(!isset($_GET['id']))
 		redirectexit('action=admin;area=multiblock;sa=main;'. $context['session_var'] .'=' . $context['session_id']);
@@ -719,9 +674,9 @@ function ShowMBEdit()
 	//Catch id
 	$context['idmbk'] = addslashes($_GET['id']);
 	//Load Specific
-	SpecificMultiBlocks($context['idmbk']);
+	$subs->SpecificMultiBlocks($context['idmbk']);
 	//Loads all blocks
-	LoadsBlocksForMultiBlock(false);
+	$subs->LoadsBlocksForMultiBlock(false);
 	
 	if (!isset($_POST['next']) && !isset($_POST['save']) && !isset($_POST['back']))
 		checkSession('get');				
@@ -730,8 +685,8 @@ function ShowMBEdit()
 	{
 		checkSession('post');		
 		$step = $_POST['step'];
-		$context['title'] = !empty($_POST['title']) ? up_db_xss($_POST['title']) : '';
-		$context['position'] = !empty($_POST['position']) ?  up_db_xss($_POST['position']) : '';
+		$context['title'] = !empty($_POST['title']) ? $subs->up_db_xss($_POST['title']) : '';
+		$context['position'] = !empty($_POST['position']) ?  $subs->up_db_xss($_POST['position']) : '';
 		$context['enable'] = isset($_POST['enable']) ? 1 : 0;
 		$context['mbk_title'] = isset($_POST['mbk_title']) ? 'on' : '';
 		$context['mbk_collapse'] = isset($_POST['mbk_collapse']) ? 'on' : '';
@@ -744,7 +699,7 @@ function ShowMBEdit()
 				 	unset($_POST['block'][$i]);	
 			$context['id_blocks'] = implode(',', $_POST['block']);
 		}
-		$context['design'] = !empty($_POST['design']) ?  up_db_xss($_POST['design']) : '';
+		$context['design'] = !empty($_POST['design']) ?  $subs->up_db_xss($_POST['design']) : '';
 	}
 	
 	if (!empty($step))
@@ -758,10 +713,10 @@ function ShowMBEdit()
 	if (isset($_POST['save']))
 	{
 		checkSession('post');			
-		$title = !empty($_POST['title']) ?  up_db_xss($_POST['title']) : '';
-		$position = !empty($_POST['position']) ?  up_db_xss($_POST['position']) : '';
-		$id_blocks = !empty($_POST['blocks']) ?  up_db_xss($_POST['blocks']) : '';
-		$design = !empty($_POST['design']) ?  up_db_xss($_POST['design']) : '';
+		$title = !empty($_POST['title']) ?  $subs->up_db_xss($_POST['title']) : '';
+		$position = !empty($_POST['position']) ?  $subs->up_db_xss($_POST['position']) : '';
+		$id_blocks = !empty($_POST['blocks']) ?  $subs->up_db_xss($_POST['blocks']) : '';
+		$design = !empty($_POST['design']) ?  $subs->up_db_xss($_POST['design']) : '';
 		$enable = !empty($_POST['enable']) ? 1 : 0;
 		$mbk_title = !empty($_POST['mbk_title']) ? 'on' : '';
 		$mbk_collapse = !empty($_POST['mbk_collapse']) ? 'on' : '';
@@ -787,7 +742,7 @@ function ShowMBEdit()
 			$smcFunc['db_query']('',"
 				UPDATE {db_prefix}ultimate_portal_blocks
 					SET position = '$position', 
-						mbk_view = '".  up_db_xss($_POST['mbk_view_'.$bk]) ."'
+						mbk_view = '".  $subs->up_db_xss($_POST['mbk_view_'.$bk]) ."'
 				WHERE id = $bk");
 		}
 		
@@ -815,12 +770,8 @@ function ShowMBEdit()
 
 function ShowMBDelete()
 {
-	global $db_prefix, $context;
-	global $smcFunc,$sourcedir;
+	global $context, $smcFunc,$sourcedir, $upCaller;
 
-	//Load File
-	require_once($sourcedir . '/Subs-UltimatePortal.php');	
-	
 	if (!isset($_REQUEST['id']))
 		redirectexit('action=admin;area=multiblock;sa=main;'. $context['session_var'] .'=' . $context['session_id']);
 
@@ -828,7 +779,7 @@ function ShowMBDelete()
 	$id = (int) $_REQUEST['id'];
 
 	//Load Specific
-	SpecificMultiBlocks($id);
+	$upCaller->subs()->SpecificMultiBlocks($id);
 
 	$id_blocks = explode(',',$context['multiblocks'][$id]['blocks']);
 	foreach($id_blocks as $bk)
@@ -841,11 +792,8 @@ function ShowMBDelete()
 			WHERE id = $bk");				
 	}		
 	
-	//Now Delete	
-	$myquery = $smcFunc['db_query']('',"
-				DELETE FROM {db_prefix}up_multiblock
-				WHERE id = $id");
-				
+	//ok delete
+	$smcFunc['db_query']('',"DELETE FROM {db_prefix}up_multiblock WHERE id = $id");
 	redirectexit('action=admin;area=multiblock;sa=main;'. $context['session_var'] .'=' . $context['session_id']);
 }
 

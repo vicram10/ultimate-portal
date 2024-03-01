@@ -11,14 +11,9 @@ if (!defined('SMF'))
 	
 function ShowBlocksMain()
 {
-	global $db_prefix, $context, $scripturl, $txt, $settings;
+	global $context, $txt;
 	global $sourcedir;
 	
-	//Load the Source/Subs-UltimatePortal-Init-Blocks.php
-	require_once($sourcedir . '/Subs-UltimatePortal-Init-Blocks.php');
-	//Load the Source/Subs-UltimatePortal.php
-	require_once($sourcedir . '/Subs-UltimatePortal.php');
-		
 	if (!allowedTo('ultimate_portal_cp'))		
 		isAllowedTo('ultimate_portal_blocks');
 		
@@ -69,23 +64,25 @@ function ShowBlocksMain()
 
 function ShowBlockPositions()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $context, $txt, $upCaller;	
 
 	checkSession('get');
+
+	$subs = $upCaller->subs();
 	
 	//Calling the Block Directory and added a new blocks, on the block table, if that exist.
-	UltimatePortalBlockDir();
+	$subs->UltimatePortalBlockDir();
 
 	//Load the Block table (smf_ultimate_portal_blocks) where position = LEFT
-	LoadBlocksTableLEFT();
+	$subs->LoadBlocksTableLEFT();
 	//Load the Block table (smf_ultimate_portal_blocks) where position = CENTER
-	LoadBlocksTableCENTER();
+	$subs->LoadBlocksTableCENTER();
 	//Load the Block table (smf_ultimate_portal_blocks) where position = RIGHT
-	LoadBlocksTableRIGHT();
+	$subs->LoadBlocksTableRIGHT();
 	//Load MultiBlock Header
-	LoadBlocksTableHEADER();
+	$subs->LoadBlocksTableHEADER();
 	//Load MultiBlock Footer
-	LoadBlocksTableFOOTER();
+	$subs->LoadBlocksTableFOOTER();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'positions';
@@ -96,17 +93,17 @@ function ShowBlockPositions()
 //Blocks: position save
 function SavePositions()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $smcFunc, $cachedir;
-	global $ultimateportalSettings;
+	global $db_prefix, $context;
+	global $smcFunc, $upCaller;
 	
 	if (!isset($_POST['save']))
 		redirectexit('action=admin;area=ultimate_portal_blocks;sa=positions');
 
 	checkSession('post');
-	
+	$subs = $upCaller->subs();
+
 	//Reduce Site Overload is Checked? okay... if save blocks, edit blocks, delete existing cache files....
-	RSODeleteCacheFiles();
+	$subs->RSODeleteCacheFiles();
 	//End Reduce Site Overload
 	
 	$myquery = $smcFunc['db_query']('',"
@@ -119,10 +116,10 @@ function SavePositions()
 		$progressive_form = $id."_progressive";
 		$active_form = $id."_active";
 		
-		$title_form = isset($_POST[$title_form]) ?  up_db_xss($_POST[$title_form]) : '';
-		$position_form = isset($_POST[$position_form]) ?  up_db_xss($_POST[$position_form]) : '';
-		$progressive_form = isset($_POST[$progressive_form]) ?  up_db_xss($_POST[$progressive_form]) : '';
-		$active_form = isset($_POST[$active_form]) ?  up_db_xss($_POST[$active_form]) : '';
+		$title_form = isset($_POST[$title_form]) ?  $subs->up_db_xss($_POST[$title_form]) : '';
+		$position_form = isset($_POST[$position_form]) ?  $subs->up_db_xss($_POST[$position_form]) : '';
+		$progressive_form = isset($_POST[$progressive_form]) ?  $subs->up_db_xss($_POST[$progressive_form]) : '';
+		$active_form = isset($_POST[$active_form]) ?  $subs->up_db_xss($_POST[$active_form]) : '';
 				
 		$smcFunc['db_query']('',"UPDATE {$db_prefix}ultimate_portal_blocks
 			SET title ='$title_form', 
@@ -139,11 +136,12 @@ function SavePositions()
 
 function ShowBlockTitle()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $context, $txt, $upCaller;
 	
 	checkSession('get');
+	
 	//Load the blocks Titles
-	LoadBlocksTitle();
+	$upCaller->subs()->LoadBlocksTitle();
 
 	// Call the sub template.
 	$context['sub_template'] = 'blocks_titles';
@@ -154,20 +152,22 @@ function ShowBlockTitle()
 //Blocks: Titles save
 function SaveBlockTitle()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $db_prefix, $context, $upCaller;
 	global $smcFunc;
 	
 	if (!isset($_POST['save']))
 		redirectexit('action=admin;area=ultimate_portal_blocks;sa=blocks-titles');
 		
 	checkSession('post');	
+	$subs = $upCaller->subs();
+
 	$myquery = $smcFunc['db_query']('',"
 				SELECT id 
 				FROM {$db_prefix}ultimate_portal_blocks");
 	while( $row = $smcFunc['db_fetch_assoc']($myquery) ) {
 		$id = $row['id'];
 		$title_block = $id."_title";
-		$title_block = isset($_POST[$title_block]) ?  up_db_xss($_POST[$title_block]) : '';
+		$title_block = isset($_POST[$title_block]) ?  $subs->up_db_xss($_POST[$title_block]) : '';
 
 
 		//Now Updated the Ultimate portal Blocks Titles		
@@ -183,7 +183,7 @@ function SaveBlockTitle()
 
 function ShowCreateBlocks()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $context, $txt;
 
 	checkSession('get');
 	// Call the sub template.
@@ -194,26 +194,27 @@ function ShowCreateBlocks()
 
 function ShowAddBlockHTML()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $settings;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;
+	global $smcFunc, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
-		
+	
+	$subs = $upCaller->subs();
+
 	if (isset($_POST['save']))
 	{
 		checkSession('post');		
 		if ($_POST['bk-title'] == '')
 			fatal_lang_error('ultport_error_no_add_bk_title',false);
 
-		$title = up_convert_savedbadmin($_POST['bk-title']);
-		$icon = !empty($_POST['icon']) ?  up_db_xss($_POST['icon']) : 'bk-html';
-		$bk_collapse = !empty($_POST['can_collapse']) ?  up_db_xss($_POST['can_collapse']) : '';
-		$bk_style = !empty($_POST['bk_style']) ?  up_db_xss($_POST['bk_style']) : '';
-		$bk_no_title = !empty($_POST['no_title']) ?  up_db_xss($_POST['no_title']) : '';
+		$title = $subs->up_convert_savedbadmin($_POST['bk-title']);
+		$icon = !empty($_POST['icon']) ?  $subs->up_db_xss($_POST['icon']) : 'bk-html';
+		$bk_collapse = !empty($_POST['can_collapse']) ?  $subs->up_db_xss($_POST['can_collapse']) : '';
+		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
+		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 		
-		$textarea = up_convert_savedbadmin($_POST['elm1']);		
+		$textarea = $subs->up_convert_savedbadmin($_POST['elm1']);		
 		//Now Insert the Ultimate portal Blocks HTML		
 		$smcFunc['db_query']('',"INSERT INTO {$db_prefix}ultimate_portal_blocks (title, icon, personal, content, bk_collapse, bk_no_title, bk_style)
 								VALUES ('$title', '$icon', '1', '$textarea', '$bk_collapse', '$bk_no_title', '$bk_style')");
@@ -222,9 +223,9 @@ function ShowAddBlockHTML()
 		redirectexit('action=admin;area=ultimate_portal_blocks;sa=positions;sesc=' . $context['session_id']);
 	}
 	//Load image folder
-	load_image_folder("/icons");
+	$subs->load_image_folder("/icons");
 	//load the context_html_headers from Sources/Sub-Ultimate-Portal.php
-	context_html_headers();
+	$subs->context_html_headers();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'add_block_html';
@@ -234,12 +235,13 @@ function ShowAddBlockHTML()
 
 function ShowAddBlockPHP()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $boarddir;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;
+	global $boarddir, $smcFunc, $upCaller;
 
 	if(!isset($_POST['save']) && !isset($_POST['preview']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	$title = $txt['ultport_add_bk_title'];
 	$content = stripslashes($txt['ultport_tmp_bk_php_content']);
@@ -260,10 +262,10 @@ function ShowAddBlockPHP()
 		$title = stripslashes($_POST['bk-title']); //strip slashes added by $_POST
 		$content = $_POST['content'];
 		$content = trim('<?php'."\n".$content."\n".'?>');
-		$icon = !empty($_POST['icon']) ?  up_db_xss($_POST['icon']) : 'bk-php';
-		$bk_collapse = !empty($_POST['can_collapse']) ?  up_db_xss($_POST['can_collapse']) : '';
-		$bk_style = !empty($_POST['bk_style']) ?  up_db_xss($_POST['bk_style']) : '';
-		$bk_no_title = !empty($_POST['no_title']) ?  up_db_xss($_POST['no_title']) : '';
+		$icon = !empty($_POST['icon']) ?  $subs->up_db_xss($_POST['icon']) : 'bk-php';
+		$bk_collapse = !empty($_POST['can_collapse']) ?  $subs->up_db_xss($_POST['can_collapse']) : '';
+		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
+		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 		//Create new block ID
 		$title_file = strtolower($title);
 		$title_file = str_replace (" ", "-", $title_file);
@@ -298,12 +300,12 @@ function ShowAddBlockPHP()
 		checkSession('post');
 		$context['preview'] = 1;
 		//User-defined title & text values
-		$title =  up_db_xss($_POST['bk-title']); //strip slashes added by $_POST
+		$title =  $subs->up_db_xss($_POST['bk-title']); //strip slashes added by $_POST
 		$content = $_POST['content'];
-		$icon = !empty($_POST['icon']) ?  up_db_xss($_POST['icon']) : 'bk-php';
-		$bk_collapse = !empty($_POST['can_collapse']) ?  up_db_xss($_POST['can_collapse']) : '';
-		$bk_style = !empty($_POST['bk_style']) ?  up_db_xss($_POST['bk_style']) : '';
-		$bk_no_title = !empty($_POST['no_title']) ?  up_db_xss($_POST['no_title']) : '';
+		$icon = !empty($_POST['icon']) ?  $subs->up_db_xss($_POST['icon']) : 'bk-php';
+		$bk_collapse = !empty($_POST['can_collapse']) ?  $subs->up_db_xss($_POST['can_collapse']) : '';
+		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
+		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 		
 		//Open tmp_block.php
 		$filetext = $content;
@@ -333,7 +335,7 @@ function ShowAddBlockPHP()
 	$context['bk_no_title'] = $bk_no_title;
 	
 	//Load image folder
-	load_image_folder("/icons");
+	$subs->load_image_folder("/icons");
 
 	// Call the sub template.
 	$context['sub_template'] = 'add_block_php';
@@ -343,13 +345,13 @@ function ShowAddBlockPHP()
 
 function ShowAdminBlock()
 {
-	global $db_prefix, $context, $scripturl, $txt;
+	global $context, $txt, $upCaller;
 
 	checkSession('get');
 	//load the Custom Block	
-	CustomBlock();
+	$upCaller->subs()->CustomBlock();
 	//load the System block
-	SystemBlock();
+	$upCaller->subs()->SystemBlock();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'admin_block';
@@ -383,11 +385,13 @@ function SwitchBlockType() {
 
 function EditBlockHtml()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;
+	global $smcFunc, $upCaller;
 
 	if(!isset($_POST['save']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	if (isset($_POST['save']))
 	{
@@ -396,13 +400,13 @@ function EditBlockHtml()
 			fatal_lang_error('ultport_error_no_add_bk_title',false);
 
 		$id = (int) $_POST['id'];
-		$title = up_convert_savedbadmin($_POST['bk-title']);
-		$icon = !empty($_POST['icon']) ?  up_db_xss($_POST['icon']) : 'bk-html';
-		$bk_collapse = !empty($_POST['can_collapse']) ?  up_db_xss($_POST['can_collapse']) : '';
-		$bk_style = !empty($_POST['bk_style']) ?  up_db_xss($_POST['bk_style']) : '';
-		$bk_no_title = !empty($_POST['no_title']) ?  up_db_xss($_POST['no_title']) : '';
+		$title = $subs->up_convert_savedbadmin($_POST['bk-title']);
+		$icon = !empty($_POST['icon']) ?  $subs->up_db_xss($_POST['icon']) : 'bk-html';
+		$bk_collapse = !empty($_POST['can_collapse']) ?  $subs->up_db_xss($_POST['can_collapse']) : '';
+		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
+		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 		
-		$textarea = up_convert_savedbadmin($_POST['elm1']);		
+		$textarea = $subs->up_convert_savedbadmin($_POST['elm1']);		
 
 		//Now UPDATE the Ultimate portal Blocks HTML		
 		$smcFunc['db_query']('',"UPDATE {$db_prefix}ultimate_portal_blocks 
@@ -432,10 +436,10 @@ function EditBlockHtml()
 	}
 
 	//Load image folder
-	load_image_folder("/icons");
+	$subs->load_image_folder("/icons");
 
 	//load the context_html_headers from Sources/Sub-Ultimate-Portal.php
-	context_html_headers();
+	$subs->context_html_headers();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'edit_block_html';
@@ -445,12 +449,13 @@ function EditBlockHtml()
 
 function EditBlockPhp()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $boarddir;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;
+	global $boarddir, $smcFunc, $upCaller;
 	
 	if(!isset($_POST['save']) && !isset($_POST['preview']))
 		checkSession('get');	
+
+	$subs = $upCaller->subs();
 
 	$type_php = !empty($_REQUEST['type-php']) ? $smcFunc['db_escape_string']($_REQUEST['type-php']) : '';
 	$context['type_php'] = $type_php;
@@ -475,10 +480,10 @@ function EditBlockPhp()
 		$title = stripslashes($_POST['bk-title']); //strip slashes added by $_POST
 		$content = $_POST['content'];
 		$content = trim($content);
-		$icon =  up_db_xss($_POST['icon']);
-		$bk_collapse = !empty($_POST['can_collapse']) ?  up_db_xss($_POST['can_collapse']) : '';
-		$bk_style = !empty($_POST['bk_style']) ?  up_db_xss($_POST['bk_style']) : '';
-		$bk_no_title = !empty($_POST['no_title']) ?  up_db_xss($_POST['no_title']) : '';
+		$icon =  $subs->up_db_xss($_POST['icon']);
+		$bk_collapse = !empty($_POST['can_collapse']) ?  $subs->up_db_xss($_POST['can_collapse']) : '';
+		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
+		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 
 		$myquery = $smcFunc['db_query']('',"SELECT file FROM {$db_prefix}ultimate_portal_blocks WHERE id='$id'");
 		while( $row = $smcFunc['db_fetch_assoc']($myquery) ) {
@@ -515,20 +520,20 @@ function EditBlockPhp()
 		
 	}	
 	//Load image folder
-	load_image_folder("/icons");
+	$subs->load_image_folder("/icons");
 
 	$id = $smcFunc['db_escape_string']($_REQUEST['id']);	
 	$context['id'] = $id;
 	$context['preview'] = 1;
-	$context['title'] = stripslashes(!empty($_POST['bk-title']) ?  up_db_xss($_POST['bk-title']) : '');
-	$context['content'] = !empty($_POST['content']) ?  up_db_xss($_POST['content']) : '';
-	$context['icon'] = stripslashes(!empty($_POST['icon']) ?  up_db_xss($_POST['icon']) : '');
+	$context['title'] = stripslashes(!empty($_POST['bk-title']) ?  $subs->up_db_xss($_POST['bk-title']) : '');
+	$context['content'] = !empty($_POST['content']) ?  $subs->up_db_xss($_POST['content']) : '';
+	$context['icon'] = stripslashes(!empty($_POST['icon']) ?  $subs->up_db_xss($_POST['icon']) : '');
 	if (isset($_POST['preview']))
 	{
 		checkSession('post');
-		$context['bk_collapse'] = empty($_POST['can_collapse']) ? '' :  up_db_xss($_POST['can_collapse']);
-		$context['bk_style'] = empty($_POST['bk_style']) ? '' :  up_db_xss($_POST['bk_style']);
-		$context['bk_no_title'] = empty($_POST['no_title']) ? '' :  up_db_xss($_POST['no_title']);
+		$context['bk_collapse'] = empty($_POST['can_collapse']) ? '' :  $subs->up_db_xss($_POST['can_collapse']);
+		$context['bk_style'] = empty($_POST['bk_style']) ? '' :  $subs->up_db_xss($_POST['bk_style']);
+		$context['bk_no_title'] = empty($_POST['no_title']) ? '' :  $subs->up_db_xss($_POST['no_title']);
 	}
 	$myquery = $smcFunc['db_query']('',"SELECT id, file, title, icon, bk_collapse, bk_style, bk_no_title FROM {$db_prefix}ultimate_portal_blocks WHERE id='$id'");
 	while( $row = $smcFunc['db_fetch_assoc']($myquery) ) {
@@ -577,10 +582,11 @@ function EditBlockPhp()
 
 function ShowBlockPerms()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $boarddir;
-	global $smcFunc;
+	global $db_prefix, $context, $txt;	
+	global $smcFunc, $upCaller;
 	
+	$subs = $upCaller->subs();
+
 	//catch - id
 	$id = $smcFunc['db_escape_string']($_REQUEST['id']);
 
@@ -591,7 +597,7 @@ function ShowBlockPerms()
 	{
 		checkSession('post');
 		//go the update perms in Sources/Subs-UltimatePortal.php
-		up_update_block_perms($id);
+		$subs->up_update_block_perms($id);
 	}
 		
 	$myquery = $smcFunc['db_query']('',"SELECT id, title, perms FROM {$db_prefix}ultimate_portal_blocks WHERE id='$id'");
@@ -603,7 +609,7 @@ function ShowBlockPerms()
 
 	
 	// We need the membergroups / Para poder usar un vector (array) que contenga el ID y nombre del grupo
-	LoadMemberGroups();
+	$subs->LoadMemberGroups();
 	
 	// Call the sub template.
 	$context['sub_template'] = 'perms_block';
@@ -613,9 +619,7 @@ function ShowBlockPerms()
 
 function DeleteBlock()
 {
-	global $db_prefix, $context, $scripturl, $txt;
-	global $boarddir;
-	global $smcFunc;
+	global $db_prefix, $context, $boarddir, $smcFunc;
 	
 	checkSession('get');	
 	//catch - id
@@ -640,7 +644,4 @@ function DeleteBlock()
 
 	//redirect the Blocks Admin
 	redirectexit('action=admin;area=ultimate_portal_blocks;sa=admin-block;sesc=' . $context['session_id']);
-
 }
-
-?>

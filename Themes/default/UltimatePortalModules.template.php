@@ -10,7 +10,6 @@
 function template_enableModules_main()
 {
 	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
 
 	echo '
 	<script type="text/javascript"><!-- // --><![CDATA[
@@ -21,7 +20,7 @@ function template_enableModules_main()
 			itemValueHandle.value = itemValueHandle.value == 1 ? 0 : 1;
 
 			// Change the image, alternative text and the title.
-			document.getElementById("switch_" + itemID).src = \'', $settings['images_url'], '/admin/switch_\' + (itemValueHandle.value == 1 ? \'on\' : \'off\') + \'.png\';
+			document.getElementById("switch_" + itemID).src = \'', $settings['images_url'], '/ultimate-portal/switch_\' + (itemValueHandle.value == 1 ? \'on\' : \'off\') + \'.png\';
 			document.getElementById("switch_" + itemID).alt = itemValueHandle.value == 1 ? \'', $txt['core_settings_switch_off'], '\' : \'', $txt['core_settings_switch_on'], '\';
 			document.getElementById("switch_" + itemID).title = itemValueHandle.value == 1 ? \'', $txt['core_settings_switch_off'], '\' : \'', $txt['core_settings_switch_on'], '\';
 
@@ -47,9 +46,9 @@ function template_enableModules_main()
 				<span class="topslice"><span></span></span>
 				<div class="content features">
 					<img class="features_image png_fix" src="', $settings['default_images_url'], '/ultimate-portal/admin-main/', $modules['images'], '" alt="" />
-					<div class="features_switch" id="js_feature_', $id, '" style="display: none;">
+					<div class="features_switch" id="js_feature_', $id, '">
 						<a href="', $scripturl, '?action=admin;area=upmodulesenable;', $context['session_var'], '=', $context['session_id'], ';toggle=', $id, ';state=', $modules['enabled'] ? 0 : 1, '" onclick="return toggleItem(\'', $id, '\');">
-							<input type="hidden" name="', $id, '" id="', $id, '" value="', $modules['enabled'] ? 'on' : '', '" /><img src="', $settings['images_url'], '/admin/switch_', $modules['enabled'] ? 'on' : 'off', '.png" id="switch_', $id, '" style="margin-top: 1.3em;" alt="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" title="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" />
+							<input type="hidden" name="', $id, '" id="', $id, '" value="', $modules['enabled'] ? 'on' : '', '" /><img src="', $settings['images_url'], '/ultimate-portal/switch_', $modules['enabled'] ? 'on' : 'off', '.png" id="switch_', $id, '" style="margin-top: 1.3em;" alt="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" title="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" />
 						</a>
 					</div>
 					<h4>', ($modules['enabled'] && $modules['url'] ? '<a href="' . $modules['url'] . '">' . $modules['title'] . '</a>' : $modules['title']), '</h4>

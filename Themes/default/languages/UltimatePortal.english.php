@@ -7,8 +7,9 @@
 */
 
 //labels
-$txt['newest_member'] = '';
-
+$txt['newest_member'] = 'Newest member';
+$txt['core_settings_switch_off'] = $txt['core_settings_disabled'] = 'Off';
+$txt['core_settings_switch_on'] = $txt['core_settings_enabled'] = 'On';
 
 //Buttons
 $txt['ultport_close'] = 'Close';
