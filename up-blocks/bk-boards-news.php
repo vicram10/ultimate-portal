@@ -15,26 +15,31 @@ global $ultimateportalSettings, $sc, $user_info;
 global $smcFunc, $boarddir;
 global $boarddir, $upCaller;
 
-$upSubs = $upCaller->subs();
+$upSsi = $upCaller->ssi();
 
 $limit = !empty($ultimateportalSettings['board_news_limit']) ? (int) $ultimateportalSettings['board_news_limit'] : 10;
 $length = !empty($ultimateportalSettings['board_news_lenght']) ? (int) $ultimateportalSettings['board_news_lenght'] : ''; 
-$boards = array();
-$boards = !empty($ultimateportalSettings['board_news_view']) ? explode(',', $ultimateportalSettings['board_news_view']) : null;
-$bnews = array();
+$includeBoards = [];
+$includeBoards = !empty($ultimateportalSettings['board_news_view']) ? explode(',', $ultimateportalSettings['board_news_view']) : [];
+$bnews = [];
 
 if(!empty($ultimateportalSettings['up_reduce_site_overload']))
 {
 	if((cache_get_data('bk_boards_news', 1800)) === NULL)
 	{
-		$bnews = $upSubs->getBoardNewsSSI($limit, null, $boards, $length);
-		//Ultimate Portal use SMF Cache data... UP it's the best, only "UP", can create this feature
+		$bnews = $upSsi->getBoardNews(
+			numRecent: $limit, 
+			excludeBoards: null, 
+			includeBoards: $includeBoards, 
+			length: $length
+		);
+		//Ultimate Portal use SMF Cache data...
 		cache_put_data('bk_boards_news', $bnews, 1800);		
 	}else{
 		$bnews = cache_get_data('bk_boards_news', 1800);
 	}
 }else{
-	$bnews = $upSubs->getBoardNewsSSI($limit, null, $boards, $length);
+	$bnews = $upSsi->getBoardNews($limit, null, $includeBoards, $length);
 }
 
 loadLanguage('Stats');
@@ -48,17 +53,17 @@ foreach ($bnews as $news)
 		loadMemberContext($news['poster']['id']);
 	}
 	echo '<span class="clear upperframe"><span></span></span>
-				 <div class="roundframe"><strong>'. $txt['topic'] .':</strong> '. $news['link'] .'<br />
-					<strong>'.$txt['post_by'] .': '. $news['poster']['link'] .'</strong>
-					</div><span class="lowerframe"><span></span></span>
-					<div align="center">'. $news['time'] .'</div>
+				<div class="roundframe"><strong>'. $txt['topic'] .':</strong> '. $news['link'] .'<br />
+				<strong>'.$txt['post_by'] .': '. $news['poster']['link'] .'</strong>
+				</div><span class="lowerframe"><span></span></span>
+				<div align="center">'. $news['time'] .'</div>
+					
+				<div class="post" style="padding: 2ex 0;">
+					'. $news['preview'] .'
+				</div>
 						
-					<div class="post" style="padding: 2ex 0;">
-						'. $news['preview'] .'
-					</div>
-							
-					<div align="center" class="description"><a href="' . $scripturl . '?topic=' . $news['topic'] . '.0">', $txt['readmoreboardnews'] ,' (' . $news['replies'] . ' ' . ($news['replies'] == 1 ? $txt['ssi_comment'] : $txt['ssi_comments']) . ')</a>'. (empty($news['locked']) ? ' | '. $news['comment_link'] : '') . '
-				</div>';
+				<div align="center" class="description"><a href="' . $scripturl . '?topic=' . $news['topic'] . '.0">', $txt['readmoreboardnews'] ,' (' . $news['replies'] . ' ' . ($news['replies'] == 1 ? $txt['ssi_comment'] : $txt['ssi_comments']) . ')</a>'. (empty($news['locked']) ? ' | '. $news['comment_link'] : '') . '
+			</div>';
 }
 
 //Page Index

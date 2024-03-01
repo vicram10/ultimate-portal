@@ -45,7 +45,7 @@ class SubsBlocks extends CoreBase
 				$context['load_block_center'] = cache_get_data('load_block_center', 1800);
 
 				foreach ($blocks as $bk => $value) {
-					$context['blocks-init'][] = array(
+					$context['blocks-init'][] = [
 						'id' => $value['id'],
 						'file' => $value['file'],
 						'title' => $value['title'],
@@ -59,7 +59,7 @@ class SubsBlocks extends CoreBase
 						'bk_collapse' => $value['bk_collapse'],
 						'bk_no_title' => $value['bk_no_title'],
 						'bk_style' => $value['bk_style'],
-					);
+					];
 				}
 			}
 		} else {
@@ -78,15 +78,10 @@ class SubsBlocks extends CoreBase
 	//Get Column
 	function printColumn($position)
 	{
-		global $db_prefix, $sourcedir, $boarddir, $context, $user_info;
-		global $ultimateportalSettings, $settings, $scripturl;
-		global $options;
+		global $boarddir, $context, $user_info, $scripturl;
 
 		//default position
 		$position = isset($position) ? $position : "left";
-
-		//Init Blocks
-		$column = '';
 
 		if (!empty($context['load_block_' . $position])) {
 			foreach ($context['blocks-init'] as $row) {
@@ -94,22 +89,12 @@ class SubsBlocks extends CoreBase
 					$id_block = $row['id'];
 					$content = "";
 					$perms = '';
-					$perms = array();
+					$perms = !empty($row['perms']) ? explode(',', $row['perms']) : null;
 					$title = $row['title'];
 					$icon = $row['icon'];
 					$active = $row['active'];
 
-					if ($row['perms']) {
-						$perms =  $row['perms'];
-					}
-
-					if (!$perms) {
-						$perms = array();
-					}
-
-					$perms = !empty($perms) ? explode(',', $perms) : '';
-					$viewblock	= !empty($perms) ? false : true;
-					if ($viewblock === false) {
+					if (false === ($viewblock = !empty($perms) ? false : true)) {
 						foreach ($user_info['groups'] as $group_id)
 							if (in_array($group_id, $perms)) {
 								$viewblock = true;
@@ -202,10 +187,9 @@ class SubsBlocks extends CoreBase
 		$this->printPageBelow($right);
 	}
 
-	function printPageAbove($left, $right, $copyright = '', $call_forum = 0, $call_front_page = 0)
-	{
+	function printPageAbove($left, $right, $copyright = '', $call_forum = 0, $call_front_page = 0){
 		global $settings, $context, $txt, $options;
-		global $ultimateportalSettings, $user_info, $upCaller;
+		global $ultimateportalSettings, $user_info;
 
 		if (!empty($ultimateportalSettings['up_left_right_collapse'])) {
 
@@ -323,8 +307,8 @@ class SubsBlocks extends CoreBase
 		$this->printMultiblock('header');
 
 		echo '	
-	<table id="up_bk_table_main" summary="" style="width:100%" cellpadding="3" cellspacing="0">
-		<tr>';
+		<table id="up_bk_table_main" style="width:100%" cellpadding="3" cellspacing="0">
+			<tr>';
 
 		if (!empty($left) && !empty($context['load_block_left'])) {
 			echo '
@@ -334,7 +318,7 @@ class SubsBlocks extends CoreBase
 		}
 
 		echo '					
-			<td align="left" valign="top" width="' . (!empty($ultimateportalSettings['ultimate_portal_width_col_center']) ? (empty($right) && empty($left) ? '100%' : $ultimateportalSettings['ultimate_portal_width_col_center']) : '70%') . '">';
+			<td align="left" valign="top" width="' . (!empty($ultimateportalSettings['ultimate_portal_width_col_center']) ? (empty($right) && empty($left) ? '100%' : $ultimateportalSettings['ultimate_portal_width_col_center']) : '70%') . '"'. (empty($call_front_page) ? ' style="padding-top:10px;"' : '') .'>';
 		//Column Center			
 		if (empty($call_forum) && !empty($call_front_page)) {
 			$this->printColumn("center");
@@ -368,7 +352,7 @@ class SubsBlocks extends CoreBase
 	//Print Multiblock 
 	function printMultiblock($position)
 	{
-		global $settings, $context, $txt, $options, $scripturl;
+		global $context, $scripturl;
 		global $ultimateportalSettings, $user_info;
 
 		if ($position == 'header') {
