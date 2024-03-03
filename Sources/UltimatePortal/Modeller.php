@@ -16,4 +16,16 @@ class Modeller extends CoreBase {
         }
         return null;
     }
+
+    function alertWarning(?string $title, string $message):string {
+        global $settings;
+        return '
+        <div class="up-alert up-bg-warning up-flex">
+		    <img alt="" src="'.$settings['default_images_url'].'/ultimate-portal/download/stop.png"/>
+            <div class="up-alert-body">
+                '. (!empty($title) ? '<div class="up-alert-title">'. $title .'</div>' : '') .'
+		        <div class="up-alert-message">'. $message .'</div>
+            </div>
+	    </div>';
+    }
 }

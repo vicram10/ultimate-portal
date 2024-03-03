@@ -147,9 +147,9 @@ $txt['ultport_admin_lang_maintenance_admin'] = 'Administraci�n del Idioma';
 $txt['lang_maintenance_duplicate_title'] = 'Duplicaci�n de Idioma';
 $txt['ultport_admin_lang_maintenance_edit_info'] = 'Informacion de Archivo de Idioma';
 $txt['ultport_admin_lang_maintenance_edit'] = 'Edicion de Archivo de Idioma';
-$txt['ultport_admin_lang_maintenance_warning'] = 'Acuerdese de Limpiar la Cache del Foro cuando edite un Archivo de Idioma
-												<strong>Administracion---->Mantenimiento----->Rutina------></strong> Limpiar Cache de Archivo. 
-												<br/>&nbsp;&nbsp;Es la �ltima Opci�n de Este panel de Control.';
+$txt['ultport_admin_lang_maintenance_warning'] = 'Acuerdese de Limpiar la Cache del Foro cuando edite un Archivo de Idioma.
+<div><strong>Administracion---->Mantenimiento----->Rutina------></strong> Limpiar Cache de Archivo.</div>
+<div>Es la �ltima Opci�n de Este panel de Control.</div>';
 
 //Admin - Language - Maintenance - Section Admin Language 
 $txt['ultport_admin_lang_maintenance_admin_edit_language'] = '<strong>Seleccionar Idioma</strong>

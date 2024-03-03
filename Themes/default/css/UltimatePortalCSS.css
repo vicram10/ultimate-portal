@@ -1,3 +1,14 @@
+:root {
+	--size-very-small: 0.5em !important;
+	--size-small: 1.5em;
+	--size-large: 3em;
+	--size-big: 5em;
+	--size-extra-big: 9em;
+	--bg-warning: #FFECA4;
+	--border-warning: #D0A400;
+	--table-head: #F0F4F7;
+}
+
 /*-------------------------
 #General
 --------------------------*/
@@ -447,6 +458,10 @@ h4.catbg span.left, h4.catbg2 span.left, h3.catbg span.left, h3.catbg2 span.left
     background: url(../images/theme/main_block.png) no-repeat 5px -999px !important;
 }
 
+.w-100 {
+	width:100%;
+}
+
 .fw-bold {
 	font-weight: bold;
 }
@@ -454,4 +469,94 @@ h4.catbg span.left, h4.catbg2 span.left, h3.catbg span.left, h3.catbg2 span.left
 #display_head {
 	margin: 0px !important;
 	border-top: 1px solid #ddd;
+}
+
+.up-rapid-links {
+	max-width: 100%;
+	height: 180px;
+}
+
+.up-rapid-links > div {
+	float: left;
+	width: 30%;
+	border: 1px solid #CCC;
+	border-radius: 10px;
+	background-color: #F8F8F8;
+	padding: 10px;
+	height: 100%;
+	margin: 3px;	
+	overflow: auto;
+}
+
+.up-rapid-links > div > img {
+	padding: 5px;
+	float: left;
+	margin-right: 10px;
+}
+
+.up-link-title {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: 900;
+	padding-bottom: 1em;
+}
+
+.up-flex {
+	display: flex !important;
+}
+
+.up-alert {
+	padding: var(--size-very-small);
+	padding-left: var(--size-small);
+	margin-top: var(--size-small);
+	margin-bottom: var(--size-small);
+	border-radius: 20px;
+	align-items: center !important;
+}
+
+.up-bg-warning {
+	background-color: var(--bg-warning);
+	border: 1px solid var(--border-warning);
+}
+
+.up-alert > img {
+	display: block;
+	float: left;
+	width: var(--size-big);
+	height: var(--size-big);
+}
+
+.up-alert-body {
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	display: block;	
+	padding: var(--size-small);
+}
+
+.up-alert-title {	
+	font-size: var(--size-large);
+	font-weight: 900;
+	margin-bottom: 10px;
+}
+
+.up-alert-message {
+	font-size: var(--size-small);
+}
+
+.up-alert .up-alert-title {
+	color: var(--border-warning);
+}
+
+.table {
+	display: table;
+	width: 100%;
+	border-spacing: var(--size-small);
+	border-collapse: collapse;
+}
+
+.table > thead > tr > th{
+	font-weight: 900;
+}
+
+.table > thead > tr > th, .table > tbody > tr > td {
+	background-color: var(--table-head);
+	padding: var(--size-small);
 }

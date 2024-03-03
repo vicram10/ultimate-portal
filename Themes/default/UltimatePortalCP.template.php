@@ -13,125 +13,113 @@ function template_preferences_main()
 
 	//Header Main
 	echo '
-	<table width="100%" align="center" cellspacing="1" cellpadding="5" border="0">							
-		<tr>
-			<td width="100%" class="catbg" align="left">	
-				', $txt['ultport_admin_preferences_title'] . ' - ' . $txt['ultport_preferences_title'] ,'
-			</td>
-		</tr>
-		<tr>
-			<td class="windowbg description" width="100%" align="left">	
-				', $txt['main_description'] ,'
-			</td>
-		</tr>
-	</table><br/>';
+	<div class="cat_bar">
+		<h3 class="catbg">
+			', $txt['ultport_admin_preferences_title'] . ' - ' . $txt['ultport_preferences_title'] ,'
+		</h3>				
+	</div>
+	<div class="information">	
+		', $txt['main_description'] ,'
+	</div>';
 	//Rapid Links
-	echo '
-	<div style="border:1px solid" class="windowbg2">
-			<div class="content">
-				<ul class="flow_hidden" id="quick_tasks">
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=preferences;sa=gral-settings;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/preferences.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=preferences;sa=gral-settings;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['ultport_preferences_title'] ,'</a></h5>
-						<span class="task">', $txt['ultport_admin_gral_settings_description'] ,'</span>
-					</li>
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=ultimate_portal_blocks;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/blocks.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=ultimate_portal_blocks;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_blocks_title'] ,'</a></h5>
-						<span class="task">', $txt['main_blocks_description'] ,'</span>
-					</li>';
-					
-				if(!empty($ultimateportalSettings['user_posts_enable']))
-				{
-					echo '
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=user-posts;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/user-posts.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=user-posts;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_user_posts_title'] ,'</a></h5>
-						<span class="task">', $txt['main_user_posts_description'] ,'</span>
-					</li>';
-				}
-				if(!empty($ultimateportalSettings['up_news_enable']))
-				{
-					echo '
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=up-news;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/news.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=up-news;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_news_title'] ,'</a></h5>
-						<span class="task">', $txt['main_news_description'] ,'</span>
-					</li>';
-				}
-					echo '
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=board-news;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/board-news.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=board-news;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_bnews_title'] ,'</a></h5>
-						<span class="task">', $txt['main_bnews_description'] ,'</span>
-					</li>';
-				
-				if(!empty($ultimateportalSettings['download_enable']))
-				{
-					echo '				
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=download;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/download.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=download;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_download_title'] ,'</a></h5>
-						<span class="task">', $txt['main_download_description'] ,'</span>
-					</li>';
-				}
-				
-				if(!empty($ultimateportalSettings['ipage_enable']))
-				{				
-					echo '
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=internal-page;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/internal-page.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=internal-page;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_ipage_title'] ,'</a></h5>
-						<span class="task">', $txt['main_ipage_description'] ,'</span>
-					</li>';
-				}
-				
-					echo '
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=up-affiliates;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/up-affiliates.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=up-affiliates;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_affiliates_title'] ,'</a></h5>
-						<span class="task">', $txt['main_affiliates_description'] ,'</span>
-					</li>';
-				
-				if(!empty($ultimateportalSettings['about_us_enable']))
-				{
-					echo '				
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=up-aboutus;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/up-aboutus.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=up-aboutus;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_about_title'] ,'</a></h5>
-						<span class="task">', $txt['main_about_description'] ,'</span>
-					</li>';
-				}
-				
-				if(!empty($ultimateportalSettings['faq_enable']))
-				{
-					echo '
-					<li>
-						<a href="', $scripturl ,'?action=admin;area=up-faq;' . $context['session_var'].'=' . $context['session_id'].'"><img class="home_image png_fix" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/up-faq.png" /></a>
-						<h5><a href="', $scripturl ,'?action=admin;area=up-faq;' . $context['session_var'].'=' . $context['session_id'].'">', $txt['main_faq_title'] ,'</a></h5>
-						<span class="task">', $txt['main_faq_description'] ,'</span>
-					</li>';
-				}
-				
+	$rapidLinks = [
+		'preferences' => [
+			'url' => $scripturl .'?action=admin;area=preferences;sa=gral-settings;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/preferences.png',
+			'title' => $txt['ultport_preferences_title'],
+			'description' => $txt['ultport_admin_gral_settings_description'],
+			'visible' => true,
+		],
+		'blocks' => [
+			'url' => $scripturl .'?action=admin;area=ultimate_portal_blocks;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/blocks.png',
+			'title' => $txt['main_blocks_title'],
+			'description' => $txt['main_blocks_description'],
+			'visible' => true,
+		],		
+		'user-posts' => [
+			'url' => $scripturl .'?action=admin;area=user-posts;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/user-posts.png',
+			'title' => $txt['main_user_posts_title'],
+			'description' => $txt['main_user_posts_description'],
+			'visible' => !empty($ultimateportalSettings['user_posts_enable']),
+		],		
+		'up-news' => [
+			'url' => $scripturl .'?action=admin;area=up-news;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/news.png',
+			'title' => $txt['main_news_title'],
+			'description' => $txt['main_news_description'],
+			'visible' => !empty($ultimateportalSettings['up_news_enable']),
+		],
+		'board-news' => [
+			'url' => $scripturl .'?action=admin;area=board-news;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/board-news.png',
+			'title' => $txt['main_bnews_title'],
+			'description' => $txt['main_bnews_description'],
+			'visible' => true,
+		],
+		'download' => [
+			'url' => $scripturl .'?action=admin;area=download;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/download.png',
+			'title' => $txt['main_download_title'],
+			'description' => $txt['main_download_description'],
+			'visible' => !empty($ultimateportalSettings['download_enable']),
+		],
+		'internal-page' => [
+			'url' => $scripturl .'?action=admin;area=internal-page;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/internal-page.png',
+			'title' => $txt['main_ipage_title'],
+			'description' => $txt['main_ipage_description'],
+			'visible' => !empty($ultimateportalSettings['ipage_enable']),
+		],
+		'up-affiliates' => [
+			'url' => $scripturl .'?action=admin;area=up-affiliates;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/up-affiliates.png',
+			'title' => $txt['main_affiliates_title'],
+			'description' => $txt['main_affiliates_description'],
+			'visible' => true,
+		],
+		'up-aboutus' => [
+			'url' => $scripturl .'?action=admin;area=up-aboutus;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/up-aboutus.png',
+			'title' => $txt['main_about_title'],
+			'description' => $txt['main_about_description'],
+			'visible' => !empty($ultimateportalSettings['about_us_enable']),
+		],
+		'up-faq' => [
+			'url' => $scripturl .'?action=admin;area=up-faq;' . $context['session_var'].'=' . $context['session_id'],
+			'image' => $settings['default_theme_url'] .'/images/ultimate-portal/admin-main/up-faq.png',
+			'title' => $txt['main_faq_title'],
+			'description' => $txt['main_faq_description'],
+			'visible' => !empty($ultimateportalSettings['faq_enable']),
+		],
+	];
+
+	echo '<fieldset class="windowbg">
+		<legend>', $txt['ultport_admin_main_title'] ,'</legend>
+		<div class="up-rapid-links">';
+	foreach($rapidLinks as $link){
+		if ($link['visible']){
 			echo '
-				</ul>
-			</div>
-		</div><br />';
+			<div>			
+				<img src="', $link['image'] ,'" />
+				<div class="up-link-title"><a href="', $link['url'] ,'">', $link['title'] ,'</a></div>
+				<p>', $link['description'] ,'</p>
+			</div>';
+		}
+	}
+	echo '</div></fieldset>';
 		
-		//Credits
+	//Credits
 	echo '
-	<table width="100%" align="center" cellspacing="1" cellpadding="5" border="0">							
-		<tr>
-			<td width="100%" class="catbg" align="left">	
-				<img width="20" height="20" style="vertical-align:middle" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/credits.png" />&nbsp;', $txt['main_credits_title'] ,'
-			</td>
-		</tr>
-		<tr>
-			<td class="windowbg description" width="100%" align="left">	
-				', $txt['main_credits_description'] ,'
-			</td>
-		</tr>
-	</table><br/>';
+	<div class="cat_bar">
+		<h3 class="catbg">
+			<img width="20" height="20" style="vertical-align:middle" alt="" src="', $settings['default_theme_url'] ,'/images/ultimate-portal/admin-main/credits.png" />&nbsp;', $txt['main_credits_title'] ,'
+		</h3>
+	</div>
+	<p class="information">
+		', $txt['main_credits_description'] ,'
+	</p>';
 		
 }
 
@@ -142,162 +130,160 @@ function template_preferences_gral_settings()
 	global $ultimateportalSettings;
 	
 	echo'
-	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=gral-settings" accept-charset="', $context['character_set'], '">												
-		<table width="95%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" width="100%" colspan="2">						
-					<img alt="',$txt['ultport_admin_gral_settings_sect_principal'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/gral-settings.png"/>&nbsp;', $txt['ultport_admin_gral_settings_sect_principal'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
-					', $txt['ultport_admin_gral_settings_portal_enable'], '
-				</td>
+	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=gral-settings" accept-charset="', $context['character_set'], '">								
+		<div class="cat_bar">
+			<h3 class="catbg"><img alt="',$txt['ultport_admin_gral_settings_sect_principal'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/gral-settings.png"/>&nbsp;', $txt['ultport_admin_gral_settings_sect_principal'], '</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>', $txt['ultport_admin_gral_settings_portal_enable'], '</dt>
 				<td width="50%" align="center" class="windowbg2">
-					<input type="checkbox" value="on" name="ultimate_portal_enable" ',!empty($ultimateportalSettings['ultimate_portal_enable']) ? 'checked="checked"' : '',' />
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+				<dd><input type="checkbox" value="on" name="ultimate_portal_enable" ',!empty($ultimateportalSettings['ultimate_portal_enable']) ? 'checked="checked"' : '',' /></dd>			
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_portal_title'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="ultimate_portal_home_title" size="50" maxlength="100" ',!empty($ultimateportalSettings['ultimate_portal_home_title']) ? 'value="'.$ultimateportalSettings['ultimate_portal_home_title'].'"' : '','/>
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_favicons'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="favicons" ',!empty($ultimateportalSettings['favicons']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_use_curve'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="up_use_curve_variation" ',!empty($ultimateportalSettings['up_use_curve_variation']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>				
-			<tr>
-				<td class="catbg" width="100%" colspan="2">
-					<img alt="',$txt['ultport_admin_gral_settings_sect_view_portal'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/view-portal.png"/>&nbsp;', $txt['ultport_admin_gral_settings_sect_view_portal'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>
+		</div>
+
+		<div class="cat_bar" style="padding-top:10px;">
+			<h3 class="catbg">
+				<img alt="',$txt['ultport_admin_gral_settings_sect_view_portal'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/view-portal.png"/>&nbsp;', $txt['ultport_admin_gral_settings_sect_view_portal'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_height_col_left'] , '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="ultimate_portal_width_col_left" size="3" maxlength="4" ',!empty($ultimateportalSettings['ultimate_portal_width_col_left']) ? 'value="'.$ultimateportalSettings['ultimate_portal_width_col_left'].'"' : '','/>
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_height_col_center'] , '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="ultimate_portal_width_col_center" size="3" maxlength="4" ',!empty($ultimateportalSettings['ultimate_portal_width_col_center']) ? 'value="'.$ultimateportalSettings['ultimate_portal_width_col_center'].'"' : '','/>
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_height_col_right'] , '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="ultimate_portal_width_col_right" size="3" maxlength="4" ',!empty($ultimateportalSettings['ultimate_portal_width_col_right']) ? 'value="'.$ultimateportalSettings['ultimate_portal_width_col_right'].'"' : '','/>
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_enable_portal_col_left'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="ultimate_portal_enable_col_left" ',!empty($ultimateportalSettings['ultimate_portal_enable_col_left']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>					
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>					
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_enable_portal_col_right'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="ultimate_portal_enable_col_right" ',!empty($ultimateportalSettings['ultimate_portal_enable_col_right']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>					
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>					
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_enable_icons'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="ultimate_portal_enable_icons" ',!empty($ultimateportalSettings['ultimate_portal_enable_icons']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>					
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>					
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_gral_settings_icons_extention'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
-					<select name="ultimate_portal_icons_extention" size="1">
-						<option value=".png" ' ,($ultimateportalSettings['ultimate_portal_icons_extention'] == '.png') ? 'selected="selected"' : '','>.png</option>
-						<option value=".jpg" ' ,($ultimateportalSettings['ultimate_portal_icons_extention'] == '.jpg') ? 'selected="selected"' : '','>.jpg</option>
-						<option value=".gif" ' ,($ultimateportalSettings['ultimate_portal_icons_extention'] == '.gif') ? 'selected="selected"' : '','>.gif</option>
-						<option value=".bmp" ' ,($ultimateportalSettings['ultimate_portal_icons_extention'] == '.bmp') ? 'selected="selected"' : '','>.bmp</option>																		
+				</dt>
+				<dd>
+					<select name="ultimate_portal_icons_extention" size="1">';
+					foreach(['.png', '.jpg', '.gif', '.bpm'] as $icon){
+						echo '<option value="', $icon ,'" ' ,($ultimateportalSettings['ultimate_portal_icons_extention'] == $icon) ? 'selected="selected"' : '','>', $icon ,'</option>';
+					}
+					echo '
 					</select>
-				</td>
-			</tr>								
-			<tr>
-				<td class="catbg" width="100%" colspan="2">		
-					<img alt="',$txt['ultport_admin_gral_settings_sect_view_forum'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/view-forum.png"/>&nbsp;', $txt['ultport_admin_gral_settings_sect_view_forum'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>
+		</div>
+
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<img alt="',$txt['ultport_admin_gral_settings_sect_view_forum'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/view-forum.png"/>&nbsp;', $txt['ultport_admin_gral_settings_sect_view_forum'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_view_forum_enable_col_left'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="up_forum_enable_col_left" ',!empty($ultimateportalSettings['up_forum_enable_col_left']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>					
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_view_forum_enable_col_right'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="up_forum_enable_col_right" ',!empty($ultimateportalSettings['up_forum_enable_col_right']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>	
-			<tr>
+				</dd>
+			</dl>	
+			<dl class="settings">
 				<td class="catbg" width="100%" colspan="2">		
 					<img alt="',$txt['ultport_exconfig_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/>&nbsp;', $txt['ultport_exconfig_title'], '
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_rso_title'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="up_reduce_site_overload" ',!empty($ultimateportalSettings['up_reduce_site_overload']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>				
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>				
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_collapse_left_right'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="up_left_right_collapse" ',!empty($ultimateportalSettings['up_left_right_collapse']) ? 'checked="checked"' : '','/>
-				</td>
-			</tr>				
-		</table>
-		<table width="95%" align="center">					
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="save" value="',$txt['ultport_button_save'],'" />
-				</td>
-			</tr>
-		</table>
+				</dd>
+			</dl>
+		</div>
+		
+		<div style="width:100%">			
+			<input type="hidden" name="sc" value="', $context['session_id'], '" />
+			<input type="submit" name="save" value="',$txt['ultport_button_save'],'" class="button" />		
+		</div>
 	</form>';
 
 }
@@ -305,76 +291,63 @@ function template_preferences_gral_settings()
 //Show the Ultimate Portal - Area: Preferences / Section: Lang Maintenance
 function template_preferences_lang_maintenance()
 {
-	global $context, $scripturl, $txt, $settings;
+	global $context, $scripturl, $txt, $settings, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
-	echo'
+	echo $modeller->alertWarning(title:null, message: $txt['ultport_admin_lang_maintenance_warning']);
+
+	echo '
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=lang-edit" accept-charset="', $context['character_set'], '">												
-		<table width="95%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td width="100%" colspan="2" class="catbg">						
-					<img alt="',$txt['ultport_admin_lang_maintenance_admin'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/lang-edit.png"/>&nbsp;', $txt['ultport_admin_lang_maintenance_admin'], '
-				</td>
-			</tr>
-			<tr>
-				<td style="background-color:#FFF6BF;" colspan="2" width="100%">									
-					<div id="warning">
-						<img alt="" style="float:left" width="30" height="30"  border="0" src="'.$settings['default_images_url'].'/ultimate-portal/download/stop.png"/>&nbsp;&nbsp;'. $txt['ultport_admin_lang_maintenance_warning'] .'
-					</div>
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" class="windowbg">									
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<img alt="',$txt['ultport_admin_lang_maintenance_admin'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/lang-edit.png"/> ', $txt['ultport_admin_lang_maintenance_admin'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_lang_maintenance_admin_edit_language'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					', $context['ult_port_langs'], '
-				</td>
-			</tr>
-		</table>
-		<table width="95%" align="center" cellspacing="1" cellpadding="5" border="0">				
-			<tr>
-				<td align="center" colspan="2">
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="editing" value="',$txt['ultport_button_edit'],'" />
-				</td>
-			</tr>
-		</table>
-	</form><br/>';
+				</dd>
+			</dl>
+			<div style="width:100%">				
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="submit" name="editing" value="',$txt['ultport_button_edit'],'" class="button" />
+			</div>
+		</div>		
+	</form>';
 
 	//Duplicate Files?
 	echo'
-	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=lang-edit" accept-charset="', $context['character_set'], '">												
-		<table width="95%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td width="100%" colspan="2" class="catbg">						
-					<img alt="',$txt['lang_maintenance_duplicate_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/copy.png"/>&nbsp;', $txt['lang_maintenance_duplicate_title'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
+	<form style="margin-top: 20px;" method="post" action="', $scripturl, '?action=admin;area=preferences;sa=lang-edit" accept-charset="', $context['character_set'], '">												
+		<div class="cat_bar">			
+			<h3 class="catbg">
+				<img alt="',$txt['lang_maintenance_duplicate_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/copy.png"/>&nbsp;', $txt['lang_maintenance_duplicate_title'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_select_lang_duplicate'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					', $context['ult_port_langs'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
+				</dd>
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_lang_duplicate_new'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					<input type="text" name="new_file" size="40" value="" />
-				</td>
-			</tr>			
-		</table>
-		<table width="95%" align="center" cellspacing="1" cellpadding="5" border="0">				
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="duplicate" value="',$txt['ultport_button_add'],'" />
-				</td>
-			</tr>
-		</table>
+				</dd>
+			</dl>			
+		<div class="w-100">
+			<input type="hidden" name="sc" value="', $context['session_id'], '" />
+			<input type="submit" name="duplicate" value="',$txt['ultport_button_add'],'" class="button" />				
+		</div>
 	</form>';
 		
 }
@@ -386,39 +359,21 @@ function template_preferences_lang_edit()
 
 	echo'
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=lang-edit" accept-charset="', $context['character_set'], '">												
-		<table width="95%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td width="100%" colspan="2" class="catbg">						
-					<img alt="',$txt['ultport_admin_lang_maintenance_edit_info'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/info.png"/>&nbsp;', $txt['ultport_admin_lang_maintenance_edit_info'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg">									
-					', $txt['ultport_admin_edit_language_file'] ,'
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<span style="color:#00883C" ><strong>', $context['file'] ,'</strong></span>
-				</td>
-			</tr>	
-			<tr>
-				<td width="100%" colspan="2" class="catbg">						
-					<img alt="',$txt['ultport_admin_lang_maintenance_edit'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/lang-edit.png"/>&nbsp;', $txt['ultport_admin_lang_maintenance_edit'], '
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2"  width="100%" align="center" class="windowbg2">
-					<textarea id="content" name="content" rows="20" cols="80" style="width: 99.2%">', $context['content_htmlspecialchars'] ,'</textarea>
-				</td>
-			</tr>
-			<tr>
-				<td class="windowbg" align="center" colspan="2">	
-					<input type="hidden" name="file" value="', $context['file'] ,'" />				
-					<input type="submit" name="save" value="',$txt['ultport_button_edit'],'" />
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<a href="', $scripturl, '?action=admin;area=preferences;sa=lang-maintenance"><input type="button" name="',$txt['ultport_button_go_back'],'" value="',$txt['ultport_button_go_back'],'" /></a>
-				</td>
-			</tr>
-		</table>
+		<div class="cat_bar">
+			<h3 class="catbg">						
+				<img alt="',$txt['ultport_admin_lang_maintenance_edit_info'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/info.png"/>&nbsp;', $txt['ultport_admin_lang_maintenance_edit_info'], ' [', $context['file'] ,']
+			</h3>
+		</div>
+		<div class="windowbg">			
+			<div class="windowbg2 w-100">
+				<textarea id="content" name="content" rows="20" cols="80" class="w-100">', $context['content_htmlspecialchars'] ,'</textarea>
+			</div>			
+			<div class="w-100" style="padding-top:10px;">	
+				<input type="hidden" name="file" value="', $context['file'] ,'" />				
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="submit" name="save" value="',$txt['ultport_button_edit'],'" class="button" style="padding-left:5px;padding-right:5px;padding-bottom:5px;" />				
+			</div>
+		</div>
 	</form>';
 	
 }
@@ -430,74 +385,66 @@ function template_preferences_permissions_settings()
 
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=permissions-settings" accept-charset="', $context['character_set'], '">												
-		<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="2">	
-					<img alt="',$txt['ultport_admin_permissions_settings_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/perm.png"/>&nbsp;', $txt['ultport_admin_permissions_settings_title'], '
-				</td>
-			</tr>		
-			<tr>
-				<td width="50%" class="windowbg">									
+		<div class="cat_bar">
+			<h3 class="catbg">
+			<img alt="',$txt['ultport_admin_permissions_settings_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/perm.png"/> ', $txt['ultport_admin_permissions_settings_title'], '
+			</h3>		
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_perms_groups'], '
-				</td>			
-				<td width="50%" class="windowbg">									
-					<select size="1" name="group">';
-					foreach ($context['groups'] as $group)
-					{	
+				</dt>			
+				<dd>
+					<select name="group">';
+					foreach ($context['groups'] as $group){	
 						echo '
 						<option '. (!empty($group['selected']) ? $group['selected'] : '') .' value="'. $group['id_group'] .'">'. $group['group_name'] .'</option>';
 					}	
-				echo '					
+					echo '
 					</select>	
-				</td>
-			</tr>
-		</table>
-		<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">							
-			<tr>
-				<td align="left" colspan="2">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />											
-					<input type="submit" name="view-perms" value="',$txt['ultport_button_edit'],'" />
-				</td>
-			</tr>
-		</table>
-	</form><br />';
+				</dd>
+			</dl>
+		</div>
+		<div class="w-100">
+			<input type="hidden" name="sc" value="', $context['session_id'], '" />											
+			<input type="submit" name="view-perms" value="',$txt['ultport_button_edit'],'" />
+		</div>
+	</form>';
 	
 	if (!empty($context['view-perms']))	
 	{
-		echo	'
-		<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=permissions-settings" accept-charset="', $context['character_set'], '">												
-			<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-				<tr>
-					<td class="catbg" align="left" colspan="2">
+		echo'
+		<div style="padding-top:15px;">
+			<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=permissions-settings" accept-charset="', $context['character_set'], '">												
+				<div class="cat_bar">
+					<h3 class="catbg">
 						', $txt['ultport_admin_permissions_settings_subtitle'], '
-					</td>
-				</tr>';
-			
-			foreach ($context['permissions'] as $permissions)
-			{	
+					</h3>
+				</div>
+				<div class="windowbg noup">';				
+				foreach ($context['permissions'] as $permissions)
+				{	
 					echo '
-				<tr>
-					<td align="left" width="50%" class="windowbg">									
-						'. $permissions['text-name'] .'
-					</td>
-					<td align="center" width="50%" class="windowbg">									
-						<input type="checkbox" value="on" name="', $permissions['name'] ,'" ', (!empty($context[$permissions['name']]['value']) ? 'checked="checked"' : '') ,'/>
-					</td>
-				</tr>';
-			}	
+					<dl class="settings">
+						<dt>
+							'. $permissions['text-name'] .'
+						</dt>
+						<dd>
+							<input type="checkbox" value="on" name="', $permissions['name'] ,'" ', (!empty($context[$permissions['name']]['value']) ? 'checked="checked"' : '') ,'/>
+						</dd>
+					</dl>';
+				}	
 
-		echo '					
-			</table>
-			<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">							
-				<tr>
-					<td align="left" colspan="2">	
-						<input type="hidden" name="group_selected" value="', $context['group-selected'] ,'" />					
-						<input type="hidden" name="sc" value="', $context['session_id'], '" />						
-						<input type="submit" name="save" value="',$txt['ultport_button_save'],'" />
-					</td>
-				</tr>
-			</table>
-		</form><br />';
+			echo '					
+				</div>
+				<div class="w-100">
+					<input type="hidden" name="group_selected" value="', $context['group-selected'] ,'" />					
+					<input type="hidden" name="sc" value="', $context['session_id'], '" />						
+					<input type="submit" name="save" value="',$txt['ultport_button_save'],'" class="button" />
+				</div>
+			</form>
+		</div>';
 
 	}	
 	
@@ -520,152 +467,144 @@ function template_preferences_main_links()
 	    </script>";
 	
 	echo	'
-	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=save-portal-menu" accept-charset="', $context['character_set'], '">												
-		<table width="95%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="8">	
-					<img alt="',$txt['ultport_admin_portal_menu_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/link.png"/>&nbsp;', $txt['ultport_admin_portal_menu_title'], '
-				</td>
-			</tr>		
-			<tr>
-				<td align="center" width="1%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_icon'], '
-				</td>			
-				<td align="center" width="15%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_title'], '
-				</td>			
-				<td align="center" width="60%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_url'], '
-				</td>			
-				<td align="center" width="1%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_position'], '
-				</td>			
-				<td align="center" width="1%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_edit'], '
-				</td>			
-				<td align="center" width="1%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_delete'], '
-				</td>			
-				<td align="center" width="1%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_active'], '
-				</td>			
-				<td align="center" width="17%" style="font-size:12px" class="titlebg">									
-					', $txt['ultport_admin_mainlinks_top_menu'], '
-				</td>			
-			</tr>';	
-			
-		foreach($context['main-links'] as $main_link)
-		{	
-			echo '
-			<tr>
-				<td class="',$main_link['activestyle'],'" width="1%" align="center">
-					', $main_link['icon'] ,'
-				</td>
-				<td class="',$main_link['activestyle'],'" width="15%" align="left">
-					', $main_link['title'] ,'
-				</td>
-				<td class="',$main_link['activestyle'],'" width="60%" align="left">
-					', $main_link['url'] ,'
-				</td>
-				<td class="',$main_link['activestyle'],'" width="1%" align="center">
-					<input type="text" name="', $main_link['position_form'] ,'" size="4" value="', !empty($main_link['position']) ? $main_link['position'] : '' , '" />
-				</td>
-				<td class="',$main_link['activestyle'],'" width="1%" align="center">
-					<strong><a style="color:blue" href="', $scripturl, '?action=admin;area=preferences;sa=edit-portal-menu;id=', $main_link['id'] ,';' . $context['session_var'].'=', $context['session_id'], '">', $txt['ultport_button_edit'] ,'</a></strong>
-				</td>
-				<td class="',$main_link['activestyle'],'" width="1%" align="center">
-					<strong><a onclick="return makesurelink()" style="color:red" href="', $scripturl, '?action=admin;area=preferences;sa=delete-portal-menu;id=', $main_link['id'] ,';' . $context['session_var'].'=', $context['session_id'], '">', $txt['ultport_button_delete'] ,'</a></strong>
-				</td>
-				<td class="',$main_link['activestyle'],'" width="1%" align="center">
-					<input type="checkbox" name="',  $main_link['active_form'] ,'" value="1" ', $main_link['active'] ,' />
-				</td>
-				<td class="',$main_link['activestyle'],'" width="17%" align="center">
-					<input type="checkbox" name="',  $main_link['top_menu_form'] ,'" value="1" ', $main_link['top_menu'] ,' />
-				</td>
-			</tr>';				
-		}
-			
+	<div class="cat_bar">
+		<h3 class="catbg">
+			<img alt="',$txt['ultport_admin_portal_menu_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/link.png"/> ', $txt['ultport_admin_portal_menu_title'], '
+		</h3>
+	</div>		
+	<div class="windowbg noup" style="padding-top: 10px; padding-bottom:10px;">
+		<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=save-portal-menu" accept-charset="', $context['character_set'], '">												
+			<table class="w-100 table">
+				<thead>
+					<tr>
+						<th align="center">									
+							', $txt['ultport_admin_mainlinks_icon'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_title'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_url'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_position'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_edit'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_delete'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_active'], '
+						</th>			
+						<th align="center">	
+							', $txt['ultport_admin_mainlinks_top_menu'], '
+						</th>
+					</tr>			
+				</thead>
+				<tbody>';	
 				
-	echo '
-			<tr>
-				<td class="windowbg" align="right" colspan="8">
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="hidden" name="save-menu" value="ok" />						
-					<input type="submit" name="',$txt['ultport_button_save'],'" value="',$txt['ultport_button_save'],'" />
-				</td>
-			</tr>
-		</table>
-	</form><br />';
+			foreach($context['main-links'] as $main_link)
+			{	
+				echo '
+				<tr>
+					<td class="',$main_link['activestyle'],'" width="1%" align="center">
+						', $main_link['icon'] ,'
+					</td>
+					<td class="',$main_link['activestyle'],'" width="15%" align="left">
+						', $main_link['title'] ,'
+					</td>
+					<td class="',$main_link['activestyle'],'" width="60%" align="left">
+						', $main_link['url'] ,'
+					</td>
+					<td class="',$main_link['activestyle'],'" width="1%" align="center">
+						<input type="text" name="', $main_link['position_form'] ,'" size="4" value="', !empty($main_link['position']) ? $main_link['position'] : '' , '" />
+					</td>
+					<td class="',$main_link['activestyle'],'" width="1%" align="center">
+						<strong><a style="color:blue" href="', $scripturl, '?action=admin;area=preferences;sa=edit-portal-menu;id=', $main_link['id'] ,';' . $context['session_var'].'=', $context['session_id'], '">', $txt['ultport_button_edit'] ,'</a></strong>
+					</td>
+					<td class="',$main_link['activestyle'],'" width="1%" align="center">
+						<strong><a onclick="return makesurelink()" style="color:red" href="', $scripturl, '?action=admin;area=preferences;sa=delete-portal-menu;id=', $main_link['id'] ,';' . $context['session_var'].'=', $context['session_id'], '">', $txt['ultport_button_delete'] ,'</a></strong>
+					</td>
+					<td class="',$main_link['activestyle'],'" width="1%" align="center">
+						<input type="checkbox" name="',  $main_link['active_form'] ,'" value="1" ', $main_link['active'] ,' />
+					</td>
+					<td class="',$main_link['activestyle'],'" width="17%" align="center">
+						<input type="checkbox" name="',  $main_link['top_menu_form'] ,'" value="1" ', $main_link['top_menu'] ,' />
+					</td>
+				</tr>';				
+			}
+				
+					
+		echo '</tbody>
+			</table>
+			<div class="w-100">
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="hidden" name="save-menu" value="ok" />						
+				<input type="submit" name="',$txt['ultport_button_save'],'" value="',$txt['ultport_button_save'],'" class="button"/>
+			</div>
+		</form>
+	</div>';
 
 	//Add Main Link
 	echo	'
-	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=add-portal-menu" accept-charset="', $context['character_set'], '">												
-		<table style="margin-left:30px" width="50%" align="left" class="tborder" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="2">	
+	<div style="padding-top: 10px; padding-bottom:10px;">
+		<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=add-portal-menu" accept-charset="', $context['character_set'], '">												
+			<div class="cat_bar">				
+				<h3 class="catbg">	
 					<img alt="',$txt['ultport_admin_portal_menu_add_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/link_add.png"/>&nbsp;', $txt['ultport_admin_portal_menu_add_title'], '
-				</td>
-			</tr>		
-			<tr>
-				<td width="50%" class="windowbg">									
-					', $txt['ultport_admin_mainlinks_icon'], '
-				</td>			
-				<td width="50%" class="windowbg">									
-					<input type="text" name="icon" size="52" />
-				</td>			
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg2">									
-					', $txt['ultport_admin_mainlinks_title'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="text" name="title" size="52" />
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" class="windowbg">									
-					', $txt['ultport_admin_mainlinks_url'], '
-				</td>			
-				<td width="50%" class="windowbg">									
-					<input value="http://" type="text" name="url" size="52" />
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" class="windowbg2">									
-					', $txt['ultport_admin_mainlinks_position'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="text" name="position" value="', $context['last_position'] ,'" size="2" />
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" class="windowbg">									
-					', $txt['ultport_admin_mainlinks_active'], '
-				</td>			
-				<td width="50%" class="windowbg">									
-					<input type="checkbox" name="active" value="1" />
-				</td>			
-			</tr>
-			<tr>
-				<td class="windowbg2" align="center" colspan="2">	
+				</h3>
+			</div>
+			<div class="windowbg noup">
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_admin_mainlinks_icon'], '
+					</dt>			
+					<dd>
+						<input type="text" name="icon" size="52" />
+					</dd>			
+				</dl>
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_admin_mainlinks_title'], '
+					</dt>			
+					<dd>
+						<input type="text" name="title" size="52" />
+					</dd>			
+				</dl>			
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_admin_mainlinks_url'], '
+					</dt>			
+					<dd>
+						<input value="https://" type="text" name="url" size="52" />
+					</dd>			
+				</dl>			
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_admin_mainlinks_position'], '
+					</dt>			
+					<dd>
+						<input type="text" name="position" value="', $context['last_position'] ,'" size="2" />
+					</dd>			
+				</dl>
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_admin_mainlinks_active'], '
+					</dt>			
+					<dd>
+						<input type="checkbox" name="active" value="1" />
+					</dd>			
+				</dl>
+				<div class="w-100">
 					<input type="hidden" name="add-menu" value="ok" />	
 					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_add'],'" value="',$txt['ultport_button_add'],'" />
-				</td>
-			</tr>
-		</table>
-	</form>';
-	
-	echo '	
-	<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-		<tr>
-			<td align="left" colspan="6">	
-				&nbsp;
-			</td>
-		</tr>
-	</table>';
-	
-	
+					<input type="submit" name="',$txt['ultport_button_add'],'" value="',$txt['ultport_button_add'],'" class="button" />
+				</div>
+			</div>
+		</form>
+	</div>';	
 }
 
 //Show the Ultimate Portal - Area: Preferences / Section: Edit Portal Menu Settings
@@ -676,68 +615,66 @@ function template_preferences_edit_main_links()
 	//Add Main Link
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=edit-portal-menu" accept-charset="', $context['character_set'], '">												
-		<table width="50%" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="2">	
-					<img alt="',$txt['ultport_admin_portal_menu_edit_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/link_edit.png"/>&nbsp;', $txt['ultport_admin_portal_menu_edit_title'], '
-				</td>
-			</tr>';
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<img alt="',$txt['ultport_admin_portal_menu_edit_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/link_edit.png"/> ', $txt['ultport_admin_portal_menu_edit_title'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">';
 	
-	foreach($context['edit-main-links'] as $edit_main_link)
-	{		
-	echo	'				
-			<tr>
-				<td width="30%" class="windowbg">									
+		foreach($context['edit-main-links'] as $edit_main_link)
+		{		
+		echo	'				
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_mainlinks_icon'], '
-				</td>			
-				<td width="70%" class="windowbg">									
+				</dt>
+				<dd>
 					<input type="hidden" name="id" value="', $edit_main_link['id'] ,'" />						
 					<input type="text" name="icon" value="', $edit_main_link['icon'] ,'" size="65" />
-				</td>			
-			</tr>
-			<tr>
+				<dd>
+			</dl>
+			<dl class="settings">
 				<td width="30%" class="windowbg2">									
 					', $txt['ultport_admin_mainlinks_title'], '
-				</td>			
-				<td width="70%" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="title" value="', $edit_main_link['title'] ,'" size="65" />
-				</td>			
-			</tr>			
-			<tr>
-				<td width="30%" class="windowbg">									
+				<dd>
+			</dl>			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_mainlinks_url'], '
-				</td>			
-				<td width="70%" class="windowbg">									
+				</dt>
+				<dd>
 					<input type="text" name="url" value="', $edit_main_link['url'] ,'" size="65" />
-				</td>			
-			</tr>			
-			<tr>
-				<td width="30%" class="windowbg2">									
+				<dd>
+			</dl>			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_mainlinks_position'], '
-				</td>			
-				<td width="70%" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="position" value="', $edit_main_link['position'] ,'" size="2" />
-				</td>			
-			</tr>			
-			<tr>
-				<td width="30%" class="windowbg">									
+				<dd>
+			</dl>			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_mainlinks_active'], '
-				</td>			
-				<td width="70%" class="windowbg">									
+				</dt>
+				<dd>
 					<input type="checkbox" value="on" name="active" value="1" ', (!empty($edit_main_link['active']) ? 'checked="checked"' : '') ,' />
-				</td>			
-			</tr>';
+				<dd>
+			</dl>';
 	}		
 			
-	echo 	'		
-			<tr>
-				<td class="windowbg2" align="center" colspan="2">	
-					<input type="hidden" name="save" value="ok" />	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_edit'],'" value="',$txt['ultport_button_edit'],'" />
-				</td>
-			</tr>
-		</table>
+	echo 	'	
+		</div>	
+		<div class="w-100">
+			<input type="hidden" name="save" value="ok" />	
+			<input type="hidden" name="sc" value="', $context['session_id'], '" />
+			<input type="submit" name="',$txt['ultport_button_edit'],'" value="',$txt['ultport_button_edit'],'" class="button" />
+		</div>
 	</form>';
 	
 }
@@ -750,69 +687,62 @@ function template_preferences_seo()
 	//Add Main Link
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=seo" accept-charset="', $context['character_set'], '">												
-		<table width="', !empty($context['robots_txt']) ? '82%' : '60%', '" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="2">	
-					<img alt="',$txt['ultport_seo_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/>&nbsp;', $txt['seo_robots_title'], '
-				</td>
-			</tr>			
-			<tr>
-				<td valign="top" width="30%" class="windowbg">									
-					', $txt['seo_robots_txt'], '
-				</td>
-				<td width="70%" class="windowbg">
-					<strong>', $txt['seo_robots_added'] ,'</strong><br/>
-					<textarea id="robots_add" name="robots_add" rows="20" cols="80">', !empty($context['robots_txt']) ? $context['robots_txt'] : '' ,'</textarea>
-				</td>			
-			</tr>	
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="save_robot" value="',$txt['ultport_button_save'],'" />
-				</td>
-			</tr>
-		</table><br />
-		<table width="', !empty($context['robots_txt']) ? '82%' : '60%', '" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="2">	
-					<img alt="',$txt['ultport_seo_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/>&nbsp;', $txt['seo_config'], '
-				</td>
-			</tr>			
-			<tr>
-				<td valign="top" align="left" width="50%" class="windowbg">									
+		<div class="cat_bar">
+			<h3 class="catbg">	
+				<img alt="',$txt['ultport_seo_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/> ', $txt['seo_robots_title'], '
+			</h3>
+		</div>	
+		<div class="windowbg noup">		
+			<div>', $txt['seo_robots_txt'], '</div>
+			<div class="w-100">
+				<strong>', $txt['seo_robots_added'] ,'</strong><br/>
+				<textarea id="robots_add" name="robots_add" rows="20" cols="80" class="w-100">
+					', !empty($context['robots_txt']) ? $context['robots_txt'] : '' ,'
+				</textarea>
+			</div>				
+			<div class="w-100" style="padding-top: 15px;">	
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="submit" name="save_robot" value="',$txt['ultport_button_save'],'" class="button"/>
+			</div>
+		</div>
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<img alt="',$txt['ultport_seo_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/> ', $txt['seo_config'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">			
+			<dl class="settings">
+				<dt>
 					', $txt['seo_title_key_word'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					<input type="text" name="seo_title_keyword" size="50" maxlength="200" ',!empty($ultimateportalSettings['seo_title_keyword']) ? 'value="'.$ultimateportalSettings['seo_title_keyword'].'"' : '','/>				
-				</td>			
-			</tr>	
-			<tr>
-				<td valign="top" align="left" width="50%" class="windowbg">									
+				</dd>			
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['seo_google_analytics'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					<input type="text" name="seo_google_analytics" size="20" maxlength="50" ',!empty($ultimateportalSettings['seo_google_analytics']) ? 'value="'.$ultimateportalSettings['seo_google_analytics'].'"' : '','/>
-				</td>			
-			</tr>				
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="save_seo_config" value="',$txt['ultport_button_save'],'" />
-				</td>
-			</tr>
-		</table>
-		<br />
-		<table width="', !empty($context['robots_txt']) ? '82%' : '60%', '" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="2">	
-					<img alt="',$txt['seo_google_verification_code_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/>&nbsp;', $txt['seo_google_verification_code_title'], '
-				</td>
-			</tr>			
-			<tr>
-				<td valign="top" align="left" width="50%" class="windowbg">									
+				</dd>			
+			</dl>
+			<div class="w-100">	
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="submit" name="save_seo_config" value="',$txt['ultport_button_save'],'" class="button"/>
+			</div>
+		</div>
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<img alt="',$txt['seo_google_verification_code_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/> ', $txt['seo_google_verification_code_title'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['seo_google_verification_code'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					<input type="text" name="seo_google_verification_code" size="50" maxlength="200" />';
 				if(!empty($ultimateportalSettings['seo_google_verification_code']))	
 				{
@@ -826,7 +756,7 @@ function template_preferences_seo()
 						if(!empty($verifications_codes[$i]))
 						{
 							echo '	
-							<li style="background:transparent url(', $settings['default_theme_url'] ,'/images/ultimate-portal/download/menu.png) no-repeat scroll 2px 50%;padding-left:16px;">', $verifications_codes[$i] ,'.html&nbsp;<a href="', $scripturl ,'?action=admin;area=preferences;sa=seo;file=', $verifications_codes[$i] ,';' . $context['session_var'].'=', $context['session_id'] ,'"><img src="', $settings['default_theme_url'] ,'/images/pm_recipient_delete.gif" alt="', $txt['ultport_button_delete'] ,'" title="', $txt['ultport_button_delete'] ,'" /></a></li>';	
+							<li style="background:transparent url(', $settings['default_theme_url'] ,'/images/ultimate-portal/download/menu.png) no-repeat scroll 2px 50%;padding-left:16px;">', $verifications_codes[$i] ,'.html&nbsp;<a href="', $scripturl ,'?action=admin;area=preferences;sa=seo;file=', $verifications_codes[$i] ,';' . $context['session_var'].'=', $context['session_id'] ,'"><img src="', $settings['default_theme_url'] ,'/images/ultimate-portal/delete.png" alt="', $txt['ultport_button_delete'] ,'" title="', $txt['ultport_button_delete'] ,'" /></a></li>';	
 						}
 					}
 					echo '
@@ -834,13 +764,11 @@ function template_preferences_seo()
 					</div>';
 				}
 	echo '				
-				</td>			
-			</tr>	
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="save_seo_google_verification_code" value="',$txt['ultport_button_save'],'" />
-				</td>
+				</dd>			
+			</dl>	
+			<div class="w-100">				
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="submit" name="save_seo_google_verification_code" value="',$txt['ultport_button_save'],'" class="button"/>				
 			</tr>
 		</table>		
 	</form>';	
