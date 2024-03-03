@@ -52,13 +52,13 @@ $txt['main_faq_description'] = 'Ultimate Portal Module Default , with this modul
 $txt['main_manual_title'] = 'On line Manual';
 $txt['main_manual_description'] = 'With this manual, you will know how to handle the Ultimate Portal, detail each part of the Ultimate Portal is explained, so you can handle the Ultimate Portal of the best possible way.';
 $txt['main_credits_title'] = 'Credits';
-$txt['main_credits_description'] = '<strong><a href="http://www.smfsimple.com">SMFSimple</a></strong> want to thank everyone who helped make <strong>Ultimate Portal</strong> what it is today, giving form and directing our project, through the thick and thin. I wouldn\'t have been possible without you. This includes our users - Thanks for installing and using our software, giving us valuable information, bug reports, and opinions.
+$txt['main_credits_description'] = '<strong><a href="https://www.smfsimple.com">SMFSimple</a></strong> want to thank everyone who helped make <strong>Ultimate Portal</strong> what it is today, giving form and directing our project, through the thick and thin. I wouldn\'t have been possible without you. This includes our users - Thanks for installing and using our software, giving us valuable information, bug reports, and opinions.
 	<br /><br /><strong>Founding Father of Ultimate Portal and Project Manager:</strong> Victor "vicram10" Ramirez
 	<br /><br /><strong>Staff:</strong> Vicram, Lean, 4kstore & Distante!
 	<br /><br /><strong>Special Thanks to</strong> Nino_16, royalduke, Suki, Liam, Near, Frony & Maliante!
 	<br /><br />
 	<strong>Special Thanks for the icons used to: </strong> 
-	<a href="http://www.famfamfam.com/lab/icons/silk/" target="_blank">FamFamFam</a> | <a href="http://dryicons.com" target="_blank">DryIcons</a> | <a href="http://iconfinder.com" target="_blank">Iconfinder</a>
+	<a href="https://www.famfamfam.com/lab/icons/silk/" target="_blank">FamFamFam</a> | <a href="https://dryicons.com" target="_blank">DryIcons</a> | <a href="https://iconfinder.com" target="_blank">Iconfinder</a>
 	<br /><br />
 	And to all those who have helped us and we have not appointed, <strong>Thank you very much</strong>';
 
@@ -147,10 +147,9 @@ $txt['ultport_admin_lang_maintenance_admin'] = 'Admin of language';
 $txt['lang_maintenance_duplicate_title'] = 'Language Duplication';
 $txt['ultport_admin_lang_maintenance_edit_info'] = 'Language File Information';
 $txt['ultport_admin_lang_maintenance_edit'] = 'Language File Editing';
-$txt['ultport_admin_lang_maintenance_warning'] = 'Remember to clean
-Cache Forum when editing a language file
-												<strong>Admin---->Maintenance----->Routine------></strong> Clean Cache File. 
-												<br/>&nbsp;&nbsp;It is the last option in this control panel.';
+$txt['ultport_admin_lang_maintenance_warning'] = 'Remember to clean Cache Forum when editing a language file.
+<div><strong>Admin---->Maintenance----->Routine------></strong> Clean Cache File.</div> 
+<div>It is the last option in this control panel.</div>';
 
 //Admin - Language - Maintenance - Section Admin Language 
 $txt['ultport_admin_lang_maintenance_admin_edit_language'] = '<strong>Select Language</strong>
