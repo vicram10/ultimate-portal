@@ -266,16 +266,6 @@ $txt['ultport_add_bk_html_titles'] = 'Building block HTML';
 $txt['ultport_add_bk_php_titles'] = 'Building block PHP';
 $txt['ultport_tmp_bk_php_hello'] = 'Hello';
 $txt['ultport_tmp_bk_php_content'] = '
-/*------------------------------------------------------
-*	Ultimate Portal
-*	Version 0.4
-*	Project Manager: vicram10
-*	Copyright 2011-2021
-*	Powered by SMFSimple.com
---------------------------------------------------------
-Got DB connection, all global variables
-and all functions of the Portal and your availability Forum
-*/
 //NOT DELETE THIS PART
 if (!defined(\'SMF\'))
 	die(\'Hacking attempt...\');
@@ -283,7 +273,7 @@ if (!defined(\'SMF\'))
 
 global $user_info, $txt, $context;
 $username = $user_info[\'username\'];
-echo $txt[\'ultport_tmp_bk_php_hello\'] . \'�<strong>\'. $username . \'</strong>\';';
+echo $txt[\'ultport_tmp_bk_php_hello\'] . \' <b>\'. $username . \'</b>\';';
 
 $txt['ultport_admin_bk_title'] = 'Blocks Admin';
 $txt['ultport_admin_bk_description'] = 'Area where you can, edit your blocks, assign permissions, etc.';
