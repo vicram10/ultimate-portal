@@ -536,6 +536,7 @@ class Subs
 		);
 		while ($row = $smcFunc['db_fetch_assoc']($mbquery)) {
 			$context['exists_multiheader'] = 1;
+			$id = $row['id'];
 			$context['block-header'][$row['id']] = array(
 				'id' => $row['id'],
 				'mbtitle' => $row['title'],
@@ -547,7 +548,7 @@ class Subs
 				'mbk_style' => $row['mbk_style'],
 			);
 
-			$id_blocks = $context['block-header'][$row['id']]['blocks'];
+			$id_blocks = $context['block-header'][$id]['blocks'];
 
 			$myquery = 	$smcFunc['db_query'](
 				'',
@@ -562,10 +563,10 @@ class Subs
 
 			$totprog = $smcFunc['db_num_rows']($myquery);
 
-			$context['header-progoption-' . $row['id']] = ''; //only is declared
+			$context['header-progoption-' . $id] = ''; //only is declared
 
 			for ($i = 1; $i <= $totprog; $i++) {
-				$context['header-progoption-' . $row['id']] .= "<option value=\"$i\">$i</option>";
+				$context['header-progoption-' . $id] .= "<option value=\"$i\">$i</option>";
 			}
 
 			while ($row2 = $smcFunc['db_fetch_assoc']($myquery)) {
@@ -2118,44 +2119,16 @@ class Subs
 		global $context, $settings;
 
 		$context['html_headers'] .= '		
-		<!-- TinyMCE -->
-		<script type="text/javascript" src="' . $settings['default_theme_url'] . '/up-editor/jscripts/tiny_mce/tiny_mce.js"></script>
-		<script type="text/javascript">
-			tinyMCE.init({
-				// General options
-				mode : "textareas",
-                width : "350",
-				theme : "advanced",
-				plugins : "safari,layer,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,xhtmlxtras",
-				extended_valid_elements : "iframe[src|width|height|name|align]",
-				// Theme options
-				theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-				theme_advanced_buttons2 : "bullist,numlist,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,preview,|,forecolor,backcolor",
-				theme_advanced_buttons3 : "hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-				theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins",
-				theme_advanced_toolbar_location : "top",
-				theme_advanced_toolbar_align : "left",
-				language : "es",
-				theme_advanced_statusbar_location : "bottom",
-				theme_advanced_resizing : true,
-		
-				// Example content CSS (should be your site CSS)
-				content_css : "' . $settings['default_theme_url'] . '/up-editor/examples/css/content.css",
-		
-				// Drop lists for link/image/media/template dialogs
-				template_external_list_url : "' . $settings['default_theme_url'] . '/up-editor/examples/lists/template_list.js",
-				external_link_list_url : "' . $settings['default_theme_url'] . '/up-editor/examples/lists/link_list.js",
-				media_external_list_url : "' . $settings['default_theme_url'] . '/up-editor/examples/lists/media_list.js",
-		
-				// Replace values for the template plugin
-				template_replace_values : {
-					username : "Some User",
-					staffid : "991234"
-				}
-			});
-		</script>
-		<!-- /TinyMCE -->	
-	';
+		<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>';
+
+		$context['insert_after_template'] .= '
+		<script type="text/javascript" defer>
+			ClassicEditor
+				.create( document.querySelector(".up-editor") )
+				.catch( error => {
+					console.error( error );
+				});
+		</script>';
 	}
 
 	//Load the Ultimate Portal Settings

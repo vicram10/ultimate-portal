@@ -111,19 +111,16 @@ function SavePositions()
 				FROM {$db_prefix}ultimate_portal_blocks");
 	while( $row = $smcFunc['db_fetch_assoc']($myquery) ) {
 		$id = (int) $row['id'];
-		$title_form = $id."_title";
 		$position_form = $id."_position";
 		$progressive_form = $id."_progressive";
 		$active_form = $id."_active";
 		
-		$title_form = isset($_POST[$title_form]) ?  $subs->up_db_xss($_POST[$title_form]) : '';
 		$position_form = isset($_POST[$position_form]) ?  $subs->up_db_xss($_POST[$position_form]) : '';
 		$progressive_form = isset($_POST[$progressive_form]) ?  $subs->up_db_xss($_POST[$progressive_form]) : '';
 		$active_form = isset($_POST[$active_form]) ?  $subs->up_db_xss($_POST[$active_form]) : '';
 				
 		$smcFunc['db_query']('',"UPDATE {$db_prefix}ultimate_portal_blocks
-			SET title ='$title_form', 
-				position ='$position_form', 
+			SET position ='$position_form', 
 				progressive ='$progressive_form', 
 				active = '$active_form' 
 			WHERE id='$id'");
@@ -214,7 +211,7 @@ function ShowAddBlockHTML()
 		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
 		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 		
-		$textarea = $subs->up_convert_savedbadmin($_POST['elm1']);		
+		$textarea = $subs->up_convert_savedbadmin($_POST['body_html']);		
 		//Now Insert the Ultimate portal Blocks HTML		
 		$smcFunc['db_query']('',"INSERT INTO {$db_prefix}ultimate_portal_blocks (title, icon, personal, content, bk_collapse, bk_no_title, bk_style)
 								VALUES ('$title', '$icon', '1', '$textarea', '$bk_collapse', '$bk_no_title', '$bk_style')");

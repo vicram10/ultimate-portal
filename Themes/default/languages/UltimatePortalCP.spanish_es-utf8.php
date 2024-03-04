@@ -269,16 +269,6 @@ $txt['ultport_add_bk_html_titles'] = 'Creaci&oacute;n de bloque HTML';
 $txt['ultport_add_bk_php_titles'] = 'Creaci&oacute;n de bloque PHP';
 $txt['ultport_tmp_bk_php_hello'] = 'Hola';
 $txt['ultport_tmp_bk_php_content'] = '
-/*------------------------------------------------------
-*	Ultimate Portal
-*	Version 0.4
-*	Project Manager: vicram10
-*	Copyright 2011-2021
-*	Powered by SMFSimple.com
---------------------------------------------------------
-Tienes conexi&oacute;n del DB, todas las variables globales 
-y todas las funciones de Portal y Foro a tu disponibilidad
-*/
 //NO BORRAR ESTA PARTE, RIESGO DE SEGURIDAD SI SE BORRA
 if (!defined(\'SMF\'))
 	die(\'Hacking attempt...\');
@@ -286,7 +276,8 @@ if (!defined(\'SMF\'))
 
 global $user_info, $txt, $context;
 $username = $user_info[\'username\'];
-echo $txt[\'ultport_tmp_bk_php_hello\'] . \'�<strong>\'. $username . \'</strong>\';';
+echo $txt[\'ultport_tmp_bk_php_hello\'] . \' <b>\'. $username . \'</b>\';';
+
 $txt['ultport_admin_bk_title'] = 'Administrando Bloques';
 $txt['ultport_admin_bk_description'] = 'Zona en la que podras, editar tus bloques, asignarle permisos, etc.';
 $txt['ultport_admin_bk_custom'] = 'Listado de Bloques Personales';

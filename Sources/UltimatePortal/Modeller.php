@@ -28,4 +28,30 @@ class Modeller extends CoreBase {
             </div>
 	    </div>';
     }
+
+    function printBlockAdmin(array $block){
+        global $txt, $context;
+        $slug = $block['slug']; // it's the position
+        $model = '
+        <span class="floatleft">'. $block['title'] .'</span>
+        <span class="floatright">
+            <select name="'.$block['position_form'].'">';
+            foreach(['left','center','right'] as $position){
+                $model .= '
+                <option value="'. $position .'"'. ($position == $slug ? ' selected' : '') .'>
+                    '.$txt['ultport_blocks_'.$position].'
+                </option>';
+
+            }	
+            $model .= '
+            </select>
+            <select name="'.$block['progressive_form'].'">
+                <option value="'. $block['progressive'] .'">'. $block['progressive'] .'</option>
+                '. $context[$slug.'-progoption'] .'
+            </select>
+            '.$txt['ultport_blocks_enable'].' <input type="checkbox" name="'.  $block['active_form'] .'" value="checked" '. $block['active'] .' />
+        </span>';
+
+        return $model;
+    }
 }
