@@ -109,7 +109,7 @@ function template_positions()
 								<option value="', $vblocks['progressive'] ,'">', $vblocks['progressive'] ,'</option>
 								', $context['header-progoption-'.$id] ?? null ,'
 							</select>
-							',$txt['ultport_blocks_enable'],' <input type="checkbox" name="',  $vblocks['active_form'] ,'" value="checked" ', $vblocks['active'] ,' />
+							'. $modeller->getGreatCheckbox(name:$vblocks['active_form'],value:'checked',isChecked:$vblocks['active']) .'
 						</span>
 					</li>';
 				}
@@ -153,7 +153,7 @@ function template_positions()
 								<option value="', $vblocks['progressive'] ,'">', $vblocks['progressive'] ,'</option>
 								', $context['header-progoption-'.$id] ?? null ,'
 							</select>
-							',$txt['ultport_blocks_enable'],' <input type="checkbox" name="',  $vblocks['active_form'] ,'" value="checked" ', $vblocks['active'] ,' />
+							'. $modeller->getGreatCheckbox(name:$vblocks['active_form'],value:'checked',isChecked:$vblocks['active']) .'
 						</span>
 					</li>';
 				}
@@ -166,7 +166,7 @@ function template_positions()
 		<div class="floatright">
 			<input type="hidden" name="sc" value="', $context['session_id'], '" />
 			<input type="hidden" name="save" value="ok" />						
-			<button type="submit" name="',$txt['ultport_button_save'],'" class="button">
+			<button type="submit" name="',$txt['ultport_button_save'],'" class="up-btn">
 				<i class="bi bi-check-circle-fill"></i> ',$txt['ultport_button_save'],'
 			</button>
 		</div>
@@ -199,7 +199,7 @@ function template_blocks_titles()
 		<div class="floatright" style="padding-top:5px;">
 			<input type="hidden" name="save" value="ok" />
 			<input type="hidden" name="sc" value="', $context['session_id'], '" />
-			<button type="submit" name="',$txt['ultport_button_edit'],'">
+			<button type="submit" name="',$txt['ultport_button_edit'],'" class="up-btn">
 				<i class="bi bi-check-circle-fill"></i> ',$txt['ultport_button_edit'],'
 			</button>
 		</div>
@@ -224,7 +224,7 @@ function template_create_blocks()
 
 function template_add_block_html()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $scripturl;
 	
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=ultimate_portal_blocks;sa=add-block-html" accept-charset="', $context['character_set'], '">												
@@ -288,7 +288,7 @@ function template_add_block_html()
 		<div class="w-100">	
 			<input type="hidden" name="save" value="ok" />		
 			<input type="hidden" name="sc" value="', $context['session_id'], '" />
-			<button type="submit" name="',$txt['ultport_button_add'],'">
+			<button type="submit" name="',$txt['ultport_button_add'],'" class="up-btn">
 				<i class="bi bi-check-circle-fill"></i> ',$txt['ultport_button_add'],'
 			</button>
 		</td>
@@ -298,105 +298,97 @@ function template_add_block_html()
 
 function template_add_block_php()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $scripturl, $upCaller;
+	$block = $upCaller->subsBlock();
 	
 	//Preview
 	if($context['preview'])
 	{
 		echo '
-		<table align="center" width="70%">
-			<tr>
-				<td>';
-					head_block($context['icon'], $context['title'], -10, $context['bk_collapse'], $context['bk_no_title'], $context['bk_style']);
-					eval($context['content']);
-					footer_block($context['bk_style']);
-		echo '			
-				</td>
-			</tr>
-		</table><br />';
+		<div class="w-100 up-bg-warning" style="padding:10px !important;border-radius:10px;">';			
+			$block->head($context['icon'], $context['title'], -10, $context['bk_collapse'], $context['bk_no_title'], $context['bk_style']);
+			eval($context['content']);
+			$block->footer($context['bk_style']);
+		echo '
+		</div>';
 	}
 	//End Preview
 	
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=ultimate_portal_blocks;sa=add-block-php" accept-charset="', $context['character_set'], '">												
-		<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" width="100%" class="titlebg">									
-					', $txt['ultport_add_bk_php_titles'], '
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" class="windowbg2">									
+		<div class="cat_bar" style="margin-top:10px;">
+			<h3 class="catbg">
+				', $txt['ultport_add_bk_php_titles'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_title'], '
-				</td>			
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>			
+				<dd>
 					<input type="text" value="', $context['title'] ,'" name="bk-title" size="50" />
-				</td>			
-			</tr>
-			<tr>
-				<td valign="top" width="50%" class="windowbg2">									
+				</dd>			
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_icon'], '
-				</td>			
-				<td width="50%" class="windowbg2">
-					<table width="100%">
-						<tr>';									
-						$i = 1;
-						foreach($context['folder_images'] as $folder)
-						{
-							echo '
-							<td>
-								<input '. ($context['icon'] == $folder['value'] ? 'checked="checked"' : '') .' value="'. $folder['value'] .'" type="radio" name="icon">&nbsp;', $folder['image'] . '
-							</td>';
-							$i++;
-							if($i==6)
-							{
-								echo '</tr><tr>';
-								$i = 1;
-							}
-						}
-		echo '			</tr>
-					</table>
-				</td>			
-			</tr>						
-			<tr>
-				<td colspan="2" width="100%" align="center" class="tborder">									
-					<textarea id="content" name="content" rows="20" cols="80" style="width: 99.2%">', $context['content'] ,'</textarea>
-				</td>			
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>			
+				<dd>
+				<dd class="w-100">';
+				foreach($context['folder_images'] as $folder)
+				{
+					echo '
+					<span class="floatleft">
+						<input value="'. $folder['value'] .'" type="radio" name="icon">&nbsp;', $folder['image'] . '			
+					</span>';
+				}
+				echo '
+				</dd>
+			</dl>
+			<div class="w-100">
+				<textarea id="content" name="content" rows="20" class="w-100">
+					', $context['content'] ,'
+				</textarea>
+			</div>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_collapse'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" name="can_collapse" value="on" ', !empty($context['bk_collapse']) ? 'checked="checked"' : '' ,' />
-				</td>			
-			</tr>						
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dd>
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_style'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" name="bk_style" value="on" ', !empty($context['bk_style']) ? 'checked="checked"' : '' ,' />
-				</td>			
-			</tr>						
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dd>
+			</dl>						
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_no_title'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="checkbox" name="no_title" value="on" ', !empty($context['bk_no_title']) ? 'checked="checked"' : '' ,' />
-				</td>
-			</tr>			
-		</table>
-		<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" align="left">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="save" value="', $txt['ultport_button_add'] ,'" />&nbsp;
-					<input type="submit" name="preview" value="', $txt['ultport_button_preview'] ,'" />
-				</td>
-			</tr>
-		</table>
+				</dd>
+			</dl>			
+		</div>
+		<div class="w-100">
+			<div class="floatright">
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<button type="submit" name="save" class="up-btn">
+					<i class="bi bi-check-circle-fill"></i> ', $txt['ultport_button_add'] ,'
+				</button>
+			</div>
+			<div class="floatleft">
+				<button type="submit" name="preview" class="up-btn">
+					<i class="bi bi-search"></i> ', $txt['ultport_button_preview'] ,'
+				</button>
+			</div>
+		</div>
 	</form>';
 
 }
@@ -418,346 +410,287 @@ function template_admin_block()
 
 	
 	echo	'
-	<table width="100%" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-		<tr>
-			<td colspan="6" width="100%" class="catbg">									
-				', $txt['ultport_admin_bk_custom'], '
-			</td>			
-		</tr>			
-		<tr>
-			<td width="5%" align="center" class="titlebg">									
-				', $txt['ultport_blocks_titles_id'], '
-			</td>			
-			<td width="3%" align="center" class="titlebg">									
-				', $txt['ultport_admin_bk_type'], '
-			</td>			
-			<td width="58%" align="left" class="titlebg">									
-				', $txt['ultport_add_bk_title'], '
-			</td>			
-			<td width="34%"  align="left" colspan="3" class="titlebg">									
-				', $txt['ultport_admin_bk_action'], '
-			</td>			
-		</tr>';
-	if (!empty($context['bkcustom_view']))	
-	{
-		foreach($context['block-custom'] as $block_custom)
-		{	
-		echo '					
-		<tr>
-			<td width="5%" align="center" class="', $block_custom['activestyle'] ,'">									
-				', $block_custom['id'] ,'
-			</td>			
-			<td width="3%" align="center" class="', $block_custom['activestyle'] ,'">									
-				', $block_custom['type-img'] ,'
-			</td>			
-			<td width="58%" align="left" class="', $block_custom['activestyle'] ,'">									
-				', $block_custom['title_link_edit'] ,'
-			</td>			
-			<td width="11%" align="center" class="', $block_custom['activestyle'] ,'">									
-				', $block_custom['permissions'] ,'
-			</td>			
-			<td width="11%" align="center" class="', $block_custom['activestyle'] ,'">									
-				', $block_custom['edit'] ,'
-			</td>			
-			<td width="11%" align="center" class="', $block_custom['activestyle'] ,'">									
-				', $block_custom['delete'] ,'
-			</td>			
-		</tr>';	
-		}
-	}
+	<div class="title_bar">
+		<h3 class="titlebg">
+			', $txt['ultport_admin_bk_custom'], '
+		</h3>
+	</div>
+	<div class="manage-blocks windowbg noup">
+		<ul class="nolist">';
+		if (!empty($context['bkcustom_view']))	{
+			foreach($context['block-custom'] as $block_custom){	
+				echo '					
+				<li class="windowbg">
+					<span class="floatleft">
+						', $block_custom['type-img'] ,' 
+						', $block_custom['title_link_edit'] ,'
+					</span>
+					<span class="floatright">
+						<span class="fw-bold" style="padding-right:10px;">', $block_custom['permissions'] ,'</span>
+						<span class="fw-bold" style="padding-right:10px;">', $block_custom['edit'] ,'</span>
+						<span class="fw-bold" style="padding-right:10px;">', $block_custom['delete'] ,'</span>
+					</span>
+				</li>';	
+			}
+		}		
 	echo '	
-	</table><br />';
+		</ul>
+	</div>';
 
 	echo	'
-	<table width="100%" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-		<tr>
-			<td colspan="6" width="100%" class="catbg">									
-				', $txt['ultport_admin_bk_system'], '
-			</td>			
-		</tr>
-		<tr>
-			<td width="5%" align="center" class="titlebg">									
-				', $txt['ultport_blocks_titles_id'], '
-			</td>			
-			<td width="3%" align="center" class="titlebg">									
-				', $txt['ultport_admin_bk_type'], '
-			</td>			
-			<td width="58%" align="left" class="titlebg">									
-				', $txt['ultport_add_bk_title'], '
-			</td>			
-			<td width="34%" align="left" colspan="3" class="titlebg">									
-				', $txt['ultport_admin_bk_action'], '
-			</td>			
-		</tr>';
-	foreach($context['block-system'] as $block_system)
-	{	
-		echo '					
-		<tr>
-			<td width="5%" align="center" class="', $block_system['activestyle'] ,'">									
-				', $block_system['id'] ,'
-			</td>			
-			<td width="3%" align="center" class="', $block_system['activestyle'] ,'">									
-				', $block_system['type-img'] ,'
-			</td>			
-			<td width="58%" align="left" class="', $block_system['activestyle'] ,'">									
-				', $block_system['title'] ,'
-			</td>			
-			<td width="11%" align="center" class="', $block_system['activestyle'] ,'">									
-				', $block_system['permissions'] ,'
-			</td>			
-			<td width="11%" align="center" class="', $block_system['activestyle'] ,'">									
-				', $block_system['edit'] ,'
-			</td>			
-			<td width="11%" align="center" class="', $block_system['activestyle'] ,'">									
-				', $block_system['delete'] ,'
-			</td>			
-		</tr>';
-	}	
+	<div class="title_bar">
+		<h3 class="titlebg">
+			', $txt['ultport_admin_bk_system'], '
+		</h3>
+	</div>
+	<div class="manage-blocks windowbg noup">
+		<ul class="nolist">';
+		foreach($context['block-system'] as $block_system){	
+			echo '					
+			<li class="windowbg">
+				<span class="floatleft">
+					', $block_system['type-img'] ,' 
+					', $block_system['title'] ,'
+				</span>
+				<span class="floatright">
+					<span class="fw-bold" style="padding-right:10px;">', $block_system['permissions'] ,'</span>
+					<span class="fw-bold" style="padding-right:10px;">', $block_system['edit'] ,'</span>
+					<span class="fw-bold" style="padding-right:10px;">', $block_system['delete'] ,'</span>
+				</span>
+			</li>';
+		}	
 	echo '	
-	</table>';
+		</ul>
+	</div>';
 
 
 }
 
 function template_edit_block_html()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $scripturl, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 	
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=ultimate_portal_blocks;sa=blocks-html-edit" accept-charset="', $context['character_set'], '">												
-		<table width="80%" align="center" class="tborder" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" width="100%" class="titlebg">									
-					', $txt['ultport_add_bk_html_titles'], '
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" class="windowbg2">									
+		<div class="title_bar">		
+			<h3 class="titlebg">
+				', $txt['ultport_add_bk_html_titles'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_title'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" value="', $context['title'] ,'" name="bk-title" size="85" />
-				</td>			
-			</tr>			
-			<tr>
-				<td valign="top" width="50%" class="windowbg2">									
+				</dd>
+			</dl>			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_icon'], '
-				</td>			
-				<td width="50%" class="windowbg2">
-					<table width="100%">
-						<tr>';									
-						$i = 1;
-						foreach($context['folder_images'] as $folder)
-						{
-							echo '
-							<td>
-								<input '. ($context['icon'] == $folder['value'] ? 'checked="checked"' : '') .' value="'. $folder['value'] .'" type="radio" name="icon">&nbsp;', $folder['image'] . '
-							</td>';
-							$i++;
-							if($i==6)
-							{
-								echo '</tr><tr>';
-								$i = 1;
-							}
-						}
-		echo '			</tr>
-					</table>
-				</td>						
-			</tr>			
-			<tr>
-				<td colspan="2" width="100%" align="center" class="windowbg2">									
-					<textarea id="elm1" name="elm1" rows="15" cols="80" style="width: 100%">', $context['content'] ,'</textarea>
-				</td>			
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>			
+				<dd class="w-100">';
+				foreach($context['folder_images'] as $folder)
+				{
+					echo '
+					<span class="floatleft">
+						<input '. ($context['icon'] == $folder['value'] ? 'checked="checked"' : '') .' value="'. $folder['value'] .'" type="radio" name="icon"> ', $folder['image'] . '			
+					</span>';
+				}
+				echo '
+				</dd>			
+			</dl>					
+			<div class="w-100">
+				<textarea name="body_html" class="up-editor">
+					', $context['content'] ,'
+				</textarea>
+			</div>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_collapse'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="checkbox" name="can_collapse" value="on" ', !empty($context['bk_collapse']) ? 'checked="checked"' : '' ,' />
-				</td>			
-			</tr>						
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'can_collapse',value:'on', isChecked:!empty($context['bk_collapse'])) ,'
+				</dd>
+			</dl>						
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_style'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="checkbox" name="bk_style" value="on" ', !empty($context['bk_style']) ? 'checked="checked"' : '' ,' />
-				</td>			
-			</tr>						
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'bk_style',value:'on', isChecked:!empty($context['bk_style'])) ,'
+				</dd>
+			</dl>						
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_no_title'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="checkbox" name="no_title" value="on" ', !empty($context['bk_no_title']) ? 'checked="checked"' : '' ,' />
-				</td>
-			</tr>			
-		</table>
-		<table width="80%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" align="center">	
-					<input type="hidden" name="save" value="ok" />						
-					<input type="hidden" name="id" value="', $context['id'] ,'" />	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_save'],'" value="',$txt['ultport_button_save'],'" />
-				</td>
-			</tr>
-		</table>
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'no_title',value:'on', isChecked:!empty($context['bk_no_title'])) ,'
+				</dd>
+			</dl>
+		</div>
+		<div class="w-100">
+			<input type="hidden" name="save" value="ok" />						
+			<input type="hidden" name="id" value="', $context['id'] ,'" />	
+			<input type="hidden" name="sc" value="', $context['session_id'], '" />
+			<button type="submit" name="save" class="up-btn">
+				<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+			</button>
+		</div>
 	</form>';
 
 }
 
 function template_edit_block_php()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $scripturl, $upCaller;
+	$block = $upCaller->subsBlock();
+	$modeller = $upCaller->ssi()->getModeller();
 	
 	//Preview
 	if($context['preview'])
 	{
 		echo '
-		<table align="center" width="70%">
-			<tr>
-				<td>';
-					head_block($context['icon'], $context['title'], -10, $context['bk_collapse'], $context['bk_no_title'], $context['bk_style']);
-					$context['content'] = trim($context['content'], '<?php');
-					$context['content'] = trim($context['content'], '?>');
-					eval($context['content']);
-					footer_block($context['bk_style']);
-		echo '			
-				</td>
-			</tr>
-		</table><br />';
+		<div class="up-bg-warning" style="padding:10px;border-radius:10px;margin-bottom:20px;">';
+			$block->head($context['icon'], $context['title'], -10, $context['bk_collapse'], $context['bk_no_title'], $context['bk_style']);
+			$context['content'] = trim($context['content'], '<?php');
+			eval($context['content']);
+			$block->footer($context['bk_style']);
+		echo '
+		</div>';
 	}
 	//End Preview
 	
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=ultimate_portal_blocks;sa=blocks-php-edit;id='. $context['id'] .';type-php='. $context['type_php'] .'" accept-charset="', $context['character_set'], '">												
-		<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" width="100%" class="titlebg">									
-					', $txt['ultport_add_bk_php_titles'], '
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" class="windowbg2">									
+		<div class="title_bar">
+			<h3 class="titlebg">
+				', $txt['ultport_add_bk_php_titles'], '
+			</h3>			
+		</div>			
+		<div class="manage-blocks windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_title'], '
-				</td>			
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>			
+				<dd>
 					<input type="text" value="', $context['title'] ,'" name="bk-title" size="50" />
-				</td>			
-			</tr>
-			<tr>
-				<td valign="top" width="50%" class="windowbg2">									
+				</dd>			
+			</dl>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_icon'], '
-				</td>			
-				<td width="50%" class="windowbg2">
-					<table width="100%">
-						<tr>';									
-						$i = 1;
-						foreach($context['folder_images'] as $folder)
-						{
-							echo '
-							<td>
-								<input '. ($context['icon'] == $folder['value'] ? 'checked="checked"' : '') .' value="'. $folder['value'] .'" type="radio" name="icon">&nbsp;', $folder['image'] . '
-							</td>';
-							$i++;
-							if($i==6)
-							{
-								echo '</tr><tr>';
-								$i = 1;
-							}
-						}
-		echo '			</tr>
-					</table>
-				</td>			
-			</tr>									
-			<tr>
-				<td colspan="2" width="100%" align="center" class="tborder">									
-					<textarea id="content" name="content" rows="20" cols="80" style="width: 99.2%">', $context['content'] ,'</textarea>
-				</td>			
-			</tr>
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>			
+				<dd class="w-100">';
+				foreach($context['folder_images'] as $folder)
+				{
+					echo '
+					<span class="floatleft">
+						<input '. ($context['icon'] == $folder['value'] ? 'checked="checked"' : '') .' value="'. $folder['value'] .'" type="radio" name="icon"> ', $folder['image'] . '			
+					</span>';
+				}
+				echo '
+				</dd>			
+			</dl>									
+			<div class="w-100">
+				<textarea id="content" name="content" rows="20" class="w-100">', $context['content'] ,'</textarea>
+			</div>
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_collapse'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="checkbox" name="can_collapse" value="on" ', !empty($context['bk_collapse']) ? 'checked="checked"' : '' ,' />
-				</td>			
-			</tr>						
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'can_collapse',value:'on', isChecked:!empty($context['bk_collapse'])) ,'
+				</dd>
+			</dl>						
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_style'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="checkbox" name="bk_style" value="on" ', !empty($context['bk_style']) ? 'checked="checked"' : '' ,' />
-				</td>			
-			</tr>						
-			<tr>
-				<td width="50%" class="windowbg2">									
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'bk_style',value:'on', isChecked:!empty($context['bk_style'])) ,'
+				</dd>
+			</dl>						
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_add_bk_no_title'], '
-				</td>			
-				<td width="50%" class="windowbg2">									
-					<input type="checkbox" name="no_title" value="on" ', !empty($context['bk_no_title']) ? 'checked="checked"' : '' ,' />
-				</td>
-			</tr>						
-		</table>
-		<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" align="left">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="hidden" name="use_folder" value="', $context['use_folder'] ,'" />&nbsp;
-					<input type="submit" name="save" value="', $txt['ultport_button_save'] ,'" />&nbsp;
-					<input type="submit" name="preview" value="', $txt['ultport_button_preview'] ,'" />
-				</td>
-			</tr>
-		</table>
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'no_title',value:'on', isChecked:!empty($context['bk_no_title'])) ,'
+				</dd>
+			</dl>						
+		</div>
+		<div class="w-100">
+			<span class="floatleft">
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<input type="hidden" name="use_folder" value="', $context['use_folder'] ,'" />
+				<button type="submit" name="preview" class="up-btn">
+					<i class="bi bi-search"></i> ', $txt['ultport_button_preview'] ,'
+				</button>
+			</span>
+			<span class="floatright">
+				<button type="submit" name="save" class="up-btn">
+					<i class="bi bi-save"></i> ', $txt['ultport_button_save'] ,'
+				</button>
+			</span>
+		</div>
 	</form>';
 
 }
 
 function template_perms_block()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $scripturl, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 	
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=ultimate_portal_blocks;sa=blocks-perms;id='. $context['id'] .'" accept-charset="', $context['character_set'], '">												
-		<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" width="100%" class="titlebg">									
-					', $txt['ultport_admin_edit_perms'], ' (', $context['title'] ,')
-				</td>			
-			</tr>			
-			<tr>
-				<td width="50%" valign="top" class="windowbg2">									
+		<div class="title_bar">
+			<h3 class="titlebg">									
+				', $txt['ultport_admin_edit_perms'], ' (', $context['title'] ,')
+			</h3>			
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_select_perms'], '
-				</td>			
-				<td width="50%" align="left" class="windowbg2">									
+				</dt>			
+				<dd>
 					<div id="allowedAutoUnhideGroupsList">';
-					$permissionsGroups = explode(',',$context['perms']);
+						$permissionsGroups = explode(',',$context['perms']);
 						// List all the membergroups so the user can choose who may access this board.
-					foreach ($context['groups'] as $group)
-	echo '
-						<input type="checkbox" name="perms[]" value="', $group['id_group'], '" id="groups_', $group['id_group'], '"', ((in_array($group['id_group'],$permissionsGroups) == true) ? ' checked="checked" ' : ''), '/>', $group['group_name'], '<br />';
-echo '
-						<input type="checkbox" onclick="invertAll(this, this.form, \'perms[]\');" /> <i>', $txt['ultport_button_select_all'], '</i><br />
-						<br />
+						foreach ($context['groups'] as $group){
+						$id_input = "groups_".$group['id_group'];
+						echo '
+						<div>
+							', $modeller->getGreatCheckbox(
+								name:'perms[]', 
+								value: $group['id_group'],
+								isChecked: in_array($group['id_group'],$permissionsGroups),
+								id: $id_input
+							) ,' ', $group['group_name'], '
+						</div>';
+						}
+						echo '
+						<div style="margin-top:10px;padding-top:5px;border-top:1px solid #CCC;">
+							<span class="up-checkbox" style="padding-left:10px;padding-right:10px;">
+								<input type="checkbox" onclick="invertAll(this, this.form, \'perms[]\');" class="up-checkbox-input" />
+							</span>
+							', $txt['ultport_button_select_all'], '
+						</div>
 					</div>
-				</td>			
-			</tr>			
-		</table>
-		<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td colspan="2" align="left">	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="save" value="', $txt['ultport_button_save'] ,'" />
-				</td>
-			</tr>
-		</table>
+				</dd>			
+			</dl>
+		</div>
+		<div class="w-100">	
+			<input type="hidden" name="sc" value="', $context['session_id'], '" />
+			<button type="submit" name="save" class="up-btn">
+				<i class="bi bi-save"></i> ', $txt['ultport_button_save'] ,'
+			</button>
+		</div>
 	</form>';
 
 }
-
-
-?>
-

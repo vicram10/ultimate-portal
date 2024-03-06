@@ -49,9 +49,16 @@ class Modeller extends CoreBase {
                 <option value="'. $block['progressive'] .'">'. $block['progressive'] .'</option>
                 '. $context[$slug.'-progoption'] .'
             </select>
-            '.$txt['ultport_blocks_enable'].' <input type="checkbox" name="'.  $block['active_form'] .'" value="checked" '. $block['active'] .' />
+            '. $this->getGreatCheckbox(name:$block['active_form'],value:'checked',isChecked:$block['active']) .'
         </span>';
 
         return $model;
+    }
+
+    function getGreatCheckbox(string $name, string $value, bool $isChecked = false, ?string $id = null):string{
+        return '
+        <span class="up-checkbox" style="padding-left:10px;padding-right:10px;">
+            <input type="checkbox" '. ($id ? 'id="'.$id.'"' : null) .' name="'. $name .'" class="up-checkbox-input" '.($isChecked ? 'checked="checked"' : '').' value="'.$value.'" />
+        </span>';
     }
 }
