@@ -54,6 +54,7 @@ function ShowBlocksMain()
 			),
 			'admin-block' => array(
 				'description' => $txt['ultport_admin_bk_description'],
+				'is_last' => true,
 			),
 		),
 	);
@@ -258,7 +259,7 @@ function ShowAddBlockPHP()
 		//User-defined title & text values
 		$title = stripslashes($_POST['bk-title']); //strip slashes added by $_POST
 		$content = $_POST['content'];
-		$content = trim('<?php'."\n".$content."\n".'?>');
+		$content = trim('<?php'."\n".$content."\n");
 		$icon = !empty($_POST['icon']) ?  $subs->up_db_xss($_POST['icon']) : 'bk-php';
 		$bk_collapse = !empty($_POST['can_collapse']) ?  $subs->up_db_xss($_POST['can_collapse']) : '';
 		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
@@ -295,7 +296,7 @@ function ShowAddBlockPHP()
 	//Preview?	
 	if (isset($_POST['preview'])) {
 		checkSession('post');
-		$context['preview'] = 1;
+		$context['preview'] = true;
 		//User-defined title & text values
 		$title =  $subs->up_db_xss($_POST['bk-title']); //strip slashes added by $_POST
 		$content = $_POST['content'];
@@ -403,7 +404,7 @@ function EditBlockHtml()
 		$bk_style = !empty($_POST['bk_style']) ?  $subs->up_db_xss($_POST['bk_style']) : '';
 		$bk_no_title = !empty($_POST['no_title']) ?  $subs->up_db_xss($_POST['no_title']) : '';
 		
-		$textarea = $subs->up_convert_savedbadmin($_POST['elm1']);		
+		$textarea = $subs->up_convert_savedbadmin($_POST['body_html']);		
 
 		//Now UPDATE the Ultimate portal Blocks HTML		
 		$smcFunc['db_query']('',"UPDATE {$db_prefix}ultimate_portal_blocks 
@@ -496,7 +497,7 @@ function EditBlockPhp()
 			exit;
 		}
 		//Write $content to cached php file
-   		if (!fwrite($handle, '<?php'."\n".$content."\n".'?>')) {
+   		if (!fwrite($handle, '<?php'."\n".$content."\n")) {
 			fatal_lang_error('ultport_error_no_add_bk_nofile',false);
 			exit;
    		}
