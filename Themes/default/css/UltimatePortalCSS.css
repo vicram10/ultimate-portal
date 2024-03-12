@@ -16,7 +16,10 @@
 	--btn-text-color-default: #39739d;
 	--btn-background-hover-color: #b3d3ea;
   	--btn-text-active-color: #2c5777;
+	--radio-button-first-color: #f4f4f4;
+	--radio-button-second-color: #3197EE;
 }
+
 
 /*-------------------------
 #General
@@ -606,12 +609,16 @@ h4.catbg span.left, h4.catbg2 span.left, h3.catbg span.left, h3.catbg2 span.left
     border-bottom: none !important;
 }
 
+.manage-blocks > ul li.windowbg:last-child {
+	border-bottom: 1px solid #ddd !important;
+}
+
 .up-text-muted {
 	color: #bbb !important;	
 }
 
 .up-small {
-	font-size: 10px !important;
+	font-size: 12px !important;
 }
 
 .up-editor {
@@ -723,3 +730,58 @@ outline: 0;
 .up-checkbox .up-checkbox-input:checked:hover {
 background-color: #535db3;
 }
+
+.up-radio {	
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+  }
+  
+  .up-radio label {
+	display: flex;
+	cursor: pointer;
+	font-weight: 500;
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 0.375em;
+  }
+  
+  .up-radio  label input {
+	position: absolute;
+	left: -9999px;
+  }
+  
+  .up-radio label input:checked + span {
+	background-color: #414181;
+	color: white;
+  }
+  
+  .up-radio label input:checked + span:before {
+	box-shadow: inset 0 0 0 0.4375em #00005c;
+  }
+  
+  .up-radio label span {
+	display: flex;
+	align-items: center;
+	padding: 0.375em 0.75em 0.375em 0.375em;
+	border-radius: 99em;
+	transition: 0.25s ease;
+	color: #414181;
+  }
+  
+  .up-radio label span:hover {
+	background-color: #d6d6e5;
+  }
+  
+  .up-radio label span:before {
+	display: flex;
+	flex-shrink: 0;
+	content: "";
+	background-color: #fff;
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 50%;
+	margin-right: 0.375em;
+	transition: 0.25s ease;
+	box-shadow: inset 0 0 0 0.125em #00005c;
+  }

@@ -10,6 +10,7 @@
 $txt['newest_member'] = 'Newest member';
 $txt['core_settings_switch_off'] = $txt['core_settings_disabled'] = 'Off';
 $txt['core_settings_switch_on'] = $txt['core_settings_enabled'] = 'On';
+$txt['up_not_founds'] = 'Records not found';
 
 //Buttons
 $txt['ultport_close'] = 'Close';
