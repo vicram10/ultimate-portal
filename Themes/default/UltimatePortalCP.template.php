@@ -127,7 +127,8 @@ function template_preferences_main()
 function template_preferences_gral_settings()
 {
 	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $ultimateportalSettings, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 	
 	echo'
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=gral-settings" accept-charset="', $context['character_set'], '">								
@@ -137,8 +138,9 @@ function template_preferences_gral_settings()
 		<div class="windowbg noup">
 			<dl class="settings">
 				<dt>', $txt['ultport_admin_gral_settings_portal_enable'], '</dt>
-				<td width="50%" align="center" class="windowbg2">
-				<dd><input type="checkbox" value="on" name="ultimate_portal_enable" ',!empty($ultimateportalSettings['ultimate_portal_enable']) ? 'checked="checked"' : '',' /></dd>			
+				<dd>
+					', $modeller->getGreatCheckbox(name:'ultimate_portal_enable',value:'on',isChecked:!empty($ultimateportalSettings['ultimate_portal_enable'])) ,'
+				</dd>			
 			</dl>
 			<dl class="settings">
 				<dt>
@@ -153,7 +155,8 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_gral_settings_favicons'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="favicons" ',!empty($ultimateportalSettings['favicons']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'favicons',value:'on',isChecked:!empty($ultimateportalSettings['favicons'])) ,'
+
 				</dd>
 			</dl>
 			<dl class="settings">
@@ -161,7 +164,7 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_gral_settings_use_curve'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="up_use_curve_variation" ',!empty($ultimateportalSettings['up_use_curve_variation']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'up_use_curve_variation',value:'on',isChecked:!empty($ultimateportalSettings['up_use_curve_variation'])) ,'
 				</dd>
 			</dl>
 		</div>
@@ -201,7 +204,7 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_gral_settings_enable_portal_col_left'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="ultimate_portal_enable_col_left" ',!empty($ultimateportalSettings['ultimate_portal_enable_col_left']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'ultimate_portal_enable_col_left',value:'on',isChecked:!empty($ultimateportalSettings['ultimate_portal_enable_col_left'])) ,'
 				</dd>
 			</dl>					
 			<dl class="settings">
@@ -209,7 +212,7 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_gral_settings_enable_portal_col_right'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="ultimate_portal_enable_col_right" ',!empty($ultimateportalSettings['ultimate_portal_enable_col_right']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'ultimate_portal_enable_col_right',value:'on',isChecked:!empty($ultimateportalSettings['ultimate_portal_enable_col_right'])) ,'
 				</dd>
 			</dl>					
 			<dl class="settings">
@@ -217,7 +220,7 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_gral_settings_enable_icons'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="ultimate_portal_enable_icons" ',!empty($ultimateportalSettings['ultimate_portal_enable_icons']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'ultimate_portal_enable_icons',value:'on',isChecked:!empty($ultimateportalSettings['ultimate_portal_enable_icons'])) ,'
 				</dd>
 			</dl>					
 			<dl class="settings">
@@ -246,7 +249,7 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_view_forum_enable_col_left'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="up_forum_enable_col_left" ',!empty($ultimateportalSettings['up_forum_enable_col_left']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'up_forum_enable_col_left',value:'on',isChecked:!empty($ultimateportalSettings['up_forum_enable_col_left'])) ,'
 				</dd>
 			</dl>
 			<dl class="settings">
@@ -254,20 +257,20 @@ function template_preferences_gral_settings()
 					', $txt['ultport_admin_view_forum_enable_col_right'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="up_forum_enable_col_right" ',!empty($ultimateportalSettings['up_forum_enable_col_right']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'up_forum_enable_col_right',value:'on',isChecked:!empty($ultimateportalSettings['up_forum_enable_col_right'])) ,'
 				</dd>
 			</dl>	
-			<dl class="settings">
-				<td class="catbg" width="100%" colspan="2">		
+			<div class="title_bar">
+				<h3 class="titlebg">
 					<img alt="',$txt['ultport_exconfig_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/config.png"/>&nbsp;', $txt['ultport_exconfig_title'], '
-				</dd>
-			</dl>	
+				</h3>
+			</div>
 			<dl class="settings">
 				<dt>
 					', $txt['ultport_rso_title'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="up_reduce_site_overload" ',!empty($ultimateportalSettings['up_reduce_site_overload']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'up_reduce_site_overload',value:'on',isChecked:!empty($ultimateportalSettings['up_reduce_site_overload'])) ,'
 				</dd>
 			</dl>				
 			<dl class="settings">
@@ -275,14 +278,16 @@ function template_preferences_gral_settings()
 					', $txt['ultport_collapse_left_right'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="up_left_right_collapse" ',!empty($ultimateportalSettings['up_left_right_collapse']) ? 'checked="checked"' : '','/>
+					', $modeller->getGreatCheckbox(name:'up_left_right_collapse',value:'on',isChecked:!empty($ultimateportalSettings['up_left_right_collapse'])) ,'
 				</dd>
 			</dl>
 		</div>
 		
 		<div style="width:100%">			
 			<input type="hidden" name="sc" value="', $context['session_id'], '" />
-			<input type="submit" name="save" value="',$txt['ultport_button_save'],'" class="button" />		
+			<button type="submit" name="save" class="up-btn">
+				<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+			</button>
 		</div>
 	</form>';
 
@@ -313,8 +318,12 @@ function template_preferences_lang_maintenance()
 				</dd>
 			</dl>
 			<div style="width:100%">				
-				<input type="hidden" name="sc" value="', $context['session_id'], '" />
-				<input type="submit" name="editing" value="',$txt['ultport_button_edit'],'" class="button" />
+				<span class="floatright">
+					<input type="hidden" name="sc" value="', $context['session_id'], '" />
+					<button type="submit" name="editing" class="up-btn">
+						<i class="bi bi-floppy-fill"></i> ',$txt['ultport_button_edit'],'
+					</button>
+				</span>
 			</div>
 		</div>		
 	</form>';
@@ -343,10 +352,15 @@ function template_preferences_lang_maintenance()
 				<dd>
 					<input type="text" name="new_file" size="40" value="" />
 				</dd>
-			</dl>			
-		<div class="w-100">
-			<input type="hidden" name="sc" value="', $context['session_id'], '" />
-			<input type="submit" name="duplicate" value="',$txt['ultport_button_add'],'" class="button" />				
+			</dl>
+			<div class="w-100">
+				<span class="floatright">
+					<input type="hidden" name="sc" value="', $context['session_id'], '" />
+					<button type="submit" name="duplicate" class="up-btn">
+						<i class="bi bi-plus-circle-fill"></i> ',$txt['ultport_button_add'],'
+					</button>
+				</span>
+			</div>
 		</div>
 	</form>';
 		
@@ -371,7 +385,9 @@ function template_preferences_lang_edit()
 			<div class="w-100" style="padding-top:10px;">	
 				<input type="hidden" name="file" value="', $context['file'] ,'" />				
 				<input type="hidden" name="sc" value="', $context['session_id'], '" />
-				<input type="submit" name="save" value="',$txt['ultport_button_edit'],'" class="button" style="padding-left:5px;padding-right:5px;padding-bottom:5px;" />				
+				<button type="submit" name="save" class="up-btn" style="padding-left:5px;padding-right:5px;padding-bottom:5px;">
+					<i class="bi bi-floppy-fill"></i> ',$txt['ultport_button_edit'],'
+				</button>
 			</div>
 		</div>
 	</form>';
@@ -381,7 +397,7 @@ function template_preferences_lang_edit()
 //Show the Ultimate Portal - Area: Preferences / Section: Permissions Settings
 function template_preferences_permissions_settings()
 {
-	global $context, $scripturl, $txt, $settings;
+	global $context, $scripturl, $txt, $settings, $upCaller;
 
 	echo	'
 	<form method="post" action="', $scripturl, '?action=admin;area=preferences;sa=permissions-settings" accept-charset="', $context['character_set'], '">												
@@ -408,7 +424,9 @@ function template_preferences_permissions_settings()
 		</div>
 		<div class="w-100">
 			<input type="hidden" name="sc" value="', $context['session_id'], '" />											
-			<input type="submit" name="view-perms" value="',$txt['ultport_button_edit'],'" />
+			<button type="submit" name="view-perms" class="up-btn" style="padding-left:5px;padding-right:5px;padding-bottom:5px;">
+				<i class="bi bi-floppy-fill"></i> ',$txt['ultport_button_edit'],'
+			</button>
 		</div>
 	</form>';
 	
@@ -422,7 +440,8 @@ function template_preferences_permissions_settings()
 						', $txt['ultport_admin_permissions_settings_subtitle'], '
 					</h3>
 				</div>
-				<div class="windowbg noup">';				
+				<div class="windowbg noup">';		
+				$modeller = $upCaller->ssi()->getModeller();
 				foreach ($context['permissions'] as $permissions)
 				{	
 					echo '
@@ -431,7 +450,7 @@ function template_preferences_permissions_settings()
 							'. $permissions['text-name'] .'
 						</dt>
 						<dd>
-							<input type="checkbox" value="on" name="', $permissions['name'] ,'" ', (!empty($context[$permissions['name']]['value']) ? 'checked="checked"' : '') ,'/>
+							', $modeller->getGreatCheckbox(name:$permissions['name'],value:'on',isChecked: !empty($context[$permissions['name']]['value']))  ,'
 						</dd>
 					</dl>';
 				}	
@@ -441,7 +460,9 @@ function template_preferences_permissions_settings()
 				<div class="w-100">
 					<input type="hidden" name="group_selected" value="', $context['group-selected'] ,'" />					
 					<input type="hidden" name="sc" value="', $context['session_id'], '" />						
-					<input type="submit" name="save" value="',$txt['ultport_button_save'],'" class="button" />
+					<button type="submit" name="save" class="up-btn" style="padding-left:5px;padding-right:5px;padding-bottom:5px;">
+						<i class="bi bi-check-circle-fill"></i> ',$txt['ultport_button_save'],'
+					</button>
 				</div>
 			</form>
 		</div>';
@@ -453,7 +474,8 @@ function template_preferences_permissions_settings()
 //Show the Ultimate Portal - Area: Preferences / Section: Portal Menu Settings
 function template_preferences_main_links()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $settings, $scripturl, $ultimateportalSettings, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo "
 	    <script type=\"text/javascript\">
@@ -540,9 +562,13 @@ function template_preferences_main_links()
 		echo '</tbody>
 			</table>
 			<div class="w-100">
-				<input type="hidden" name="sc" value="', $context['session_id'], '" />
-				<input type="hidden" name="save-menu" value="ok" />						
-				<input type="submit" name="',$txt['ultport_button_save'],'" value="',$txt['ultport_button_save'],'" class="button"/>
+				<span class="floatright">
+					<input type="hidden" name="sc" value="', $context['session_id'], '" />
+					<input type="hidden" name="save-menu" value="ok" />						
+					<button type="submit" name="save" class="up-btn">
+						<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+					</button>
+				</span>
 			</div>
 		</form>
 	</div>';
@@ -594,13 +620,17 @@ function template_preferences_main_links()
 						', $txt['ultport_admin_mainlinks_active'], '
 					</dt>			
 					<dd>
-						<input type="checkbox" name="active" value="1" />
+						', $modeller->getGreatCheckbox(name:'active',value:'1') ,'
 					</dd>			
 				</dl>
 				<div class="w-100">
-					<input type="hidden" name="add-menu" value="ok" />	
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_add'],'" value="',$txt['ultport_button_add'],'" class="button" />
+					<span class="floatright">
+						<input type="hidden" name="add-menu" value="ok" />	
+						<input type="hidden" name="sc" value="', $context['session_id'], '" />
+						<button type="submit" name="add" class="up-btn">
+							<i class="bi bi-save"></i> ',$txt['ultport_button_add'],'
+						</button>
+					</span>
 				</div>
 			</div>
 		</form>
@@ -610,7 +640,8 @@ function template_preferences_main_links()
 //Show the Ultimate Portal - Area: Preferences / Section: Edit Portal Menu Settings
 function template_preferences_edit_main_links()
 {
-	global $context, $txt, $settings, $scripturl, $ultimateportalSettings;
+	global $context, $txt, $settings, $scripturl, $ultimateportalSettings, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 	
 	//Add Main Link
 	echo	'
@@ -663,7 +694,7 @@ function template_preferences_edit_main_links()
 					', $txt['ultport_admin_mainlinks_active'], '
 				</dt>
 				<dd>
-					<input type="checkbox" value="on" name="active" value="1" ', (!empty($edit_main_link['active']) ? 'checked="checked"' : '') ,' />
+					', $modeller->getGreatCheckbox(name:'active',value:'on',isChecked:!empty($edit_main_link['active'])) ,'
 				<dd>
 			</dl>';
 	}		
@@ -673,7 +704,9 @@ function template_preferences_edit_main_links()
 		<div class="w-100">
 			<input type="hidden" name="save" value="ok" />	
 			<input type="hidden" name="sc" value="', $context['session_id'], '" />
-			<input type="submit" name="',$txt['ultport_button_edit'],'" value="',$txt['ultport_button_edit'],'" class="button" />
+			<button type="submit" name="edit" class="up-btn">
+				<i class="bi bi-floppy-fill"></i> ',$txt['ultport_button_edit'],'
+			</button>
 		</div>
 	</form>';
 	
@@ -702,7 +735,9 @@ function template_preferences_seo()
 			</div>				
 			<div class="w-100" style="padding-top: 15px;">	
 				<input type="hidden" name="sc" value="', $context['session_id'], '" />
-				<input type="submit" name="save_robot" value="',$txt['ultport_button_save'],'" class="button"/>
+				<button type="submit" name="save_robot" class="up-btn">
+					<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+				</button>
 			</div>
 		</div>
 		<div class="cat_bar">
@@ -729,7 +764,9 @@ function template_preferences_seo()
 			</dl>
 			<div class="w-100">	
 				<input type="hidden" name="sc" value="', $context['session_id'], '" />
-				<input type="submit" name="save_seo_config" value="',$txt['ultport_button_save'],'" class="button"/>
+				<button type="submit" name="save_seo_config" class="up-btn">
+					<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+				</button>
 			</div>
 		</div>
 		<div class="cat_bar">
@@ -768,7 +805,9 @@ function template_preferences_seo()
 			</dl>	
 			<div class="w-100">				
 				<input type="hidden" name="sc" value="', $context['session_id'], '" />
-				<input type="submit" name="save_seo_google_verification_code" value="',$txt['ultport_button_save'],'" class="button"/>				
+				<button type="submit" name="save_seo_google_verification_code" class="up-btn">
+					<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+				</button>
 			</tr>
 		</table>		
 	</form>';	
@@ -776,8 +815,7 @@ function template_preferences_seo()
 
 function template_mb_main()
 {
-	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $context, $txt;
 
 	echo "
 	<script type=\"text/javascript\">
@@ -792,158 +830,142 @@ function template_mb_main()
 
 	echo '
 	<div id="admincenter">
-		<div class="cat_bar">
-			<h3 class="catbg">
+		<div class="title_bar">
+			<h3 class="titlebg">
 				', $txt['ultport_mb_title'] ,' - ', $txt['ultport_mb_main'] ,'
 			</h3>
 		</div>
-		<table align="left" width="100%">
-			<tr>';
-					
-			if($context['mb_view'])
-			{
-				$alternate = true;
-				$i = 1;
-				$column = 2;
+		<div class="manage-blocks windowbg noup">';
+			if($context['mb_view']){
+				echo '<ul class="nolist">';
 				foreach($context['multiblocks'] as $mb)
 				{
 					echo '
-					<td valign="top" width="33.33%">
-						<div class="windowbg', $alternate ? '' : '2' ,'">
-							<span class="topslice"><span></span></span>
-							<div class="content">
-								<span style="font-size:15px;font-weight:bold">', $mb['title'] ,'</span>
-								<div class="righttext" style="float:right">
-									', $mb['edit'] ,'&nbsp;', $mb['delete'] ,'
-								</div>	
-							</div>
-							<span class="botslice"><span></span></span>
-						</div>
-					</td>';					
-					$alternate = !$alternate;
-					if($i == $column+1)
-					{
-						echo '</tr><tr>';
-						$i = 1;
-					}
+					<li class="windowbg">
+						<span class="floatleft fw-bold">
+							', $mb['title'] ,'
+							<div class="up-text-muted up-small">', $mb['position'] ,'</div>
+						</span>
+						<span class="floatright">
+							', $mb['edit'] ,' ', $mb['delete'] ,'
+						</span>
+					</li>';
 				}
+				echo '
+				</ul>';
 			}else{
-				echo '<td></td>';
+				echo '<div class="noticebox"></div>';
 			}
 			echo '
-			</tr>
-		</table>	
-	</div><!-- div admincenter -->
-	<br class="clear" />';
+		</div>	
+	</div>';
 }
 
 function template_mb_add()
 {
 	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo '
 	<div id="admincenter">
 		<form name="mbadd" method="post" action="', $scripturl, '?action=admin;area=multiblock;sa=add" accept-charset="', $context['character_set'], '">
-			<div class="cat_bar">
-				<h3 class="catbg">
+			<div class="title_bar">
+				<h3 class="titlebg">
 					', $txt['ultport_mb_title'] ,' - ', $txt['ultport_mb_add'] ,' - ', $txt['ultport_mb_step'] ,' 1
 				</h3>
 			</div>
-			<div class="windowbg2">
-				<span class="topslice"><span></span></span>
-				<div class="content">
-					<dl class="settings">
-						<dt>
-							', $txt['ultport_mb_enable'] ,'
-						</dt>
-						<dd>
-							<input type="checkbox" name="enable" value="1" class="input_check" /> 
-						</dd>						
-						<dt>
-							', $txt['ultport_mb_title2'] ,'
-						</dt>
-						<dd>
-							<input type="text" name="title" value="" class="input_text" size="70"/>
-						</dd>';
-						
-						$position = explode('|', $txt['ultport_mb_position']);
-						
-						echo '
-						<dt>
-							', $position[0] ,'
-						</dt>
-						<dd>
-							<select id="position" name="position">
-								<option value="header">', trim($position[1]) ,'</option>
-								<option value="footer">', trim($position[2]) ,'</option>
-							</select>
-						</dd>
-						<dt>
-							', $txt['ultport_mb_blocks'] ,'
-						</dt>
-						<dd>';
+			<div class="windowbg">
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_mb_enable'] ,'
+					</dt>
+					<dd>
+						', $modeller->getGreatCheckbox(name:'enable',value:'1') ,'
+					</dd>						
+					<dt>
+						', $txt['ultport_mb_title2'] ,'
+					</dt>
+					<dd>
+						<input type="text" name="title" value="" class="input_text" size="70"/>
+					</dd>';
 					
-					foreach($context['blocks'] as $blocks)
-					{
-						echo '	
-							<input type="checkbox" name="block[]" value="', $blocks['id'] ,'" class="input_check" /> ', $blocks['title'],'<br />';
-					}
+					$position = explode('|', $txt['ultport_mb_position']);
 					
 					echo '
-						</dd>';
-					
+					<dt>
+						', $position[0] ,'
+					</dt>
+					<dd>
+						<select id="position" name="position">
+							<option value="header">', trim($position[1]) ,'</option>
+							<option value="footer">', trim($position[2]) ,'</option>
+						</select>
+					</dd>
+					<dt>
+						', $txt['ultport_mb_blocks'] ,'
+					</dt>
+					<dd>';				
+					foreach($context['blocks'] as $blocks){
+						echo '
+						<div>
+							',$modeller->getGreatCheckbox(name:'block[]',value:$blocks['id']),'
+							<span class="up-small">',$blocks['title'],'</span>
+						</div>';
+					}				
+					echo '
+					</dd>';				
 					$design = explode('|', $txt['ultport_mb_design']);
 					echo '	
-						<dt>
-							', $design[0] ,'
-						</dt>
-						<dd>
-							<div style="width:30%;float:left;text-align:left">
-								<input type="radio" value="1-2" name="design"> ', $design[1] ,'
-								<br />
-								<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/1-row-2-columns.png" width="100" height="100" align="top" />
-							</div>
-							<div style="width:30%;float:left;text-align:left">
-								<input type="radio" value="2-1" name="design"> ', $design[2] ,'
-								<br />
-								<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/2-rows-1-column.png" width="100" height="100" align="top" />
-							</div>
-							<div style="width:30%;float:left;text-align:left">
-								<input type="radio" value="3-1" name="design"> ', $design[3] ,'
-								<br />
-								<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/3-rows-1-column.png" width="100" height="100" align="top" />
-							</div>
-						</dd>';
-						
-					echo '
 					<dt>
-						', $txt['ultport_mbk_collapse'] ,'
+						', $design[0] ,'
 					</dt>
 					<dd>
-						<input type="checkbox" name="mbk_collapse" value="1" class="input_check" /> 
-					</dd>											
-					<dt>
-						', $txt['ultport_mbk_style'] ,'
-					</dt>
-					<dd>
-						<input type="checkbox" name="mbk_style" value="1" class="input_check" /> 
-					</dd>											
-					<dt>
-						', $txt['ultport_mbk_title'] ,'
-					</dt>
-					<dd>
-						<input type="checkbox" name="mbk_title" value="1" class="input_check" /> 
-					</dd>											
-					</dl>
-					<div class="righttext">
-						<input type="hidden" name="step" value="1" />
-						<input type="hidden" name="sc" value="', $context['session_id'] ,'" />
-						<input type="submit" name="next" value="', $txt['ultport_mb_next'], '" class="button_submit" />
-					</div>
-				</div><!-- div content -->
-				<span class="botslice"><span></span></span>
-			</div><!-- div windowbg2 -->
+						<div style="width:30%;float:left;text-align:left">
+							<input type="radio" value="1-2" name="design"> ', $design[1] ,'
+							<br />
+							<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/1-row-2-columns.png" width="100" height="100" align="top" />
+						</div>
+						<div style="width:30%;float:left;text-align:left">
+							<input type="radio" value="2-1" name="design"> ', $design[2] ,'
+							<br />
+							<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/2-rows-1-column.png" width="100" height="100" align="top" />
+						</div>
+						<div style="width:30%;float:left;text-align:left">
+							<input type="radio" value="3-1" name="design"> ', $design[3] ,'
+							<br />
+							<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/3-rows-1-column.png" width="100" height="100" align="top" />
+						</div>
+					</dd>';
+					
+				echo '
+				<dt>
+					', $txt['ultport_mbk_collapse'] ,'
+				</dt>
+				<dd>
+					',$modeller->getGreatCheckbox(name:'mbk_collapse',value:'1'),'
+				</dd>											
+				<dt>
+					', $txt['ultport_mbk_style'] ,'
+				</dt>
+				<dd>
+					',$modeller->getGreatCheckbox(name:'mbk_style',value:'1'),'
+				</dd>											
+				<dt>
+					', $txt['ultport_mbk_title'] ,'
+				</dt>
+				<dd>
+					',$modeller->getGreatCheckbox(name:'mbk_title',value:'1'),'
+				</dd>											
+				</dl>
+				<div class="righttext">
+					<input type="hidden" name="step" value="1" />
+					<input type="hidden" name="sc" value="', $context['session_id'] ,'" />
+					<button type="submit" name="next" class="up-btn">
+						<i class="bi bi-arrow-right"></i> ', $txt['ultport_mb_next'], '
+					</button>
+				</div>
+			</div><!-- div windowbg -->
 		</form>	
 	</div><!-- div admincenter -->
 	<br class="clear">';
@@ -951,87 +973,89 @@ function template_mb_add()
 
 function template_mb_add_1()
 {
-	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $context, $scripturl, $txt, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo '
 	<div id="admincenter">
 		<form name="mbadd" method="post" action="', $scripturl, '?action=admin;area=multiblock;sa=add" accept-charset="', $context['character_set'], '">
-			<div class="cat_bar">
-				<h3 class="catbg">
+			<div class="title_bar">
+				<h3 class="titlebg">
 					', $txt['ultport_mb_title'] ,' - ', $txt['ultport_mb_add'] ,' - ', $txt['ultport_mb_step'] ,' 2				
 				</h3>
 			</div>
-			<div>
-				<span class="topslice"><span></span></span>
-				<div class="content">
-					', $txt['ultport_mb_organization'] ,'
-				</div><!-- div content -->
-				<span class="botslice"><span></span></span>
-			</div><!-- div windowbg2 -->
-			<table align="center" width="80%">
-				<tr>';
-					$bk_selected = explode(',', $context['id_blocks']);
-					$alternate = true;
-					$i = 1; //flag
-					$column = 2;
-					foreach($context['blocks'] as $blocks)
-					{
-						if (in_array($blocks['id'], $bk_selected))
-						{
-							echo '
-							<td width="50%" align="top">	
-								<div class="windowbg', $alternate ? '' : '2' ,'">
-									<span class="topslice"><span></span></span>
-									<div class="content">
-										<span style="font-weight:bold;font-size:15px;">', $blocks['title'],'</span>
-										<br />
-										',$txt['ultport_mbk_position'],'&nbsp;&nbsp;';
-										//1 Row 2 Columns
-										if($context['design'] == '1-2')
-										{
-											echo '
-											<input type="radio" value="c1" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_column'] ,' 1
-											&nbsp;&nbsp;
-											<input type="radio" value="c2" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_column'] ,' 2';									
-										}
-										
-										//2 Rows 1 Column
-										if ($context['design'] == '2-1')
-										{
-											echo '
-											<input type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 1
-											&nbsp;&nbsp;
-											<input type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 2';
-										}
-										
-										//3 Rows 1 Column
-										if ($context['design'] == '3-1')
-										{
-											echo '
-											<input type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 1
-											&nbsp;&nbsp;
-											<input type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 2
-											&nbsp;&nbsp;
-											<input type="radio" value="r3" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 3';
-										}										
-									echo '
-									</div>
-									<span class="botslice"><span></span></span>
-								</div>
-							</td>';
-							$alternate = !$alternate;
-							$i++;
-							if ($i==$column+1)
-							{
-								echo '</tr><tr>';
-								$i=1;
-							} 							
-						}
+			<div class="manage-blocks windowbg noup">
+				<div style="padding-bottom:10px;">
+					', $modeller->alertWarning(null,$txt['ultport_mb_organization'])  ,'
+				</div>
+				<ul class="nolist">';
+				$bk_selected = explode(',', $context['id_blocks']);
+				$alternate = true;
+				$i = 1; //flag
+				$column = 2;
+				foreach($context['blocks'] as $blocks){
+					if (in_array($blocks['id'], $bk_selected)){
+						echo '
+						<li class="windowbg">							
+							<span class="floatleft">
+								', $blocks['title'],' (',$txt['ultport_mbk_position'],')
+							</span>
+							<span class="floatright">';
+							switch($context['design']){
+							case "1-2":
+								echo '
+								<div class="up-radio">
+									<label>
+										<input type="radio" value="c1" name="mbk_view_', $blocks['id'] ,'"> 
+										<span>', $txt['ultport_mb_column'] ,' 1</span>
+									</label>
+									<label>
+										<input type="radio" value="c2" name="mbk_view_', $blocks['id'] ,'"> 
+										<span>', $txt['ultport_mb_column'] ,' 2</span>
+									</label>
+								</div>';
+								break;
+							case "2-1":
+								echo '
+								<div class="up-radio">
+									<label>
+										<input type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'">
+										<span>', $txt['ultport_mb_row'] ,' 1</span>
+									</label>
+									<label>
+										<input type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'">
+										<span>', $txt['ultport_mb_row'] ,' 2</span>
+									</label>
+								</div>';
+								break;
+							case "3-1":
+								echo '
+								<div class="up-radio">
+									<label>
+										<input type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'"> 
+										<span>', $txt['ultport_mb_row'] ,' 1</span>
+									</label>
+									<label>
+										<input type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'"> 
+										<span>', $txt['ultport_mb_row'] ,' 2</span>
+									</label>
+									<label>
+										<input type="radio" value="r3" name="mbk_view_', $blocks['id'] ,'"> 
+										<span>', $txt['ultport_mb_row'] ,' 3</span>
+									</label>
+								</div>';
+								break;
+							default:
+								echo $modeller->alertError(null,$txt['up_not_founds']);
+								break;
+							}															
+						echo '
+						</li>';						
 					}
-					echo '
-				</tr>
-			</table>
+				}
+				echo '
+				</ul>
+			</div>
 			<div class="righttext">
 				<input type="hidden" name="title" value="', $context['title'] ,'" />
 				<input type="hidden" name="position" value="', $context['position'] ,'" />
@@ -1042,7 +1066,9 @@ function template_mb_add_1()
 				<input type="hidden" name="blocks" value="',  $context['id_blocks'] ,'" />
 				<input type="hidden" name="design" value="',  $context['design'] ,'" />
 				<input type="hidden" name="sc" value="', $context['session_id'] ,'" />
-				<input type="submit" name="save" value="', $txt['ultport_button_save'], '" class="button_submit" />
+				<button type="submit" name="save" class="up-btn">
+					<i class="bi bi-save"></i> ', $txt['ultport_button_save'], '
+				</button>
 			</div>
 		</form>	
 	</div><!-- div admincenter -->
@@ -1052,111 +1078,123 @@ function template_mb_add_1()
 function template_mb_edit()
 {
 	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo '
 	<div id="admincenter">
 		<form name="mbedit" method="post" action="', $scripturl, '?action=admin;area=multiblock;sa=edit;id=', $context['idmbk'] ,'" accept-charset="', $context['character_set'], '">
-			<div class="cat_bar">
-				<h3 class="catbg">
+			<div class="title_bar">
+				<h3 class="titlebg">
 					', $txt['ultport_mb_title'] ,' - ', $txt['ultport_mb_edit'] ,' - ', $context['multiblocks'][$context['idmbk']]['title'] ,' - ', $txt['ultport_mb_step'] ,' 1
 				</h3>
 			</div>
-			<div class="windowbg2">
-				<span class="topslice"><span></span></span>
-				<div class="content">
-					<dl class="settings">
-						<dt>
-							', $txt['ultport_mb_enable'] ,'
-						</dt>
-						<dd>
-							<input type="checkbox" name="enable" value="1" class="input_check" ', !empty($context['multiblocks'][$context['idmbk']]['enable']) ? 'checked="checked"' : '' ,'/> 
-						</dd>						
-						<dt>
-							', $txt['ultport_mb_title2'] ,'
-						</dt>
-						<dd>
-							<input type="text" name="title" value="', $context['multiblocks'][$context['idmbk']]['title'] ,'" class="input_text" size="70"/>
-						</dd>';
-						
-						$position = explode('|', $txt['ultport_mb_position']);
-						
-						echo '
-						<dt>
-							', $position[0] ,'
-						</dt>
-						<dd>
-							<select id="position" name="position">
-								<option ', $context['multiblocks'][$context['idmbk']]['position']=='header' ? 'selected="selected"' : '' ,' value="header">', trim($position[1]) ,'</option>
-								<option ', $context['multiblocks'][$context['idmbk']]['position']=='footer' ? 'selected="selected"' : '' ,' value="footer">', trim($position[2]) ,'</option>
-							</select>
-						</dd>
-						<dt>
-							', $txt['ultport_mb_blocks'] ,'
-						</dt>
-						<dd>';
+			<div class="windowbg noup">				
+				<dl class="settings">
+					<dt>
+						', $txt['ultport_mb_enable'] ,'
+					</dt>
+					<dd>
+						', $modeller->getGreatCheckbox(name:'enable',value:'1',isChecked:!empty($context['multiblocks'][$context['idmbk']]['enable'])) ,'
+					</dd>						
+					<dt>
+						', $txt['ultport_mb_title2'] ,'
+					</dt>
+					<dd>
+						<input type="text" name="title" value="', $context['multiblocks'][$context['idmbk']]['title'] ,'" class="input_text" size="70"/>
+					</dd>';
 					
-					$id_blocks = explode(',',$context['multiblocks'][$context['idmbk']]['blocks']);
-					foreach($context['blocks'] as $blocks)
-					{
-						echo '	
-							<input ', in_array($blocks['id'], $id_blocks) ? 'checked="checked"' : '' ,' type="checkbox" name="block[]" value="', $blocks['id'] ,'" class="input_check" /> ', $blocks['title'],'<br />';
-					}
+					$position = explode('|', $txt['ultport_mb_position']);
 					
 					echo '
-						</dd>';
-					
+					<dt>
+						', $position[0] ,'
+					</dt>
+					<dd>
+						<select id="position" name="position">
+							<option ', $context['multiblocks'][$context['idmbk']]['position']=='header' ? 'selected="selected"' : '' ,' value="header">', trim($position[1]) ,'</option>
+							<option ', $context['multiblocks'][$context['idmbk']]['position']=='footer' ? 'selected="selected"' : '' ,' value="footer">', trim($position[2]) ,'</option>
+						</select>
+					</dd>
+					<dt>
+						', $txt['ultport_mb_blocks'] ,'
+					</dt>
+					<dd>';
+				
+					$id_blocks = explode(',',$context['multiblocks'][$context['idmbk']]['blocks']);
+					foreach($context['blocks'] as $blocks){
+						echo '
+						<div>
+							',$modeller->getGreatCheckbox(name:'block[]',value:$blocks['id'],isChecked:in_array($blocks['id'], $id_blocks)),' <span class="up-small">', $blocks['title'] ,'</span>
+						</div>';
+					}
+				
+					echo '
+					</dd>';
+				
 					$design = explode('|', $txt['ultport_mb_design']);
 					echo '	
-						<dt>
-							', $design[0] ,'
-						</dt>
-						<dd>
-							<div style="width:30%;float:left;text-align:left">
-								<input ', trim($context['multiblocks'][$context['idmbk']]['design'])=='1-2' ? 'checked="checked"' : '' ,' type="radio" value="1-2" name="design"> ', $design[1] ,'
-								<br />
+					<dt>
+						', $design[0] ,'
+					</dt>
+					<dd>						
+						<div style="width:30%;float:left;text-align:left" class="up-radio">
+							<label>
+								<input ', trim($context['multiblocks'][$context['idmbk']]['design'])=='1-2' ? 'checked="checked"' : '' ,' type="radio" value="1-2" name="design">
+								<span>', $design[1] ,'</span>
+							</label>
+							<div>
 								<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/1-row-2-columns.png" width="100" height="100" align="top" />
 							</div>
-							<div style="width:30%;float:left;text-align:left">
-								<input ', trim($context['multiblocks'][$context['idmbk']]['design'])=='2-1' ? 'checked="checked"' : '' ,' type="radio" value="2-1" name="design"> ', $design[2] ,'
-								<br />
+						</div>
+						<div style="width:30%;float:left;text-align:left" class="up-radio">
+							<label>
+								<input ', trim($context['multiblocks'][$context['idmbk']]['design'])=='2-1' ? 'checked="checked"' : '' ,' type="radio" value="2-1" name="design">
+								<span>', $design[2] ,'</span>
+							</label>
+							<div>
 								<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/2-rows-1-column.png" width="100" height="100" align="top" />
 							</div>
-							<div style="width:30%;float:left;text-align:left">
-								<input ', trim($context['multiblocks'][$context['idmbk']]['design'])=='3-1' ? 'checked="checked"' : '' ,' type="radio" value="3-1" name="design"> ', $design[3] ,'
-								<br />
+						</div>
+						<div style="width:30%;float:left;text-align:left" class="up-radio">
+							<label>
+								<input ', trim($context['multiblocks'][$context['idmbk']]['design'])=='3-1' ? 'checked="checked"' : '' ,' type="radio" value="3-1" name="design">
+								<span>', $design[3] ,'</span>
+							</label>
+							<div>
 								<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/3-rows-1-column.png" width="100" height="100" align="top" />
 							</div>
-						</dd>';
-						
+						</div>
+					</dd>';
+					
 					echo '
 					<dt>
 						', $txt['ultport_mbk_collapse'] ,'
 					</dt>
 					<dd>
-						<input ', !empty($context['multiblocks'][$context['idmbk']]['mbk_collapse']) ? 'checked="checked"' : '' ,' type="checkbox" name="mbk_collapse" value="1" class="input_check" /> 
+						', $modeller->getGreatCheckbox(name:'mbk_collapse',value:'1',isChecked:!empty($context['multiblocks'][$context['idmbk']]['mbk_collapse'])) ,'
 					</dd>											
 					<dt>
 						', $txt['ultport_mbk_style'] ,'
 					</dt>
 					<dd>
-						<input ', !empty($context['multiblocks'][$context['idmbk']]['mbk_style']) ? 'checked="checked"' : '' ,' type="checkbox" name="mbk_style" value="1" class="input_check" /> 
+						', $modeller->getGreatCheckbox(name:'mbk_collapse',value:'1',isChecked:!empty($context['multiblocks'][$context['idmbk']]['mbk_style'])) ,'
 					</dd>											
 					<dt>
 						', $txt['ultport_mbk_title'] ,'
 					</dt>
 					<dd>
-						<input ', !empty($context['multiblocks'][$context['idmbk']]['mbk_title']) ? 'checked="checked"' : '' ,' type="checkbox" name="mbk_title" value="1" class="input_check" /> 
+						', $modeller->getGreatCheckbox(name:'mbk_title',value:'1',isChecked:!empty($context['multiblocks'][$context['idmbk']]['mbk_title'])) ,'
 					</dd>											
-					</dl>
-					<div class="righttext">
-						<input type="hidden" name="step" value="1" />
-						<input type="hidden" name="sc" value="', $context['session_id'] ,'" />
-						<input type="submit" name="next" value="', $txt['ultport_mb_next'], '" class="button_submit" />
-					</div>
-				</div><!-- div content -->
-				<span class="botslice"><span></span></span>
-			</div><!-- div windowbg2 -->
+				</dl>
+				<div class="righttext">
+					<input type="hidden" name="step" value="1" />
+					<input type="hidden" name="sc" value="', $context['session_id'] ,'" />
+					<button type="submit" name="next" class="up-btn">
+						<i class="bi bi-arrow-right"></i> ', $txt['ultport_mb_next'], '
+					</button>
+				</div>				
+			</div><!-- div windowbg -->
 		</form>	
 	</div><!-- div admincenter -->
 	<br class="clear">';
@@ -1164,87 +1202,91 @@ function template_mb_edit()
 
 function template_mb_edit_1()
 {
-	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $context, $scripturl, $txt;
+	global $upCaller;
+
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo '
 	<div id="admincenter">
 		<form name="mbadd" method="post" action="', $scripturl, '?action=admin;area=multiblock;sa=edit;id=', $context['idmbk'] ,'" accept-charset="', $context['character_set'], '">
-			<div class="cat_bar">
-				<h3 class="catbg">
+			<div class="title_bar">
+				<h3 class="titlebg">
 					', $txt['ultport_mb_title'] ,' - ', $txt['ultport_mb_add'] ,' - ', $txt['ultport_mb_step'] ,' 2				
 				</h3>
 			</div>
-			<div>
-				<span class="topslice"><span></span></span>
-				<div class="content">
-					', $txt['ultport_mb_organization'] ,'
-				</div><!-- div content -->
-				<span class="botslice"><span></span></span>
-			</div><!-- div windowbg2 -->
-			<table align="center" width="80%">
-				<tr>';
-					$bk_selected = explode(',', $context['id_blocks']);
-					$alternate = true;
-					$i = 1; //flag
-					$column = 2;
-					foreach($context['blocks'] as $blocks)
-					{
-						if (in_array($blocks['id'], $bk_selected))
-						{
-							echo '
-							<td width="50%" align="top">	
-								<div ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ('class="windowbg'. ($alternate ? '' : '2')) : 'class="information' ,'">
-									<span class="topslice"><span></span></span>
-									<div class="content">
-										<span style="font-weight:bold;font-size:15px;">', $blocks['title'],'</span>
-										<br />
-										',$txt['ultport_mbk_position'],'&nbsp;&nbsp;';
-										//1 Row 2 Columns
-										if($context['design'] == '1-2')
-										{
-											echo '
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='c1' ? 'checked="checked"' : '') : '' ,' type="radio" value="c1" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_column'] ,' 1
-											&nbsp;&nbsp;
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='c2' ? 'checked="checked"' : '') : '' ,' type="radio" value="c2" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_column'] ,' 2';									
-										}
-										
-										//2 Rows 1 Column
-										if ($context['design'] == '2-1')
-										{
-											echo '
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r1' ? 'checked="checked"' : '') : '' ,' type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 1
-											&nbsp;&nbsp;
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r2' ? 'checked="checked"' : '') : '' ,' type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 2';
-										}
-										
-										//3 Rows 1 Column
-										if ($context['design'] == '3-1')
-										{
-											echo '
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r1' ? 'checked="checked"' : '') : '' ,' type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 1
-											&nbsp;&nbsp;
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r2' ? 'checked="checked"' : '') : '' ,' type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 2
-											&nbsp;&nbsp;
-											<input ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r3' ? 'checked="checked"' : '') : '' ,' type="radio" value="r3" name="mbk_view_', $blocks['id'] ,'"> ', $txt['ultport_mb_row'] ,' 3';
-										}										
-									echo '
-									</div>
-									<span class="botslice"><span></span></span>
-								</div>
-							</td>';
-							$alternate = !$alternate;
-							$i++;
-							if ($i==$column+1)
-							{
-								echo '</tr><tr>';
-								$i=1;
-							} 							
-						}
+			<div class="manage-blocks windowbg noup">
+				<div style="padding-bottom:10px;">
+					', $modeller->alertWarning(null,$txt['ultport_mb_organization'])  ,'
+				</div>
+				<ul class="nolist">';
+				$bk_selected = explode(',', $context['id_blocks']);
+				$alternate = true;
+				$i = 1; //flag
+				$column = 2;
+				foreach($context['blocks'] as $blocks){
+					if (in_array($blocks['id'], $bk_selected)){
+						echo '
+						<li class="windowbg">							
+							<span class="floatleft">
+								', $blocks['title'],' (',$txt['ultport_mbk_position'],')
+							</span>
+							<span class="floatright">';
+							switch($context['design']){
+							case "1-2":
+								echo '
+								<div class="up-radio">
+									<label>
+										<input type="radio" value="c1" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='c1' ? 'checked="checked"' : '') : '' ,'> 
+										<span>', $txt['ultport_mb_column'] ,' 1</span>
+									</label>
+									<label>
+										<input type="radio" value="c2" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='c2' ? 'checked="checked"' : '') : '' ,'> 
+										<span>', $txt['ultport_mb_column'] ,' 2</span>
+									</label>
+								</div>';
+								break;
+							case "2-1":
+								echo '
+								<div class="up-radio">
+									<label>
+										<input type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r1' ? 'checked="checked"' : '') : '' ,'>
+										<span>', $txt['ultport_mb_row'] ,' 1</span>
+									</label>
+									<label>
+										<input type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r2' ? 'checked="checked"' : '') : '' ,'>
+										<span>', $txt['ultport_mb_row'] ,' 2</span>
+									</label>
+								</div>';
+								break;
+							case "3-1":
+								echo '
+								<div class="up-radio">
+									<label>
+										<input type="radio" value="r1" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r1' ? 'checked="checked"' : '') : '' ,'> 
+										<span>', $txt['ultport_mb_row'] ,' 1</span>
+									</label>
+									<label>
+										<input type="radio" value="r2" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r2' ? 'checked="checked"' : '') : '' ,'> 
+										<span>', $txt['ultport_mb_row'] ,' 2</span>
+									</label>
+									<label>
+										<input type="radio" value="r3" name="mbk_view_', $blocks['id'] ,'" ', !empty($context['oblocks'][$blocks['id']]['mbk_view']) ? ($context['oblocks'][$blocks['id']]['mbk_view']=='r3' ? 'checked="checked"' : '') : '' ,'> 
+										<span>', $txt['ultport_mb_row'] ,' 3</span>
+									</label>
+								</div>';
+								break;
+							default:
+								echo $modeller->alertError(null,$txt['up_not_founds']);
+								break;
+							}															
+						echo '
+						</li>';						
 					}
-					echo '
-				</tr>
-			</table>
+				}
+				echo '
+				</ul>
+			</div>
 			<div class="righttext">
 				<input type="hidden" name="title" value="', $context['title'] ,'" />
 				<input type="hidden" name="position" value="', $context['position'] ,'" />
@@ -1255,8 +1297,9 @@ function template_mb_edit_1()
 				<input type="hidden" name="blocks" value="',  $context['id_blocks'] ,'" />
 				<input type="hidden" name="design" value="',  $context['design'] ,'" />
 				<input type="hidden" name="sc" value="', $context['session_id'] ,'" />
-				<input type="submit" name="back" value="', $txt['ultport_button_go_back'], '" class="button_submit" />&nbsp;
-				<input type="submit" name="save" value="', $txt['ultport_button_save'], '" class="button_submit" />
+				<button type="submit" name="save" class="up-btn">
+					<i class="bi bi-save"></i> ', $txt['ultport_button_save'], '
+				</button>
 			</div>
 		</form>	
 	</div><!-- div admincenter -->
