@@ -1,4 +1,7 @@
 <?php
+
+use UltimatePortal\Models\ExtraField;
+
 /**
 * @package Ultimate Portal
 * @version 1.0.0
@@ -13,8 +16,7 @@ function template_enableModules_main()
 
 	echo '
 	<script type="text/javascript"><!-- // --><![CDATA[
-		function toggleItem(itemID)
-		{
+		function toggleItem(itemID){
 			// Toggle the hidden item.
 			var itemValueHandle = document.getElementById(itemID);
 			itemValueHandle.value = itemValueHandle.value == 1 ? 0 : 1;
@@ -36,43 +38,45 @@ function template_enableModules_main()
 				<h3 class="titlebg">
 					', $txt['ultport_enablemodules_title'] ,'
 				</h3>
-			</div>';
+			</div>
+			<div class="manage-blocks windowbg noup">
+				<ul class="nolist">';
 
-	$alternate = true;
-	foreach ($context['modules'] as $id => $modules)
-	{
-		echo '
-			<div class="windowbg', $alternate ? '2' : '', '">
-				<span class="topslice"><span></span></span>
-				<div class="content features">
-					<img class="features_image png_fix" src="', $settings['default_images_url'], '/ultimate-portal/admin-main/', $modules['images'], '" alt="" />
-					<div class="features_switch" id="js_feature_', $id, '">
-						<a href="', $scripturl, '?action=admin;area=upmodulesenable;', $context['session_var'], '=', $context['session_id'], ';toggle=', $id, ';state=', $modules['enabled'] ? 0 : 1, '" onclick="return toggleItem(\'', $id, '\');">
-							<input type="hidden" name="', $id, '" id="', $id, '" value="', $modules['enabled'] ? 'on' : '', '" /><img src="', $settings['images_url'], '/ultimate-portal/switch_', $modules['enabled'] ? 'on' : 'off', '.png" id="switch_', $id, '" style="margin-top: 1.3em;" alt="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" title="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" />
-						</a>
-					</div>
-					<h4>', ($modules['enabled'] && $modules['url'] ? '<a href="' . $modules['url'] . '">' . $modules['title'] . '</a>' : $modules['title']), '</h4>
-					<p>', $modules['desc'], '</p>
-					<div id="plain_feature_', $id, '">
-						<label for="plain_feature_', $id, '_radio_on"><input type="radio" name="feature_plain_', $id, '" id="plain_feature_', $id, '_radio_on" value="1"', $modules['enabled'] ? ' checked="checked"' : '', ' class="input_radio" />', $txt['core_settings_enabled'], '</label>
-						<label for="plain_feature_', $id, '_radio_off"><input type="radio" name="feature_plain_', $id, '" id="plain_feature_', $id, '_radio_off" value="0"', !$modules['enabled'] ? ' checked="checked"' : '', ' class="input_radio" />', $txt['core_settings_disabled'], '</label>
-					</div>
+				foreach ($context['modules'] as $id => $modules){
+					echo '
+					<li class="windowbg">
+						<span class="floatleft">
+							<img class="features_image png_fix" src="', $settings['default_images_url'], '/ultimate-portal/admin-main/', $modules['images'], '" alt="" />							
+							<div class="up-text-muted">
+								', ($modules['enabled'] && $modules['url'] ? '<a href="' . $modules['url'] . '">' . $modules['title'] . '</a>' : $modules['title']), '
+							</div>
+							<p>', $modules['desc'], '</p>
+							<div id="plain_feature_', $id, '">
+								<label for="plain_feature_', $id, '_radio_on"><input type="radio" name="feature_plain_', $id, '" id="plain_feature_', $id, '_radio_on" value="1"', $modules['enabled'] ? ' checked="checked"' : '', ' class="input_radio" />', $txt['core_settings_enabled'], '</label>
+								<label for="plain_feature_', $id, '_radio_off"><input type="radio" name="feature_plain_', $id, '" id="plain_feature_', $id, '_radio_off" value="0"', !$modules['enabled'] ? ' checked="checked"' : '', ' class="input_radio" />', $txt['core_settings_disabled'], '</label>
+							</div>							
+						</span>
+						<span class="floatright">
+							<div class="features_switch" id="js_feature_', $id, '">
+								<a href="', $scripturl, '?action=admin;area=upmodulesenable;', $context['session_var'], '=', $context['session_id'], ';toggle=', $id, ';state=', $modules['enabled'] ? 0 : 1, '" onclick="return toggleItem(\'', $id, '\');">
+									<input type="hidden" name="', $id, '" id="', $id, '" value="', $modules['enabled'] ? 'on' : '', '" /><img src="', $settings['images_url'], '/ultimate-portal/switch_', $modules['enabled'] ? 'on' : 'off', '.png" id="switch_', $id, '" style="margin-top: 1.3em;" alt="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" title="', $txt['core_settings_switch_' . ($modules['enabled'] ? 'off' : 'on')], '" />
+								</a>
+							</div>
+						</span>
+					</li>';
+				}
+				echo '
+				</ul>			
+				<div class="righttext" style="padding-top:15px;">
+					<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+					<input type="hidden" value="0" name="js_worked" id="js_worked" />
+					<button type="submit" name="save" class="up-btn">
+						<i class="bi bi-save"></i> ', $txt['save'], '
+					</button>
 				</div>
-				<span class="botslice clear_right"><span></span></span>
-			</div>';
-
-		$alternate = !$alternate;
-	}
-
-	echo '
-			<div class="righttext">
-				<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
-				<input type="hidden" value="0" name="js_worked" id="js_worked" />
-				<input type="submit" value="', $txt['save'], '" name="save" class="button_submit" />
 			</div>
 		</form>
-	</div>
-	<br class="clear" />';
+	</div>';
 
 	// Turn on the pretty javascript if we can!
 	echo '
@@ -91,149 +95,205 @@ function template_enableModules_main()
 function template_user_posts_main()
 {
 	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $ultimateportalSettings, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo'
 	<form method="post" action="', $scripturl, '?action=admin;area=user-posts;sa=up-main" accept-charset="', $context['character_set'], '">												
-		<table width="80%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td width="100%" align="left" colspan="2" class="catbg">						
-					<img alt="',$txt['ultport_admin_user_posts_main'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/gral-settings.png"/>&nbsp;', $txt['ultport_admin_user_posts_main'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
+		<div class="title_bar">
+			<h3 class="titlebg">
+				<i class="bi bi-gear"></i> ', $txt['ultport_admin_user_posts_main'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_limit'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">									
+				</dt>
+				<dd>
 					<input type="text" name="user_posts_limit" size="3" maxlength="3" ',!empty($ultimateportalSettings['user_posts_limit']) ? 'value="'.$ultimateportalSettings['user_posts_limit'].'"' : 'value="10"','/>
-				</td>
-			</tr>	
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+				</dd>
+			</dl>	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_fields'], '
-				</td>
-				<td width="50%" valign="top" align="left" class="windowbg2">
-					<input type="checkbox" value="on" name="user_posts_field_title" checked="checked" disabled="disabled"/>&nbsp;', $txt['ultport_admin_up_field_title'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_cover" ',!empty($ultimateportalSettings['user_posts_field_cover']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_cover'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_description" ',!empty($ultimateportalSettings['user_posts_field_description']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_description'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_link_topic" checked="checked" disabled="disabled"/>&nbsp;', $txt['ultport_admin_up_field_link_topic'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_topic_author" ',!empty($ultimateportalSettings['user_posts_field_topic_author']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_topic_author'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_member_use_module" ',!empty($ultimateportalSettings['user_posts_field_member_use_module']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_member_use_module'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_member_updated_module" ',!empty($ultimateportalSettings['user_posts_field_member_updated_module']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_member_updated_module'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_type_posts" ',!empty($ultimateportalSettings['user_posts_field_type_posts']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_type_posts'] ,'
-					<br />
-					<input type="checkbox" value="on" name="user_posts_field_add_language" ',!empty($ultimateportalSettings['user_posts_field_add_language']) ? 'checked="checked"' : '',' />&nbsp;', $txt['ultport_admin_up_field_add_language'] ,'
-				</td>
-			</tr>';
+				</dt>
+				<dd>';
+					$options = [
+						'user_posts_field_title' => [
+							'value' => 'on',
+							'checked' => true,
+							'disabled' => true,
+							'label' => $txt['ultport_admin_up_field_title'],
+						],
+						'user_posts_field_cover' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_cover']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_cover'],
+						],
+						'user_posts_field_description' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_description']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_description'],
+						],
+						'user_posts_field_link_topic' => [
+							'value' => 'on',
+							'checked' => true,
+							'disabled' => true,
+							'label' => $txt['ultport_admin_up_field_link_topic'],
+						],
+						'user_posts_field_topic_author' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_topic_author']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_topic_author'],
+						],
+						'user_posts_field_member_use_module' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_member_use_module']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_member_use_module'],
+						],
+						'user_posts_field_member_updated_module' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_member_updated_module']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_member_updated_module'],
+						],
+						'user_posts_field_type_posts' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_type_posts']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_type_posts'],
+						],
+						'user_posts_field_add_language' => [
+							'value' => 'on',
+							'checked' => !empty($ultimateportalSettings['user_posts_field_add_language']),
+							'disabled' => false,
+							'label' => $txt['ultport_admin_up_field_add_language'],
+						],
+					];
+					foreach($options as $key => $opt){
+						echo '
+						<div>
+							',$modeller->getGreatCheckbox(
+								name: $key
+								,value: $opt['value']
+								,isChecked: $opt['checked']
+								,id: $key
+								,isDisabled: $opt['disabled']
+							), ' 
+							', $opt['label'] ,'
+						</div>';
+					}
+					echo '
+				</dd>
+			</dl>';
 		
-		//ONLY IF THE "COVER" FIELD, IS ENABLED, THIS PART APPEARS
-		//SOLO SI EL CAMPO COVER ESTA ACTIVADO, APARECERA ESTA PARTE
-		if (!empty($ultimateportalSettings['user_posts_field_cover']))
-		{
-		echo '			
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+			//ONLY IF THE "COVER" FIELD, IS ENABLED, THIS PART APPEARS
+			//SOLO SI EL CAMPO COVER ESTA ACTIVADO, APARECERA ESTA PARTE
+			if (!empty($ultimateportalSettings['user_posts_field_cover'])){
+			echo '
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_cover_save_host'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="checkbox" value="on" name="user_posts_cover_save_host" ',!empty($ultimateportalSettings['user_posts_cover_save_host']) ? 'checked="checked"' : '',' />
-				</td>
-			</tr>';
-		}
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'user_posts_cover_save_host',value:'on',isChecked:!empty($ultimateportalSettings['user_posts_cover_save_host'])) ,'
+				</dd>
+			</dl>';
+			}
 
-		//ONLY IF THE "COVER" AND "DESCRIPTION" FIELDS, IS ENABLED, THIS PART APPEARS
-		//SOLO SI LOS CAMPOS COVER Y DESCRIPTION ESTAN ACTIVADOS, APARECERA ESTA PARTE
-		if (!empty($ultimateportalSettings['user_posts_field_cover']) && !empty($ultimateportalSettings['user_posts_field_description']))
-		{
-		echo '			
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+			//ONLY IF THE "COVER" AND "DESCRIPTION" FIELDS, IS ENABLED, THIS PART APPEARS
+			//SOLO SI LOS CAMPOS COVER Y DESCRIPTION ESTAN ACTIVADOS, APARECERA ESTA PARTE
+			if (!empty($ultimateportalSettings['user_posts_field_cover']) && !empty($ultimateportalSettings['user_posts_field_description'])){
+			echo '			
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_internal_page_presentation'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="checkbox" value="on" name="user_posts_internal_page" ',!empty($ultimateportalSettings['user_posts_internal_page']) ? 'checked="checked"' : '',' />
-				</td>
-			</tr>';
-		}
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'user_posts_internal_page',value:'on',isChecked:!empty($ultimateportalSettings['user_posts_internal_page'])) ,'
+				</dd>
+			</dl>';
+			}
 		
-		echo '	
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+			echo '	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_presentation'], '
-				</td>
-				<td width="50%" valign="top" align="left" class="windowbg2">
-					<table width="100%" align="center" cellspacing="1" cellpadding="5" border="0">
-						<tr>
-							<td width="50%" align="center" valign="top" class="windowbg2">									
-								<input ', (($ultimateportalSettings['user_posts_cover_view'] == 'normal') ? 'checked="checked"' : '') ,' type="radio" name="user_posts_cover_view" value="normal" >&nbsp;', $txt['ultport_admin_up_normal'] ,'
-								<br /><br />
-								<a href="http://www.smfsimple.com/img/ultimateportal/user-posts/up-normal.jpg" target="_blank"><img width="150" height="150" alt="',$txt['ultport_admin_up_normal'],'" border="0" src="http://www.smfsimple.com/img/ultimateportal/user-posts/up-normal.jpg"/></a>
-							</td>
-							<td width="50%" align="center" valign="top" class="windowbg2">									
-								<input ', (($ultimateportalSettings['user_posts_cover_view'] == 'advanced') ? 'checked="checked"' : '') ,' type="radio" name="user_posts_cover_view" value="advanced" >&nbsp;', $txt['ultport_admin_up_advanced'] ,'
-								<br /><br />
-								<a href="http://www.smfsimple.com/img/ultimateportal/user-posts/up-advanced.jpg" target="_blank"><img width="150" height="150" alt="',$txt['ultport_admin_up_advanced'],'" border="0" src="http://www.smfsimple.com/img/ultimateportal/user-posts/up-advanced.jpg"/></a>
-							</td>
-						</tr>
-					</table>			
-				</td>
-			</tr>';
+				</dt>
+				<dd>					
+					<span class="floatleft">
+						<div class="up-radio">
+							<label>
+								<input ', (($ultimateportalSettings['user_posts_cover_view'] == 'normal') ? 'checked="checked"' : '') ,' type="radio" name="user_posts_cover_view" value="normal"/><span>', $txt['ultport_admin_up_normal'] ,'</span>
+							</label>
+						</div>
+						<div>
+							<a href="'.$settings['default_images_url'].'/ultimate-portal/up-normal.jpg" target="_blank"><img width="150" height="150" alt="',$txt['ultport_admin_up_normal'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/up-normal.jpg"/></a>
+						</div>
+					</span>
+					<span class="floatright">
+						<div class="up-radio">
+							<label>
+								<input ', (($ultimateportalSettings['user_posts_cover_view'] == 'advanced') ? 'checked="checked"' : '') ,' type="radio" name="user_posts_cover_view" value="advanced" ><span>', $txt['ultport_admin_up_advanced'] ,'</span>
+							</label>
+						</div>
+						<div>
+							<a href="'.$settings['default_images_url'].'/ultimate-portal/up-advanced.jpg" target="_blank"><img width="150" height="150" alt="',$txt['ultport_admin_up_advanced'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/up-advanced.jpg"/></a>
+						</div>
+					</span>	
+				</dd>
+			</dl>';
 
-		//ONLY IF THE "ADVANCED" VIEW COVER FIELD, IS SELECTED, THIS PART APPEARS
-		//SOLO SI EL CAMPO VISTA AVANZADA DE LA CARATULA ESTA SELECCIONADO, ESTA PARTE APARECE
-		if ($ultimateportalSettings['user_posts_cover_view'] == 'advanced')
-		{
-		echo '			
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+			//ONLY IF THE "ADVANCED" VIEW COVER FIELD, IS SELECTED, THIS PART APPEARS
+			//SOLO SI EL CAMPO VISTA AVANZADA DE LA CARATULA ESTA SELECCIONADO, ESTA PARTE APARECE
+			if ($ultimateportalSettings['user_posts_cover_view'] == 'advanced'){
+			echo '
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_cover_watermark'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
+				</dt>
+				<dd>
 					<input type="text" name="ultimate_portal_cover_watermark" size="50" maxlength="100" ',!empty($ultimateportalSettings['ultimate_portal_cover_watermark']) ? 'value="'.$ultimateportalSettings['ultimate_portal_cover_watermark'].'"' : '','/>
-				</td>
-			</tr>';
-		}
-		//ONLY IF THE "COVER" FIELD, IS ENABLED, THIS PART APPEARS
-		//SOLO SI EL CAMPO COVER  ESTA ACTIVADO, APARECERA ESTA PARTE
-		if (!empty($ultimateportalSettings['user_posts_field_cover']))
-		{
-		echo '
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+				</dd>
+			</dl>';
+			}
+			//ONLY IF THE "COVER" FIELD, IS ENABLED, THIS PART APPEARS
+			//SOLO SI EL CAMPO COVER  ESTA ACTIVADO, APARECERA ESTA PARTE
+			if (!empty($ultimateportalSettings['user_posts_field_cover'])){
+			echo '
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_header_show'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="checkbox" value="on" name="user_posts_header_show" ',!empty($ultimateportalSettings['user_posts_header_show']) ? 'checked="checked"' : '',' />
-				</td>
-			</tr>';	
-		}
-		echo '	
-			<tr>
-				<td width="50%" valign="top" class="windowbg">									
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'user_posts_header_show',value:'on',isChecked:!empty($ultimateportalSettings['user_posts_header_show'])) ,'
+				</dd>
+			</dl>';	
+			}
+			echo '	
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_up_social_bookmarks'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="checkbox" value="on" name="user_posts_social_bookmarks" ',!empty($ultimateportalSettings['user_posts_social_bookmarks']) ? 'checked="checked"' : '',' />
-				</td>
-			</tr>		
-		</table>
-		<table width="80%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td align="center" colspan="2">	
+				</dt>
+				<dd>
+					', $modeller->getGreatCheckbox(name:'user_posts_social_bookmarks',value:'on',isChecked:!empty($ultimateportalSettings['user_posts_social_bookmarks'])) ,'
+				</dd>
+			</dl>		
+			<div>
+				<span class="floatright">	
 					<input type="hidden" name="save" value="ok" />
 					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_save'],'" value="',$txt['ultport_button_save'],'" />
-				</td>
-			</tr>
-		</table>
+					<button type="submit" name="save" class="up-btn">
+						<i class="bi bi-save"></i> ',$txt['ultport_button_save'],'
+					</button>
+				</span>
+			</div>
+		</div>
 	</form>';
 
 }
@@ -242,229 +302,138 @@ function template_user_posts_main()
 function template_up_extra_field()
 {
 	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
+	global $ultimateportalSettings, $upCaller;
+	$modeller = $upCaller->ssi()->getModeller();
 
 	echo "
-	    <script type=\"text/javascript\">
-			function makesurelink() {
-				if (confirm('".$txt['ultport_delete_confirmation']."')) {
-					return true;
-				} else {
-					return false;
-				}
+	<script type=\"text/javascript\">
+		function makesurelink() {
+			if (confirm('".$txt['ultport_delete_confirmation']."')) {
+				return true;
+			} else {
+				return false;
 			}
-	    </script>";
-
-	if (!empty($ultimateportalSettings['user_posts_field_type_posts']) || !empty($ultimateportalSettings['user_posts_field_add_language']))
-	{
-		if (!empty($context['view']))
-		{
+		}
+	</script>";
+	echo '
+	<div class="manage-blocks windowbg noup">';
+	if (!empty($ultimateportalSettings['user_posts_field_type_posts']) || !empty($ultimateportalSettings['user_posts_field_add_language'])){
+		if (!empty($context['view'])){
 			echo'
-			<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-				<tr>
-					<td width="1%" align="center" class="catbg">									
-						', $txt['ultport_admin_extra_field_id'], '
-					</td>
-					<td width="9%" align="center" class="catbg">									
-						', $txt['ultport_admin_extra_field_icon'], '
-					</td>
-					<td width="40%" align="center" class="catbg">									
-						', $txt['ultport_admin_extra_field_title'], '
-					</td>
-					<td width="50%" align="left" colspan="2" class="catbg">									
-						', $txt['ultport_admin_extra_field_action'], '
-					</td>
-				</tr>';
-			foreach ($context['up-extfield'] as $extfield)	
-			{
-				echo '					
-				<tr>
-					<td width="1%" align="center" class="windowbg">									
-						', $extfield['id'] ,'
-					</td>
-					<td width="9%" align="center" class="windowbg">									
-						', $extfield['icon'] ,'
-					</td>
-					<td width="40%" align="left" class="windowbg">									
-						', $extfield['title'] ,' 
-						<br /><em>', $extfield['field'] ,'</em>
-					</td>
-					<td width="25%" align="center" class="windowbg">									
-						<strong>', $extfield['edit'] ,'</strong>
-					</td>
-					<td width="25%" align="center" class="windowbg">									
-						<strong>', $extfield['delete'] ,'</strong>
-					</td>
-				</tr>';
+			<ul class="nolist">';
+			foreach ($context['up-extfield'] as $extfield)	{
+				echo '
+				<li class="windowbg">
+					<span class="floatleft">							
+						<div>#', $extfield['id'] ,' ', $extfield['icon'] ,' ', $extfield['title'] ,'</div>
+						<div class="up-text-muted up-small">', $extfield['field'] ,'</div>
+					</span>
+					<span class="floatright">
+						', $extfield['edit'] ,' ', $extfield['delete'] ,'
+					</span>
+				</li>';
 			}
 			echo '
-			</table>';
+			</ul>';
 		}else{
 			echo '	
-			<table width="70%" class="tborder" align="center" cellspacing="1" cellpadding="5" border="0">
-				<tr>
-					<td class="catbg" align="left" colspan="6">	
-						<strong>', $txt['ultport_no_rows_title'] ,'</strong>
-					</td>
-				</tr>
-				<tr>
-					<td class="windowbg" align="center" colspan="6">	
-						<strong>', $txt['ultport_no_rows'] ,'</strong>
-					</td>
-				</tr>
-			</table>';
+			<div class="title_bar">
+				<h3 class="titlebg">
+					', $txt['ultport_no_rows_title'] ,'
+				</h3>				
+			</div>
+			<div class="windowbg noup">
+				', $modeller->alertWarning(title:null, message:$txt['ultport_no_rows']) ,'
+			</div>';
 		}
 	}else{
 		echo '	
-		<table width="70%" class="tborder" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td class="catbg" align="left" colspan="6">	
-					<strong>', $txt['ultport_no_rows_title'] ,'</strong>
-				</td>
-			</tr>
-			<tr>
-				<td class="windowbg" align="center" colspan="6">	
-					<strong>', $txt['ultport_no_activate_extra_field'] ,'</strong>
-				</td>
-			</tr>
-		</table>';	
+		<div class="title_bar">
+			<h3 class="titlebg">
+				', $txt['ultport_no_rows_title'] ,'
+			</h3>				
+		</div>
+		<div class="windowbg noup">
+			', $modeller->alertInfo(title:null, message:$txt['ultport_no_activate_extra_field']) ,'
+		</div>';
 	}	
 	
 	echo '	
-	<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-		<tr>
-			<td align="left" colspan="6">	
-				<img style="float:left" alt="',$txt['ultport_button_add'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/add.png"/>&nbsp;
-				<a href="', $scripturl ,'?action=admin;area=user-posts;sa=add-extra-field;sesc=' . $context['session_id'].'"><strong>', $txt['ultport_button_add'] ,'</strong></a>
-			</td>
-		</tr>
-	</table>';
+		<div class="floatleft" style="padding-top:15px;">
+			<a href="', $scripturl ,'?action=admin;area=user-posts;sa=add-extra-field;sesc=' . $context['session_id'].'" class="up-btn">
+				<i class="bi bi-plus-circle-fill"></i> ', $txt['ultport_button_add'] ,'
+			</a>
+		</div>
+	</div>';
 
 }
 
 //Show the Ultimate Portal - Area: Extra Field / Section: Add Extra Field
-function template_add_extra_field()
+function template_form_extra_field()
 {
-	global $context, $scripturl, $txt, $settings;
+	global $context, $scripturl, $txt;
 	global $ultimateportalSettings;
-
+	/** @var ExtraField $extraField */
+	$extraField = $context['extraField'] ?? null;
 
 	echo'
-	<form method="post" action="', $scripturl, '?action=admin;area=user-posts;sa=add-extra-field" accept-charset="', $context['character_set'], '">												
-		<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td width="100%" align="left" colspan="2" class="catbg">						
-					<img alt="',$txt['ultport_admin_up_extra_field_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/add.png"/>&nbsp;', $txt['ultport_admin_up_extra_field_title'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
+	<form method="post" action="', $scripturl, '?action=admin;area=user-posts;sa=', !empty($extraField->dbId) ? 'edit-extra-field' : 'add-extra-field' ,'" accept-charset="', $context['character_set'], '">												
+		<div class="title_bar">
+			<h3 class="titlebg">
+				<i class="bi bi-plus-circle-fill"></i> ', $txt['ultport_admin_up_extra_field_title'], '
+			</h3>
+		</div>
+		<div class="windowbg noup">
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_add_extra_field_title'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="text" name="title" size="50" maxlength="100" />
-				</td>
-			</tr>				
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
+				</dt>
+				<dd>
+					<input type="text" name="title" size="50" maxlength="100" value="', $extraField->title ?? null ,'"/>
+				</dd>
+			</dl>				
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_add_extra_field_icon'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="text" name="icon" size="50" maxlength="100" />
-				</td>
-			</tr>				
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
+				</dt>
+				<dd>
+					<input type="text" name="icon" size="50" maxlength="100" value="', $extraField->icon ??null ,'" />
+				</dd>
+			</dl>				
+			<dl class="settings">
+				<dt>
 					', $txt['ultport_admin_extra_field_selectfield'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<select name="field" size="1">';
-					if (!empty($ultimateportalSettings['user_posts_field_type_posts']))
-					echo '
-						<option value="type" >', $txt['ultport_admin_extra_field_type'] ,'</option>';
-						
-					if (!empty($ultimateportalSettings['user_posts_field_add_language']))						
-					echo '	
-						<option value="lang" >', $txt['ultport_admin_extra_field_lang'] ,'</option>';
-						
+				</dt>
+				<dd>
+					<select name="field" size="1">';					
+					$fieldOptions = [
+						'type'=>[
+							'label'=>$txt['ultport_admin_extra_field_type'],
+							'visible'=>!empty($ultimateportalSettings['user_posts_field_type_posts'])
+						],
+						'lang'=>[
+							'label'=>$txt['ultport_admin_extra_field_lang'],
+							'visible'=>!empty($ultimateportalSettings['user_posts_field_add_language'])
+						],
+					];
+					foreach($fieldOptions as $typeId => $value){
+
+						echo '
+						<option ', !empty($extraField->field) && $extraField->field === $typeId ? 'selected="selected"' : null ,' value="', $typeId ,'">', $value['label'] ,'</option>';
+					}
 					echo '	
 					</select>
-				</td>
-			</tr>				
-		</table>
-		<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="save" value="ok" />
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_add'],'" value="',$txt['ultport_button_add'],'" />
-				</td>
-			</tr>
-		</table>
-	</form>';
-
-}
-
-//Show the Ultimate Portal - Area: Extra Field / Section: Add Extra Field
-function template_edit_extra_field()
-{
-	global $context, $scripturl, $txt, $settings;
-	global $ultimateportalSettings;
-
-
-	echo'
-	<form method="post" action="', $scripturl, '?action=admin;area=user-posts;sa=edit-extra-field" accept-charset="', $context['character_set'], '">												
-		<table width="70%" align="center" class="bordercolor" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td width="100%" align="left" colspan="2" class="catbg">						
-					<img alt="',$txt['ultport_admin_up_extra_field_title'],'" border="0" src="'.$settings['default_images_url'].'/ultimate-portal/edit.png"/>&nbsp;', $txt['ultport_admin_up_extra_field_title'], '
-				</td>
-			</tr>
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
-					', $txt['ultport_admin_add_extra_field_title'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="text" name="title" size="50" maxlength="100" value="', $context['title'] ,'"/>
-				</td>
-			</tr>				
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
-					', $txt['ultport_admin_add_extra_field_icon'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<input type="text" name="icon" size="50" maxlength="100" value="', $context['icon'] ,'"/>
-				</td>
-			</tr>				
-			<tr>
-				<td width="50%" align="left" class="windowbg">									
-					', $txt['ultport_admin_extra_field_selectfield'], '
-				</td>
-				<td width="50%" align="center" class="windowbg2">
-					<select name="field" size="1">';
-					if (!empty($ultimateportalSettings['user_posts_field_type_posts']))
-					echo '
-						<option value="type" ', ($context['field'] == 'type') ? 'selected="selected"' : '','>', $txt['ultport_admin_extra_field_type'] ,'</option>';
-						
-					if (!empty($ultimateportalSettings['user_posts_field_add_language']))						
-					echo '	
-						<option value="lang" ', ($context['field'] == 'lang') ? 'selected="selected"' : '','>', $txt['ultport_admin_extra_field_lang'] ,'</option>';
-						
-					echo '	
-					</select>				
-				</td>
-			</tr>				
-		</table>
-		<table width="70%" align="center" cellspacing="1" cellpadding="5" border="0">
-			<tr>
-				<td align="center" colspan="2">	
-					<input type="hidden" name="id" value="', $context['id'] ,'" />						
-					<input type="hidden" name="save" value="ok" />
-					<input type="hidden" name="sc" value="', $context['session_id'], '" />
-					<input type="submit" name="',$txt['ultport_button_edit'],'" value="',$txt['ultport_button_edit'],'" />
-				</td>
-			</tr>
-		</table>
+				</dd>
+			</dl>				
+			<div>
+				<input type="hidden" name="save" value="ok" />
+				', !empty($extraField->dbId) ? '<input type="hidden" name="id" value="'. ($extraField->dbId ?? null). '" />' : null ,'
+				<input type="hidden" name="sc" value="', $context['session_id'], '" />
+				<button type="submit" name="save" class="up-btn">
+					<i class="bi bi-check-circle-fill"></i> ',$txt['ultport_button_save'],'
+				</div>
+			</div>
+		</div>
 	</form>';
 
 }

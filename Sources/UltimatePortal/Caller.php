@@ -9,6 +9,12 @@ class Caller {
         foreach (CoreBase::filesAutoLoad as $file) {
             require_once($sourcedir . '/UltimatePortal/' . $file);
         }
+        
+        //models autoload
+        foreach(scandir($sourcedir.'/UltimatePortal/Models') as $filename){
+            if (is_dir($filename)) continue;
+            require_once($sourcedir.'/UltimatePortal/Models/'.$filename);
+        }
     }
 
     function subs(): Subs { return new Subs(); }

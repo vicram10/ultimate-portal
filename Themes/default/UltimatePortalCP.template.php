@@ -921,19 +921,25 @@ function template_mb_add()
 						', $design[0] ,'
 					</dt>
 					<dd>
-						<div style="width:30%;float:left;text-align:left">
-							<input type="radio" value="1-2" name="design"> ', $design[1] ,'
-							<br />
+						<div style="width:30%;float:left;text-align:left" class="up-radio">
+							<label>
+								<input type="radio" value="1-2" name="design"> 
+								<span>', $design[1] ,'</span>
+							</label>
 							<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/1-row-2-columns.png" width="100" height="100" align="top" />
 						</div>
-						<div style="width:30%;float:left;text-align:left">
-							<input type="radio" value="2-1" name="design"> ', $design[2] ,'
-							<br />
+						<div style="width:30%;float:left;text-align:left" class="up-radio">
+							<label>
+								<input type="radio" value="2-1" name="design"> 
+								<span>', $design[2] ,'</span>
+							</label>
 							<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/2-rows-1-column.png" width="100" height="100" align="top" />
 						</div>
-						<div style="width:30%;float:left;text-align:left">
-							<input type="radio" value="3-1" name="design"> ', $design[3] ,'
-							<br />
+						<div style="width:30%;float:left;text-align:left" class="up-radio">
+							<label>
+								<input type="radio" value="3-1" name="design"> 
+								<span>', $design[3] ,'</span>
+							</label>
 							<img alt="" id="design_image" src="', $settings['default_images_url'], '/ultimate-portal/3-rows-1-column.png" width="100" height="100" align="top" />
 						</div>
 					</dd>';
@@ -990,9 +996,6 @@ function template_mb_add_1()
 				</div>
 				<ul class="nolist">';
 				$bk_selected = explode(',', $context['id_blocks']);
-				$alternate = true;
-				$i = 1; //flag
-				$column = 2;
 				foreach($context['blocks'] as $blocks){
 					if (in_array($blocks['id'], $bk_selected)){
 						echo '

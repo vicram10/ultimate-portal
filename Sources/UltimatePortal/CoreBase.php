@@ -14,7 +14,7 @@ abstract Class CoreBase {
         'Subs.php',
         'Load.php',
         'SSI.php',
-        'Modeller.php',
+        'Modeller.php',        
         'SubsBlocks.php',
         'SubsUtils.php',
     ];
