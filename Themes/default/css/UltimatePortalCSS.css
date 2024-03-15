@@ -669,66 +669,70 @@ h4.catbg span.left, h4.catbg2 span.left, h3.catbg span.left, h3.catbg2 span.left
 }
 
 .up-checkbox .up-checkbox-input {
-appearance: none;
-background-color: #dfe1e4;
-border-radius: 72px;
-border-style: none;
-flex-shrink: 0;
-height: 20px;
-margin: 0;
-position: relative;
-width: 30px;
+	appearance: none;
+	background-color: #dfe1e4;
+	border-radius: 72px;
+	border-style: none;
+	flex-shrink: 0;
+	height: 20px;
+	margin: 0;
+	position: relative;
+	width: 30px;
 }
 
 .up-checkbox .up-checkbox-input::before {
-bottom: -6px;
-content: "";
-left: -6px;
-position: absolute;
-right: -6px;
-top: -6px;
+	bottom: -6px;
+	content: "";
+	left: -6px;
+	position: absolute;
+	right: -6px;
+	top: -6px;
 }
 
 .up-checkbox .up-checkbox-input,
 .up-checkbox .up-checkbox-input::after {
-transition: all 100ms ease-out;
+	transition: all 100ms ease-out;
 }
 
 .up-checkbox .up-checkbox-input::after {
-background-color: #fff;
-border-radius: 50%;
-content: "";
-height: 14px;
-left: 3px;
-position: absolute;
-top: 3px;
-width: 14px;
+	background-color: #fff;
+	border-radius: 50%;
+	content: "";
+	height: 14px;
+	left: 3px;
+	position: absolute;
+	top: 3px;
+	width: 14px;
 }
 
 .up-checkbox input[type=checkbox] {
-cursor: default;
+	cursor: default;
 }
 
 .up-checkbox .up-checkbox-input:hover {
-background-color: #c9cbcd;
-transition-duration: 0s;
+	background-color: #c9cbcd;
+	transition-duration: 0s;
 }
 
 .up-checkbox .up-checkbox-input:checked {
-background-color: #6e79d6;
+	background-color: #6e79d6;
+}
+
+.up-checkbox .up-checkbox-input:disabled, .up-checkbox .up-checkbox-input:hover {
+	opacity: 0.3;
 }
 
 .up-checkbox .up-checkbox-input:checked::after {
-background-color: #fff;
-left: 13px;
+	background-color: #fff;
+	left: 13px;
 }
 
 .up-checkbox :focus:not(.focus-visible) {
-outline: 0;
+	outline: 0;
 }
 
 .up-checkbox .up-checkbox-input:checked:hover {
-background-color: #535db3;
+	background-color: #535db3;
 }
 
 .up-radio {	

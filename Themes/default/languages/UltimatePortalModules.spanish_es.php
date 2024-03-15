@@ -76,7 +76,7 @@ $txt['ultport_admin_up_cover_watermark'] = '<strong>Escribir la Marca de Agua a 
 							<br />Solo si la imagen es guardada en el hosting, la Marca de Agua elegida, estara escrito por la Caratula, si la imagen no se guarda en el hosting,
 							solamente simulara un efecto de Marca de Agua, sin que esta este escrito por la Caratula. 
 							<br />Dejar el campo vacio, si no desea tener la Caratula con Marca de Agua.
-							<br /><strong>Ejemplo:</strong> <strong><a href="http://www.ultimate-portal.net/image/user-posts/watermark-example.jpg" target="_blank">Imagen de Ejemplo</a></strong>.';
+							<br /><strong>Ejemplo:</strong> <strong><a href="'.$settings['default_images_url'].'/ultimate-portal/watermark-example.jpg" target="_blank">Imagen de Ejemplo</a></strong>.';
 $txt['ultport_admin_up_header_show'] = 'Visualizar los Aportes en el Header';							
 $txt['ultport_admin_up_social_bookmarks'] = '<strong>Permitir Compartir la Entrada (Social Bookmarks)</strong>
 							<br />La misma sera visualizada tanto en el bloque del modulo, como dentro de la pagina interna del Modulo.';							

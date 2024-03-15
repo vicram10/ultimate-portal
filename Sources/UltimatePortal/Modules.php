@@ -6,6 +6,8 @@
 * @copyright 2024
 */
 
+use UltimatePortal\Models\ExtraField;
+
 if (!defined('SMF'))
 	die('Hacking attempt...');
 	
@@ -222,7 +224,7 @@ function AddExtraField()
 	}
 	
 	// Call the sub template.
-	$context['sub_template'] = 'add_extra_field';
+	$context['sub_template'] = 'form_extra_field';
 	$context['page_title'] = $txt['ultport_admin_up_extra_field_title'];
 
 }
@@ -248,6 +250,9 @@ function EditExtraField()
 			fatal_lang_error('ultport_error_no_add_icon',false);
 		
 		$id = (int) $_POST['id'];	
+		if (empty($id)){
+			fatal_lang_error('ultport_error_missing_id',false);
+		}
 		$icon =  $subs->up_db_xss($_POST['icon']);
 		$title = $smcFunc['db_escape_string']($_POST['title']);
 		$field =  $subs->up_db_xss($_POST['field']);
@@ -268,16 +273,18 @@ function EditExtraField()
 	$myquery = $smcFunc['db_query']('',"SELECT id, title, icon, field 
 						FROM {$db_prefix}uposts_extra_field 
 						WHERE id = '$id'");
-	while( $row = $smcFunc['db_fetch_assoc']($myquery) ) {
-		$context['id'] = $row['id'];
-		$context['title'] = $row['title'];
-		$context['icon'] = $row['icon'];
-		$context['field'] = $row['field'];				
-	}
+	
+	$extraField = new ExtraField();
+	$row = $smcFunc['db_fetch_assoc']($myquery);	
+	$extraField->dbId = intval($row['id']);
+	$extraField->title = $row['title'];
+	$extraField->icon = $row['icon'];
+	$extraField->field = $row['field'];
 
+	$context['extraField'] = $extraField;
 		
 	// Call the sub template.
-	$context['sub_template'] = 'edit_extra_field';
+	$context['sub_template'] = 'form_extra_field';
 	$context['page_title'] = $txt['ultport_admin_up_extra_field_title'];
 
 }

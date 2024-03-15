@@ -67,10 +67,10 @@ class Modeller extends CoreBase {
         return $model;
     }
 
-    function getGreatCheckbox(string $name, string $value, bool $isChecked = false, ?string $id = null):string{
+    function getGreatCheckbox(string $name, string $value, bool $isChecked = false, ?string $id = null, ?bool $isDisabled = false):string{
         return '
         <span class="up-checkbox" style="padding-left:10px;padding-right:10px;">
-            <input type="checkbox" '. ($id ? 'id="'.$id.'"' : null) .' name="'. $name .'" class="up-checkbox-input" '.($isChecked ? 'checked="checked"' : '').' value="'.$value.'" />
+            <input type="checkbox" '. ($id ? 'id="'.$id.'"' : null) .' name="'. $name .'" class="up-checkbox-input" '.( $isDisabled ? 'disabled="disabled"' : null ).' '.($isChecked ? 'checked="checked"' : null).' value="'.$value.'" />
         </span>';
     }
 }

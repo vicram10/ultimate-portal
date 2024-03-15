@@ -67,6 +67,7 @@ $txt['ultport_social_bookmarks_share'] = 'Share this entry on';
 $txt['ultport_delete_confirm'] = 'Do you really want to delete this?';
 
 //Error
+$txt['ultport_error_missing_id'] = 'Identifier or ID not found.';
 $txt['ultport_no_extension_image'] = 'Error, file extension not allowed.';
 
 // Block Boards News

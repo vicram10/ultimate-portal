@@ -78,7 +78,7 @@ $txt['ultport_admin_up_cover_watermark'] = '<strong>Write to visualize Watermark
 							<br />Only if the image is stored in the hosting, the watermark is chosen, will be written by its cover, if the picture is saved in the hosting,
 only simulate a watermark effect, without that letter by its cover.
 							<br />Leave the field empty if you don\t want the covers with Watermark.
-							<br /><strong>Example:</strong> <strong><a href="http://www.smfsimple.com/img/ultimateportal/user-posts/watermark-example.jpg" target="_blank">Sample Image</a></strong>.';
+							<br /><strong>Example:</strong> <strong><a href="'.$settings['default_images_url'].'/ultimate-portal/watermark-example.jpg" target="_blank">Sample Image</a></strong>.';
 $txt['ultport_admin_up_header_show'] = 'Viewing posts in the Header';							
 $txt['ultport_admin_up_social_bookmarks'] = '<strong>Allow Input Share (Social Bookmarks)</strong>
 							<br />The same will be displayed both in the block module, and within the module\s internal website.';							
@@ -91,8 +91,8 @@ $txt['ultport_admin_up_field_link_topic'] = 'Link to Topic';
 $txt['ultport_admin_up_field_topic_author'] = 'Topic Autor';
 $txt['ultport_admin_up_field_member_use_module'] = 'Show who add the Contribution in Module?';
 $txt['ultport_admin_up_field_member_updated_module'] = 'Show who updates the Contribution in Module?';
-$txt['ultport_admin_up_field_type_posts'] = 'Add <strong> Selector posts <em> Type </ em> </ strong> the module?';
-$txt['ultport_admin_up_field_add_language'] = 'Add <em> <strong> Selector Languages </ em> </ strong> the module?';
+$txt['ultport_admin_up_field_type_posts'] = 'Add <b>Selector posts <em>Type</em></b> the module?';
+$txt['ultport_admin_up_field_add_language'] = 'Add <b>Selector Languages</em></b> the module?';
 $txt['ultport_admin_up_extra_field_title'] = 'Extras Fields Manager';
 $txt['ultport_admin_up_extra_field_description'] = 'Area where you can add, modify, delete, <strong> fields Contribution Type </ strong> and <strong> Language Selector </ strong> Module <strong> Members posts </ strong>';
 $txt['ultport_admin_extra_field_id'] = 'Id';
